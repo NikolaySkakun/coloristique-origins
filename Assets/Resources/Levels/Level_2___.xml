@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Level index="2">
+
+	<room class="Room">	
+		<Room index="0" x="10" y="4" z="10" color="White">
+			<cell class="Cell">
+    			<Cell index="0" x="75" z="35" type="down" color="White"></Cell>
+    			<Cell index="1" x="50" z="35" type="down" color="Black"></Cell>
+    			<Cell index="2" x="25" z="35" type="down" color="Black"></Cell>
+			</cell>
+		</Room>
+		<Room index="1" x="0.32" y="2.8" z="3.5" color="White">
+		<wall class="Wall">
+				<Wall index="0" position="50" color="White" direction="2" hill="0"></Wall>
+			</wall>
+		</Room>
+		<Room index="2" x="4" y="4" z="5" color="White"></Room>
+	</room>
+	
+	<door class="Door">
+		<Door index="0" orientation="z" color="Black" type="inlet"></Door>
+		<Door index="1" orientation="z" color="Black" type="outlet"></Door>
+	</door>	
+
+	<join> 
+		<Door roomIndex="0" doorIndex="0" sideIndex="5" x="50" y="0" type="r"></Door>
+		<Door roomIndex="0" doorIndex="1" sideIndex="5" x="50" y="0" type="d">
+			<Cell room="0" index="0"></Cell>
+			<Cell room="0" index="1"></Cell>
+		</Door>
+		<Wall roomIndex="1" wallIndex="0">
+			<Cell room="0" index="2"></Cell>
+		</Wall>
+	<Room index1="0" index2="1" sideIndex="1" x="50" y="0"></Room>
+	<Room index1="1" index2="2" sideIndex="1" x="50" y="0"></Room>
+
+	</join>
+	
+	<ball class="Ball">
+		<Ball index="0" room="0" x="25" z="60" color="Black"></Ball>
+		<Ball index="0" room="2" x="59" z="50" color="White"></Ball>
+
+	</ball>
+
+	
+</Level>
+

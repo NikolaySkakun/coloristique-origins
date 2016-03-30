@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Level index="9">
+
+	<room class="Room">	
+		<Room index="0" x="10" y="4" z="10" color="White"></Room>
+		
+		<Room index="1" x="10" y="4" z="10" color="White"></Room>
+		<Room index="2" x="10" y="4" z="10" color="White"></Room>
+		<Room index="3" x="10" y="4" z="10" color="White"></Room>
+		
+		<Room index="4" x="10" y="4" z="10" color="White"></Room>
+		<Room index="5" x="10" y="4" z="10" color="White"></Room>
+		<Room index="6" x="10" y="4" z="10" color="White"></Room>
+		
+		<Room index="7" x="1.7" y="2.8" z="0.2" color="White"></Room>
+		<Room index="8" x="0.2" y="2.8" z="1.7" color="White"></Room>
+		<Room index="9" x="1.7" y="2.8" z="0.2" color="White"></Room>
+		<Room index="10" x="0.2" y="2.8" z="1.7" color="White"></Room>
+	</room>
+	
+	<door class="Door">
+		<Door index="0" orientation="z" color="Black" type="inlet"></Door>
+		<Door index="1" orientation="z" color="Black" type="outlet"></Door>
+	</door>	
+
+	<join> 
+		<Door roomIndex="0" doorIndex="0" sideIndex="5" x="50" y="0" type="r"></Door>
+		
+		
+		
+		<Room index1="0" index2="7" sideIndex="5" x="5" y="0"></Room>
+		<Room index1="0" index2="10" sideIndex="1" x="5" y="0"></Room>
+		<Room index1="7" index2="1" sideIndex="5" x="5" y="0"></Room>
+		<Room index1="1" index2="8" sideIndex="1" x="95" y="0"></Room>	
+		<Room index1="8" index2="2" sideIndex="1" x="95" y="0"></Room>
+		<Room index1="2" index2="9" sideIndex="4" x="95" y="0"></Room>
+		<Room index1="9" index2="3" sideIndex="4" x="95" y="0"></Room>
+		
+
+		<Room index1="10" index2="4" sideIndex="1" x="5" y="0"></Room>
+		
+		<Room index1="9" index2="4" sideIndex="4" x="95" y="0"></Room>
+		
+		<Room index1="9" index2="5" sideIndex="5" x="95" y="0"></Room>
+		<Room index1="8" index2="5" sideIndex="1" x="95" y="0"></Room>
+		
+		<Room index1="7" index2="6" sideIndex="5" x="5" y="0"></Room>
+		<Room index1="8" index2="6" sideIndex="0" x="95" y="0"></Room>
+		
+		<Door roomIndex="2" doorIndex="1" sideIndex="5" x="50" y="0" type="d"></Door>
+	</join>
+
+	
+</Level>

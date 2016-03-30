@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Level index="6">
+
+	<room class="Room">	
+		<Room index="0" x="4" y="3.8" z="7" color="White"></Room>
+		<Room index="1" x="4" y="3.8" z="4" color="White"></Room>
+		<Room index="2" x="4" y="3.8" z="7" color="White">
+			<cell class="Cell">
+    			<Cell index="0" x="90" z="5" type="down" color="Black"></Cell>
+    			<Cell index="1" x="10" z="5" type="down" color="Black"></Cell>
+			</cell>
+		</Room>
+		
+		<Room index="3" x="7" y="3.8" z="4" color="White"></Room>
+		<Room index="4" x="7" y="3.8" z="4" color="White"></Room>
+		<Room index="5" x="7" y="3.8" z="7" color="White"></Room>
+		<Room index="6" x="7" y="3.8" z="7" color="White"></Room>
+		<Room index="7" x="7" y="3.8" z="7" color="White"></Room>
+		<Room index="8" x="7" y="3.8" z="7" color="White"></Room>
+		
+		<Room index="9" x="7" y="3.8" z="7" color="White">
+			<ledge class="Ledge">
+				<Ledge index="0" length="1.2" stage="1" stairsPosition="50" color="Black" sideIndex="1" x="0" stairs="true"></Ledge>
+			</ledge>
+			<cell class="Cell">
+    			<Cell index="0" x="50" z="50" type="down" color="Black"></Cell>
+			</cell>
+		</Room>
+		<Room index="10" x="7" y="3.8" z="7" color="White">
+			<ledge class="Ledge">
+				<Ledge index="0" length="1.2" stage="1" stairsPosition="50" color="Black" sideIndex="5" x="100" stairs="true"></Ledge>
+			</ledge>
+			<cell class="Cell">
+    			<Cell index="0" x="50" z="50" type="down" color="Black"></Cell>
+			</cell>
+		</Room>
+		<Room index="11" x="7" y="3.8" z="7" color="White">
+			<ledge class="Ledge">
+				<Ledge index="0" length="1.2" stage="1" stairsPosition="50" color="Black" sideIndex="4" x="0" stairs="true"></Ledge>
+			</ledge>
+			<cell class="Cell">
+    			<Cell index="0" x="50" z="50" type="down" color="Black"></Cell>
+			</cell>
+		</Room>
+		<Room index="12" x="7" y="3.8" z="7" color="White">
+			<ledge class="Ledge">
+				<Ledge index="0" length="1.2" stage="1" stairsPosition="50" color="Black" sideIndex="0" x="100" stairs="true"></Ledge>
+			</ledge>
+			<cell class="Cell">
+    			<Cell index="0" x="50" z="50" type="down" color="Black"></Cell>
+			</cell>
+		</Room>
+		
+		<Room index="13" x="3.6" y="7" z="3.6" color="White"></Room>
+		<Room index="14" x="4" y="3.5" z="7" color="White"></Room>
+
+	</room>
+	
+	<door class="Door">
+		<Door index="0" orientation="z" color="Black" type="inlet"></Door>
+		<Door index="1" orientation="z" color="Black" type="outlet"></Door>
+	</door>	
+	
+	
+
+	<join> 
+		<Door roomIndex="0" doorIndex="0" sideIndex="5" x="50" y="0" type="r"></Door>
+		
+		<Room index1="0" index2="1" sideIndex="5" x="50" y="50"></Room>
+		<Room index1="1" index2="2" sideIndex="5" x="50" y="50"></Room>
+		<Room index1="1" index2="3" sideIndex="0" x="50" y="50"></Room>
+		<Room index1="1" index2="4" sideIndex="1" x="50" y="50"></Room>
+
+		<Room index1="0" index2="5" sideIndex="0" x="50" y="50"></Room>
+		<Room index1="3" index2="5" sideIndex="4" x="50" y="50"></Room>
+		
+		<Room index1="0" index2="6" sideIndex="1" x="50" y="50"></Room>
+		<Room index1="4" index2="6" sideIndex="4" x="50" y="50"></Room>
+		
+		<Room index1="2" index2="7" sideIndex="0" x="50" y="50"></Room>
+		<Room index1="3" index2="7" sideIndex="5" x="50" y="50"></Room>
+		
+		<Room index1="2" index2="8" sideIndex="1" x="50" y="50"></Room>
+		<Room index1="4" index2="8" sideIndex="5" x="50" y="50"></Room>
+		
+		<Room index1="5" index2="9" sideIndex="2" x="50" y="50"></Room>
+		<Room index1="6" index2="10" sideIndex="2" x="50" y="50"></Room>
+		<Room index1="7" index2="11" sideIndex="2" x="50" y="50"></Room>
+		<Room index1="8" index2="12" sideIndex="2" x="50" y="50"></Room>
+		
+		<Room index1="2" index2="13" sideIndex="3" x="50" y="50"></Room>
+		<Room index1="13" index2="14" sideIndex="3" x="50" y="0"></Room>
+
+		<Door roomIndex="14" doorIndex="1" sideIndex="5" x="50" y="0" type="d">
+			<Cell room="2" index="0"></Cell>
+			<Cell room="2" index="1"></Cell>
+		</Door>
+		
+		
+		<Ledge ledgeRoom="9" ledgeIndex="0" cellRoom="12" cellIndex="0"></Ledge>
+		<Ledge ledgeRoom="10" ledgeIndex="0" cellRoom="10" cellIndex="0"></Ledge>
+		<Ledge ledgeRoom="11" ledgeIndex="0" cellRoom="9" cellIndex="0"></Ledge>
+		<Ledge ledgeRoom="12" ledgeIndex="0" cellRoom="11" cellIndex="0"></Ledge>
+	</join>
+	
+	<ball class="Ball">
+		<Ball index="0" room="1" x="50" z="50" color="Black"></Ball>
+		<Ball index="1" room="9" x="50" z="50" color="Black"></Ball>
+		<Ball index="1" room="12" x="5" z="50" color="Black"></Ball>
+	</ball>
+	
+	<lift class="Lift">
+		<Lift color="Black" roomIndex="2" x="50" z="50" height="10.8"></Lift>
+	</lift>
+
+</Level>

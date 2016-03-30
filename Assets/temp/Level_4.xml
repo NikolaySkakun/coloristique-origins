@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Level index="4">
+
+	<room class="Room">	
+		<Room index="0" x="12" y="7" z="12" color="White">
+			<ledge class="Ledge">
+				<Ledge index="0" length="8" stage="1" stairsPosition="0" color="Black" sideIndex="5" x="100" stairs="true"></Ledge>
+			</ledge>
+		</Room>
+		<Room index="1" x="3.6" y="10" z="3.6" color="White"></Room>
+		<Room index="2" x="12" y="5" z="12" color="White">
+			<cell class="Cell">
+    			<Cell index="0" x="30" z="5" type="down" color="Black"></Cell>
+    			<Cell index="1" x="50" z="5" type="down" color="White"></Cell>
+    			<Cell index="2" x="70" z="5" type="down" color="Black"></Cell>
+			</cell>
+		</Room>
+		<Room index="3" x="1.2" y="1.2" z="1.2" color="White"></Room>
+		<Room index="4" x="1.2" y="14.5" z="1.2" color="White"></Room>
+		<Room index="5" x="1.2" y="1.8" z="1.2" color="White"></Room>
+		
+		<Room index="6" x="1.2" y="1.2" z="1.2" color="White"></Room>
+	</room>
+	
+	<door class="Door">
+		<Door index="0" orientation="z" color="Black" type="inlet"></Door>
+		<Door index="1" orientation="z" color="Black" type="outlet"></Door>
+	</door>	
+	
+	
+
+	<join> 
+		<Door roomIndex="0" doorIndex="0" sideIndex="5" x="50" y="0" type="r"></Door>
+		<Door roomIndex="0" doorIndex="1" sideIndex="5" x="50" y="0" type="d">
+			<Cell room="2" index="0"></Cell>
+			<Cell room="2" index="1"></Cell>
+		</Door>
+		<Room index1="0" index2="1" sideIndex="2" x="50" y="50"></Room>
+		<Room index1="1" index2="2" sideIndex="2" x="50" y="50"></Room>
+		
+		<Room index1="0" index2="3" sideIndex="0" x="95" y="22"></Room>
+		
+		<Room index1="3" index2="4" sideIndex="2" x="50" y="50"></Room>
+
+		<Room index1="2" index2="5" sideIndex="0" x="95" y="0"></Room>
+
+		<Room index1="4" index2="6" sideIndex="2" x="50" y="50"></Room>
+		<Room index1="5" index2="6" sideIndex="3" x="50" y="50"></Room>
+
+		<Ledge ledgeRoom="0" ledgeIndex="0" cellRoom="2" cellIndex="2"></Ledge>
+	</join>
+	
+	<ball class="Ball">
+		<Ball index="0" room="0" x="50" z="50" color="White" ledge="0"></Ball>
+		<Ball index="1" room="0" x="30" z="60" color="Black"></Ball>
+
+	</ball>
+	
+	<lift class="Lift">
+		<Lift color="White" roomIndex="2" x="50" z="50" height="15"></Lift>
+	</lift>
+
+</Level>

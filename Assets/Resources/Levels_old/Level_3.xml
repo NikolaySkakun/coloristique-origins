@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Level index="3">
+
+	<room class="Room">	
+		<Room index="0" x="11" y="6" z="17" color="White">
+			<cell class="Cell">
+    			<Cell index="0" x="90" z="10" type="down" color="Black"></Cell>
+    			<Cell index="1" x="10" z="85" type="down" color="White"></Cell>
+    			<Cell index="2" x="90" z="85" type="down" color="Black"></Cell>
+			</cell>
+			<wall class="Wall">
+				<Wall index="0" position="78" color="White" direction="0"></Wall>
+			</wall>
+			<trigger class="Trigger">
+				<Trigger index="0" x="50" z="0" scaleX="11" scaleY="6" scaleZ="3.6" type="Player"></Trigger>
+				<Trigger index="1" x="50" z="100" scaleX="11" scaleY="6" scaleZ="12.6" type="Player"></Trigger>
+			</trigger>
+		</Room>
+		<Room index="1" x="1.25" y="1.1" z="1.1" color="White">
+		</Room>
+
+	</room>
+	
+	<door class="Door">
+		<Door index="0" orientation="z" color="Black" type="inlet"></Door>
+		<Door index="1" orientation="z" color="Black" type="outlet"></Door>
+	</door>	
+
+	<join> 
+		<Door roomIndex="0" doorIndex="0" sideIndex="5" x="50" y="0" type="r"></Door>
+		<Door roomIndex="0" doorIndex="1" sideIndex="5" x="50" y="0" type="d">
+			<Cell room="0" index="0"></Cell>
+			<Cell room="0" index="1"></Cell>
+		</Door>
+		<Wall roomIndex="0" wallIndex="0">
+			<Cell room="0" index="2"></Cell>
+		</Wall>
+		<Room index1="0" index2="1" sideIndex="0" x="10" y="95"></Room>
+	</join>
+	
+	<ball class="Ball">
+		<Ball index="0" room="1" x="50" z="50" color="White"></Ball>
+		<Ball index="1" room="0" x="30" z="60" color="Black"></Ball>
+
+	</ball>
+
+	<gun class = "Gun">
+		<Gun index="0" type="Gravity" x="30" z="10" roomIndex="0"></Gun>
+	</gun>
+	
+</Level>

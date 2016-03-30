@@ -1,0 +1,196 @@
+﻿[21.11.14] distance between door.trigger & door.destroyPreviousLevelTrigger < Player.thick (wrong destroy previous level)
+[22.11.14] small door.destroyPreviousLevelTrigger
+
+using UnityEngine;
+using System.Xml;
+using System.Linq;
+using System.Collections;
+using System;
+
+public class Level : Obj 
+{
+	int index = 0;
+
+	static public Level current, previous;
+
+	public bool drawing = true;
+	
+	public bool IsDrawing
+	{
+		get
+		{
+			return drawing;
+		}
+	}
+	
+	public int Index
+	{
+		get
+		{
+			return index;	
+		}
+		set
+		{
+			if(index == 0 && value > 0)
+				index = value;
+		}
+	}
+	
+	public Room[] room;
+	public Ball[] ball;
+	public Door[] door;
+	public Lift[] lift;
+	public Gun[] gun;
+
+	public Door inletDoor = null, outletDoor = null;
+
+	public static Door lastOutletDoor = null;
+	
+	//public Trigger finish;
+
+	static public Level Create(XmlNode xml)
+	{
+		Level level = Create<Level>();
+		if(Level.current == null)
+			Level.current = level;
+		else
+		{
+			Level.previous = Level.current;
+			Level.current = level;
+		}
+		level.levelIndex = level.Index = int.Parse(xml.Attributes["index"].Value);
+
+		return Obj.Create<Level>(level, xml);
+	}
+	
+	override public void Draw()
+	{
+		
+	}
+
+	/*override public void Join(XmlNode xml)
+	{
+
+	}*/
+
+	float beginDrawing = 0;
+
+	void Start () 
+	{
+		beginDrawing = Time.time;
+	}
+	
+	int GetNextLevel()
+	{
+		if(index == 0)
+		{
+			return (gameObject.GetComponent("Level_0") as Level_0).nextLevel;
+		}
+		else
+		{
+			return index + 1;	
+		}	
+
+		//return index + 1;
+	}
+
+	bool isNextLevelLoaded = false;
+
+	public void PostLoad()
+	{
+		foreach(Room r in room)
+			foreach(Side s in r.side)
+				s.AddDrawAnimation();
+
+		foreach(Door d in door)
+			foreach(Side s in d.room.side)
+				s.AddDrawAnimation();
+	}
+
+	void Update()
+	{
+		if(drawing && Time.time - beginDrawing >= Game.drawTime)
+			drawing = false;
+
+		if(outletDoor != null)
+		{
+			if(outletDoor.trigger.PlayerStay && !isNextLevelLoaded)
+			{
+				Level.lastOutletDoor = Level.current.outletDoor;
+				//Level.lastOutletDoor.cell = null;
+
+				Game.LoadLevel(GetNextLevel());
+				Game.Progress = GetNextLevel();
+				//Game.OnDrawEvent();
+
+				//Debug.Log("nxt: " + GetNextLevel().ToString());
+				//StartCoroutine();
+				//Level.lastOutletDoor.Close();
+				//Level.lastOutletDoor.door.animation.Stop();
+				//Debug.Log(Level.lastOutletDoor.door.animation.isPlaying);
+				isNextLevelLoaded = true;
+
+
+				//Debug.Log(Level.lastOutletDoor.door.animation.isPlaying);
+				//Level.lastOutletDoor.Close();
+			}
+
+			else if( isNextLevelLoaded && !Level.lastOutletDoor.trigger.PlayerStay && Level.lastOutletDoor.destroyPreviousLevelTrigger.PlayerStay)
+			{
+				Level.lastOutletDoor.cell = null;
+				Level.lastOutletDoor.Close();
+
+				if(Level.previous.gun != null)
+				{
+					foreach(Gun gun in Level.previous.gun)
+						gun.Destroy();
+				}
+
+				foreach(Ball ball in Level.previous.ball)
+					if(ball.InHands)
+					{
+					//Debug.LogWarning("Ball in hands");
+						ball.Destroy();
+						break;
+					}
+
+				foreach(Side side in Level.lastOutletDoor.room.side)
+					side.collider.enabled = true;
+				//Level.lastOutletDoor.door.animation.Play("anim");
+				StartCoroutine(DestroyPreviousLevel());
+			}
+		}
+
+
+
+	}
+
+	IEnumerator DestroyPreviousLevel() 
+	{
+		yield return new WaitForSeconds(Door.timeForUpDoor * 2f);//
+
+		Game.OnDestroyEvent();
+
+		//Player.gunCamera.SetActive(false);
+		//Debug.Log(Level.current.index);
+		/*if(outletDoor != null)
+		{
+			if(outletDoor.trigger.PlayerStay)
+			{
+				Level.lastOutletDoor = Level.current.outletDoor;
+				Level.lastOutletDoor.cell = null;
+				Level.lastOutletDoor.Close();
+				Game.LoadLevel(GetNextLevel());
+				//Debug.Log(Level.lastOutletDoor.door.animation.isPlaying);
+				yield return new WaitForSeconds(Door.timeForUpDoor);//
+
+				Game.OnDestroyEvent();
+				//Debug.Log(Level.lastOutletDoor.door.animation.isPlaying);
+				//Level.lastOutletDoor.Close();
+			}
+		}*/
+
+		//if(finish.IsInside("Player"))
+			//Game.LoadLevel(GetNextLevel());
+	}
+}

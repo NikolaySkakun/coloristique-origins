@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Level index="17">
+
+	<room class="Room">	
+		<Room index="0" x="10" y="4" z="10" color="White">
+			<cell class="Cell">
+    			<Cell index="0" x="25" z="30" type="down" color="White"></Cell>
+			</cell>
+		</Room>
+		
+		
+		
+		<Room index="1" x="10" y="4" z="10" color="White"></Room>
+		
+		<Room index="2" x="5" y="2" z="5" color="White"></Room>
+		<Room index="3" x="5" y="2" z="5" color="White"></Room>
+		<Room index="4" x="5" y="2" z="5" color="White"></Room>
+		<Room index="5" x="5" y="2" z="5" color="White"></Room>
+		<Room index="6" x="5" y="2" z="5" color="White"></Room>
+		
+		
+		
+		<Room index="7" x="10" y="6" z="10" color="White"></Room>
+		
+		<Room index="8" x="5" y="2" z="5" color="White"></Room>
+		<Room index="9" x="5" y="2" z="5" color="White"></Room>
+		<Room index="10" x="5" y="2" z="5" color="White"></Room>
+		<Room index="11" x="5" y="2" z="5" color="White"></Room>
+		<Room index="12" x="10" y="2" z="8" color="White"></Room>
+		
+	</room>
+	
+	<door class="Door">
+		<Door index="0" orientation="z" color="Black" type="inlet"></Door>
+		<Door index="1" orientation="z" color="Black" type="outlet"></Door>
+	</door>	
+
+	<join> 
+		<Door roomIndex="0" doorIndex="0" sideIndex="5" x="50" y="0" type="r"></Door>
+		<Door roomIndex="0" doorIndex="1" sideIndex="5" x="50" y="0" type="d">
+			<Cell room="0" index="0"></Cell>
+		</Door>
+		
+		
+		<Room index1="0" index2="1" sideIndex="0" x="50" y="50"></Room>
+		
+		<Room index1="1" index2="2" sideIndex="0" x="50" y="50"></Room>
+		<Room index1="1" index2="3" sideIndex="2" x="50" y="50"></Room>
+		<Room index1="1" index2="4" sideIndex="3" x="50" y="50"></Room>
+		<Room index1="1" index2="5" sideIndex="4" x="50" y="50"></Room>
+		<Room index1="1" index2="6" sideIndex="5" x="50" y="50"></Room>
+		
+		
+		
+		<Room index1="0" index2="7" sideIndex="1" x="50" y="0"></Room>
+		
+		<Room index1="7" index2="8" sideIndex="1" x="0" y="0"></Room>
+		<Room index1="7" index2="9" sideIndex="2" x="100" y="100"></Room>
+		<Room index1="7" index2="10" sideIndex="3" x="50" y="50"></Room>
+		<Room index1="7" index2="11" sideIndex="4" x="50" y="100"></Room>
+		<Room index1="7" index2="12" sideIndex="5" x="50" y="50"></Room>
+
+	</join>
+
+	
+</Level>
+

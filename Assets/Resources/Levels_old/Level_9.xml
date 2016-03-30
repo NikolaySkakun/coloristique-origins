@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Level index="9">
+
+	<room class="Room">	
+		<Room index="0" x="7" y="7.6" z="15" color="White">
+			<cell class="Cell">
+    			<Cell index="0" x="20" z="30" type="top" color="White"></Cell>
+    			<Cell index="1" x="75" z="30" type="down" color="White"></Cell>
+			</cell>
+			<ledge class="Ledge">
+				<Ledge index="0" length="14.99" stage="1" color="White" sideIndex="0" x="50" stairs="false"></Ledge>
+			</ledge>
+		</Room>
+		<Room index="1" x="3.5" y="2.8" z="0.2" color="White"></Room>
+		<Room index="2" x="3.5" y="2.8" z="0.2" color="White"></Room>
+		<Room index="3" x="3.5" y="7.6" z="15" color="White"></Room>
+		<Room index="4" x="1.5" y="7.6" z="4" color="White"></Room>
+	</room>
+	
+	<door class="Door">
+		<Door index="0" orientation="z" color="Black" type="inlet"></Door>
+		<Door index="1" orientation="z" color="Black" type="outlet"></Door>
+	</door>	
+	
+	<join> 
+		<Door roomIndex="0" doorIndex="0" sideIndex="5" x="50" y="0" type="r"></Door>
+		<Door roomIndex="0" doorIndex="1" sideIndex="5" x="80" y="100" type="d">
+			<Cell room="0" index="0"></Cell>
+		</Door>
+		<Room index1="0" index2="3" sideIndex="1" x="50" y="50"></Room>
+		<Room index1="3" index2="1" sideIndex="5" x="100" y="100"></Room>
+		<Room index1="3" index2="2" sideIndex="4" x="100" y="0"></Room>
+		
+	</join>
+	
+	<ball class="Ball">
+		<Ball index="0" room="0" x="25" z="50" color="White"></Ball>
+	</ball>
+	
+</Level>

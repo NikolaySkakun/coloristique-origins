@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Level index="8">
+
+	<room class="Room">	
+		<Room index="0" x="10" y="4" z="10" color="White">
+		<trigger class="Trigger">
+				<Trigger index="0" x="50" z="10" scaleX="10" scaleZ="10" type="Player"></Trigger>
+			</trigger>
+		</Room>
+		<Room index="1" x="3.6" y="10" z="3.6" color="White"></Room>
+		<Room index="2" x="10" y="3.8" z="10" color="White">
+			<cell class="Cell">
+    			<Cell index="0" x="80" z="20" type="down" color="White"></Cell>
+			</cell>
+			
+			<ledge class="Ledge">
+				<Ledge index="0" length="1.5" stage="1" stairsPosition="0" color="Black" sideIndex="4" x="100" stairs="true"></Ledge>
+			</ledge>
+			
+			<trigger class="Trigger">
+				<Trigger index="0" x="50" z="10" scaleX="10" scaleZ="10" type="Player"></Trigger>
+			</trigger>
+		</Room>
+		
+		<Room index="3" x="10" y="4" z="10" color="White"></Room>
+		<Room index="4" x="3.6" y="10" z="3.6" color="White"></Room>
+		<Room index="5" x="10" y="3.8" z="10" color="White"></Room>
+		<Room index="6" x="3.5" y="2.8" z="0.001" color="White"></Room>
+		
+		<Room index="7" x="500" y="100" z="500" color="Black">
+		<trigger class="Trigger">
+				<Trigger index="0" x="50" z="0" scaleX="500" scaleZ="250" type="Player"></Trigger>
+				<Trigger index="1" x="50" z="100" scaleX="500" scaleZ="250" type="Player"></Trigger>
+				
+				<Trigger index="2" x="50" z="0" scaleX="3.5" scaleZ="250" type="Player"></Trigger>
+				<Trigger index="3" x="50" z="100" scaleX="3.5" scaleZ="250" type="Player"></Trigger>
+		</trigger>
+		</Room>
+		
+		<Room index="8" x="3.5" y="2.8" z="10" color="Black">
+			<cell class="Cell">
+    			<Cell index="0" x="50" z="65" type="down" color="Black"></Cell>
+			</cell>
+			<trigger class="Trigger">
+				<Trigger index="0" x="50" z="50" scaleX="3.5" scaleZ="10" type="Player"></Trigger>
+			</trigger>
+		</Room>
+		<Room index="9" x="3.5" y="2.8" z="10" color="White"></Room>
+		
+		<Room index="10" x="3.5" y="2.8" z="10" color="White">
+			<trigger class="Trigger">
+				<Trigger index="0" x="50" z="50" scaleX="3.5" scaleZ="10" type="Player"></Trigger>
+			</trigger>
+		</Room>
+		<Room index="11" x="3.5" y="2.8" z="10" color="Black"></Room>
+		
+		
+		
+		
+		<Room index="12" x="5" y="2.8" z="5" color="White">
+		<trigger class="Trigger">
+				<Trigger index="0" x="50" z="50" scaleX="3.5" scaleZ="5" type="Player"></Trigger>
+		</trigger>
+		</Room>
+		<Room index="13" x="5" y="2.8" z="5" color="Black">
+		<trigger class="Trigger">
+				<Trigger index="0" x="50" z="50" scaleX="3.5" scaleZ="5" type="Player"></Trigger>
+		</trigger>
+		</Room>
+	</room>
+	
+	<door class="Door">
+		<Door index="0" orientation="z" color="Black" type="inlet"></Door>
+		<Door index="1" orientation="z" color="Black" type="outlet"></Door>
+
+	</door>	
+	
+	
+
+	<join> 
+		<Door roomIndex="0" doorIndex="0" sideIndex="5" x="50" y="0" type="r"></Door>
+		
+		<Room index1="0" index2="1" sideIndex="2" x="50" y="50"></Room>
+		<Room index1="1" index2="2" sideIndex="2" x="50" y="50"></Room>
+		
+		<Room index1="3" index2="4" sideIndex="2" x="50" y="50"></Room>
+		<Room index1="4" index2="5" sideIndex="2" x="50" y="50"></Room>
+		
+		<Room index1="5" index2="6" sideIndex="5" x="50" y="0"></Room>
+		
+		<Room index1="6" index2="8" sideIndex="4" x="50" y="0"></Room>
+		
+		<Room index1="6" index2="13" sideIndex="5" x="50" y="0"></Room>
+		
+		<Room index1="6" index2="12" sideIndex="4" x="50" y="0"></Room>
+		<Room index1="6" index2="10" sideIndex="5" x="50" y="0"></Room>
+
+
+		<Door roomIndex="2" doorIndex="1" sideIndex="5" x="50" y="0" type="d">
+			<Cell room="8" index="0"></Cell>
+		</Door>
+
+	</join>
+	
+	<ball class="Ball">
+		<Ball index="0" room="0" x="10" z="70" color="White"></Ball>
+		<Ball index="1" room="10" x="50" z="70" color="Black"></Ball>
+	</ball>
+	
+	<lift class="Lift">
+		<Lift color="White" roomIndex="2" x="50" z="50" height="13.8"></Lift>
+	</lift>
+
+</Level>

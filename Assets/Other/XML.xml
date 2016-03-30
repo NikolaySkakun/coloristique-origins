@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Level index="0">
+
+	<room class="Room">	
+		<Room index="0" x="1" y="1" z="1" color="White"/"Black">
+			<cell class="Cell">
+    			<Cell index="0" x="20" z="90" type="down" color="White"></Cell>
+    		</cell>
+    		<ledge class="Ledge">
+				<Ledge index="0" length="4" stage="1" stairsPosition="50" color="Black" sideIndex="1" x="50" stairs="false"></Ledge>
+			</ledge>
+		</Room>
+	</room>
+	
+	<door class="Door">
+		<Door index="0" orientation="z" color="Black"></Door>
+		<Door index="1" orientation="z" color="Black" type="outlet"></Door>
+	</door>	
+
+
+	<join> 
+		<Door roomIndex="0" doorIndex="0" sideIndex="4" x="50" y="0" type="d">
+			<Cell room="1" index="1"></Cell>
+		</Door>
+		<Door roomIndex="0" doorIndex="1" sideIndex="5" x="50" y="0" type="d">
+			<Cell room="1" index="1"></Cell>
+		</Door>
+		<Door roomIndex="1" doorIndex="0" sideIndex="4" x="50" y="0" type="r"></Door>
+		<Room index1="0" index2="2" sideIndex="2" x="50" y="50"></Room>
+	</join>
+	
+	<lift class="Lift">
+		<Lift color="Black" roomIndex="2" x="50" z="50" height="5"></Lift>
+	</lift>
+	
+	<ball class="Ball">
+		<Ball index="0" room="1" x="20" z="50" color="White"></Ball>
+		<Ball index="1" room="1" x="40" z="50" color="White"></Ball>
+		<Ball index="2" room="1" x="60" z="50" color="White"></Ball>
+		<Ball index="3" room="1" x="80" z="50" color="Black"></Ball>
+	</ball>
+	
+	<gun class = "Gun">
+		<Gun index="0" type="Laser" x="50" z="50" roomIndex="1"></Gun>
+	</gun>
+	
+	<triggers>
+
+	</triggers>
+	
+	<extra>
+
+	</extra>
+	
+</Level>
+

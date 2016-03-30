@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Level index="5">
+
+	<room class="Room">	
+		<Room index="0" x="12" y="6.6" z="12" color="White">
+			<cell class="Cell">
+    			<Cell index="0" x="93" z="93" type="down" color="Black"></Cell>
+    			<Cell index="1" x="71" z="93" type="down" color="White"></Cell>
+			</cell>
+			<wall class="Wall">
+				<Wall index="0" position="20" color="White" direction="2" hill="1"></Wall>
+			</wall>
+			<ledge class="Ledge">
+				<Ledge index="0" length="8" stage="1" stairsPosition="0" color="Black" sideIndex="5" x="100" stairs="true"></Ledge>
+			</ledge>
+		</Room>
+		<Room index="1" x="3.6" y="10" z="3.6" color="White"></Room>
+		<Room index="2" x="8" y="4" z="8" color="White">
+			<cell class="Cell">
+				<Cell index="0" x="10" z="10" type="down" color="Black"></Cell>
+			</cell>
+			<trigger class="Trigger">
+				<Trigger index="0" x="50" z="50" scaleX="8" scaleY="4" scaleZ="8" type="Player"></Trigger>
+			</trigger>
+		</Room>
+	</room>
+	
+	<door class="Door">
+		<Door index="0" orientation="z" color="Black" type="inlet"></Door>
+		<Door index="1" orientation="z" color="Black" type="outlet"></Door>
+	</door>	
+
+	<join> 
+		<Door roomIndex="0" doorIndex="0" sideIndex="5" x="50" y="0" type="r"></Door>
+		<Door roomIndex="0" doorIndex="1" sideIndex="5" x="80" y="100" type="d">
+			<Cell room="0" index="0"></Cell>
+		</Door>
+		<Wall roomIndex="0" wallIndex="0">
+			<Cell room="2" index="0"></Cell>
+		</Wall>
+		<Room index1="0" index2="1" sideIndex="2" x="95" y="5"></Room>
+		<Room index1="1" index2="2" sideIndex="2" x="50" y="50"></Room>
+		<Ledge ledgeRoom="0" ledgeIndex="0" cellRoom="0" cellIndex="1"></Ledge>
+	</join>
+	
+	<ball class="Ball">
+		<Ball index="0" room="0" x="50" z="15" color="Black"></Ball>
+		<Ball index="1" room="0" x="60" z="15" color="Black"></Ball>
+
+	</ball>
+
+	<gun class="Gun">
+		<Gun index="0" type="Color" x="90" z="10" roomIndex="0"></Gun>
+	</gun>
+	
+	<lift class="Lift">
+		<Lift color="Black" roomIndex="2" x="50" z="50" height="14"></Lift>
+	</lift>
+	
+</Level>
