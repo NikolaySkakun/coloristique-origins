@@ -73,6 +73,8 @@ public class Level_6 : MonoBehaviour
 			//level.room[0].side[4].transform.position /*- Vector3.right * level.room[2].Size.x/6.1f*/ - Vector3.up * level.room[2].Size.y/4.5f + Vector3.forward * 0.001f;
 		restart.transform.localEulerAngles = new Vector3(0, -90, 90);
 
+		level.lift [0].transform.localEulerAngles += Vector3.up * 180f;
+
 
 		/*
 		GameObject text = Word.WriteString("procedurally generated environment");

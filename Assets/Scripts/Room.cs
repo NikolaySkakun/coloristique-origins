@@ -475,7 +475,7 @@ public class Room : Obj
 
 			for(int i=0; i<3; ++i)
 			{
-				if(euler[i] !=0 && euler[i] < 5f && euler[i] > -5f)
+				if(euler[i] !=0 && (euler[i] < 5f || euler[i] > 355))
 					euler[i] = 0f;
 			}
 

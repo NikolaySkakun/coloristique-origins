@@ -116,28 +116,42 @@ public class Level_0 : MonoBehaviour
 	}
 */
 
-	void AddHideAnimation(GameObject obj)
+	Vector3 originalExitBtnPos = Vector3.zero, originalSettingsBtnPos = Vector3.zero;
+
+	void AddHideAnimation(GameObject obj, Vector3 original)
 	{
 		Animation anim = obj.GetComponent<Animation> ();
 
 		if (!anim)
 			anim = obj.AddComponent<Animation> ();
 
-		AnimationClip clip = Game.CreateAnimationClip (Game.AnimationClipType.POSITION, obj.transform.position, obj.transform.position + Vector3.forward, 1);
+		if (anim.GetClip ("Hide"))
+			anim.RemoveClip ("Hide");
+
+		float time = Mathf.Abs ((original.z + 1) - obj.transform.position.z)*0.5f;
+
+		AnimationClip clip = Game.CreateAnimationClip (Game.AnimationClipType.POSITION, obj.transform.position, original + Vector3.forward, time);
 		anim.AddClip (clip, "Hide");
 
 	}
 
-	void AddShowAnimation(GameObject obj)
+	void AddShowAnimation(GameObject obj, Vector3 original)
 	{
 		Animation anim = obj.GetComponent<Animation> ();
 		
 		if (!anim)
 			anim = obj.AddComponent<Animation> ();
-		
-		AnimationClip clip = Game.CreateAnimationClip (Game.AnimationClipType.POSITION, obj.transform.position + Vector3.forward, obj.transform.position, 1);
+
+		if (anim.GetClip ("Show"))
+			anim.RemoveClip ("Show");
+
+		float time = Mathf.Abs (original.z - obj.transform.position.z)*0.5f;
+
+		AnimationClip clip = Game.CreateAnimationClip (Game.AnimationClipType.POSITION, obj.transform.position, original, time);
 		anim.AddClip (clip, "Show");
 	}
+
+	public GameObject infoMouse, infoWalk;
 
 	IEnumerator Start() 
 	{
@@ -189,8 +203,10 @@ public class Level_0 : MonoBehaviour
 		settingsButton.transform.parent = level.transform;
 		//settingsButton.SetActive(false);
 
-		AddHideAnimation (settingsButton);
-		AddShowAnimation (settingsButton);
+		originalSettingsBtnPos = settingsButton.transform.position;
+
+		AddHideAnimation (settingsButton, originalSettingsBtnPos);
+		AddShowAnimation (settingsButton, originalSettingsBtnPos);
 
 
 		exitButton = CustomObject.ExitButton();
@@ -205,13 +221,18 @@ public class Level_0 : MonoBehaviour
 				- Vector3.right * 0.01f;//level.room[1].side[0].transform.position - Vector3.up * (level.room[1].Size.y*0.1f) ;// + Vector3.forward*(level.room[1].Size.z*0.45f);
 		exitButton.transform.parent = level.transform;
 
-		AddHideAnimation (exitButton);
-		AddShowAnimation (exitButton);
+		originalExitBtnPos = exitButton.transform.position;
+
+		AddHideAnimation (exitButton, originalExitBtnPos);
+		AddShowAnimation (exitButton, originalExitBtnPos);
 
 		level.room[0].trigger[0].transform.localPosition -= Vector3.forward*4.25f;
 
 		(esc.gameSettings = settingsButton.GetComponent<Settings>()).exit = esc;
 
+
+		Player.SetPosition(level.room[1], new Vector2(50, 50));
+		Player.player.transform.localEulerAngles = Vector3.up * 180f;
 
 
 
@@ -228,31 +249,68 @@ public class Level_0 : MonoBehaviour
 
 
 
-		GameObject infoMouse = Word.WriteString("use mouse to look around", 0.5f,  Obj.Colour.BLACK, true);
+		infoMouse = Word.WriteString("use mouse to look around", 0.5f,  Obj.Colour.BLACK); //, true
+		//Word.ApplyReverseColorShaderToString(infoMouse);
+		//float a = Mathf.Atan2( Mathf.Abs (Player.camera.transform.position.z - infoMouse.transform.position.z) , Mathf.Abs (Player.camera.transform.position.y - infoMouse.transform.position.y) ) * Mathf.Rad2Deg;
+
 		//GameObject infoMouse = Word.WriteString("use right stick to look around", 0.5f,  Obj.Colour.BLACK, true);
 		infoMouse.transform.localEulerAngles = new Vector3 (0, 90, 90);
 		infoMouse.transform.localScale = Vector3.one * 0.08f;
 		infoMouse.transform.position = 
 			level.room [1].side [4].transform.position 
-			+ Vector3.forward * 0.001f 
+			+ Vector3.forward * 0.101f 
 			- Vector3.up * 0.8f 
 			+ Vector3.right * level.room [1].Size.x / 7.85f;
 
 
+		AnimationClip clip =  Game.CreateAnimationClip (
+			Quaternion.Euler (new Vector3 (0, 90, -2)), 
+			Quaternion.Euler (infoMouse.transform.localEulerAngles),
+			Game.drawTime / 2f, Game.drawTime / 2f);
 
-		GameObject infoWalk = Word.WriteString("use S W A D buttons to walk", 0.5f,  Obj.Colour.BLACK, true);
+		clip = Game.CreateAnimationClip (Game.AnimationClipType.SCALE, Vector3.zero, infoMouse.transform.localScale, 0.0001f, Game.drawTime / 2f, clip);
+
+
+		infoMouse.AddComponent<Animation> ().AddClip (clip, "Draw");
+		infoMouse.GetComponent<Animation> ().Play ("Draw");
+
+		clip = Game.CreateAnimationClip (
+			Game.AnimationClipType.POSITION, 
+			infoMouse.transform.position, 
+			infoMouse.transform.position - Vector3.up * 2f - Vector3.forward*0.1f, 
+			0.85f, 2.25f);
+		infoMouse.GetComponent<Animation> ().AddClip(clip, "Destroy");
+
+
+		infoWalk = Word.WriteString("use S W A D buttons to walk", 0.5f,  Obj.Colour.BLACK); //, true
 		//GameObject infoWalk = Word.WriteString("use left stick to walk", 0.5f,  Obj.Colour.BLACK, true);
 		infoWalk.transform.localEulerAngles = new Vector3 (0, 90, 90);
 		infoWalk.transform.localScale = Vector3.one * 0.08f;
 		infoWalk.transform.position = 
 			level.room [1].side [4].transform.position 
-			+ Vector3.forward * 0.001f 
+			+ Vector3.forward * 0.101f 
 			- Vector3.up * 1.05f 
 			+ Vector3.right * level.room [1].Size.x / 7.08f;//10.7f;
 
 
 		infoWalk.transform.FindChild ("W").transform.localEulerAngles = Vector3.zero;
 
+		clip =  Game.CreateAnimationClip (
+			Quaternion.Euler (new Vector3 (0, 90, -5)), 
+			Quaternion.Euler (infoWalk.transform.localEulerAngles),
+			Game.drawTime / 2f, Game.drawTime / 2f);
+
+		clip = Game.CreateAnimationClip (Game.AnimationClipType.SCALE, Vector3.zero, infoWalk.transform.localScale, 0.0001f, Game.drawTime / 2f, clip);
+
+		infoWalk.AddComponent<Animation> ().AddClip (clip, "Draw");
+		infoWalk.GetComponent<Animation> ().Play ("Draw");
+
+		clip = Game.CreateAnimationClip (
+			Game.AnimationClipType.POSITION, 
+			infoWalk.transform.position, 
+			infoWalk.transform.position - Vector3.up * 2f - Vector3.forward*0.1f, 
+			1f, 2f);
+		infoWalk.GetComponent<Animation> ().AddClip(clip, "Destroy");
 
 
 		GameObject author = Word.WriteString("the game by nikolay skakun"); //most original gameplay
@@ -334,10 +392,13 @@ public class Level_0 : MonoBehaviour
 		level.door[2].openDoorTrigger = null;
 
 
+
+		level.room [1].trigger [3].OnTriggerEnterPlayer += HideButtons;
+		level.room [1].trigger [3].OnTriggerExitPlayer += ShowButtons;
+
 		//Player.Create();
 		//Player.SetPosition(level.room[0], new Vector2(50, 100));
-		Player.SetPosition(level.room[1], new Vector2(50, 50));
-		Player.player.transform.localEulerAngles = Vector3.up * 180f;
+
 
 		//Portal p = new Portal();
 
@@ -419,7 +480,8 @@ public class Level_0 : MonoBehaviour
 		//level.door[2].gameObject.SetActive(true);
 	}
 
-	bool inLoadLevelRoom = false;
+	static public bool hideInfo = false;
+	bool inLoadLevelRoom = false, usedMouse = false, usedKeys = false;
 	public int binary = 0, previousBinary = 0;
 
 	float borderSize = 0f;
@@ -436,6 +498,24 @@ public class Level_0 : MonoBehaviour
 	}
 
 	bool visibleSettingsButton = true, visibleExitButton = true;
+
+	void HideButtons()
+	{
+		AddHideAnimation (settingsButton, originalSettingsBtnPos);
+		AddHideAnimation (exitButton, originalExitBtnPos);
+
+		settingsButton.GetComponent<Animation> ().Play ("Hide");
+		exitButton.GetComponent<Animation> ().Play ("Hide");
+	}
+
+	void ShowButtons()
+	{
+		AddShowAnimation (settingsButton, originalSettingsBtnPos);
+		AddShowAnimation (exitButton, originalExitBtnPos);
+
+		settingsButton.GetComponent<Animation> ().Play ("Show");
+		exitButton.GetComponent<Animation> ().Play ("Show");
+	}
 
 	void Update () 
 	{
@@ -512,6 +592,28 @@ public class Level_0 : MonoBehaviour
 			}
 		}*/
 
+		if (!hideInfo)
+		{
+			if (!usedKeys)
+			{
+				if (Input.GetAxis ("Horizontal") != 0 || Input.GetAxis ("Vertical") != 0)
+					usedKeys = true;
+			}
+
+			if (!usedMouse)
+			{
+				if (Input.GetAxis ("Mouse Y") != 0 || Input.GetAxis ("Joy Y") != 0)
+					usedMouse = true;
+			}
+
+			if (usedKeys && usedMouse)
+			{
+				hideInfo = true;
+				infoWalk.GetComponent<Animation> ().Play ("Destroy");
+				infoMouse.GetComponent<Animation> ().Play ("Destroy");
+			}
+		}
+
 
 		if(Game.debugMode)
 		{
@@ -555,6 +657,11 @@ public class Level_0 : MonoBehaviour
 			{
 				binary = 10;
 			}
+//			else if(Input.GetKeyUp(KeyCode.Space))
+//			{
+//				infoWalk.GetComponent<Animation> ().Play ("Destroy");
+//				infoMouse.GetComponent<Animation> ().Play ("Destroy");
+//			}
 		}
 
 		//binary = 0;

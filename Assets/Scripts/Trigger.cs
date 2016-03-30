@@ -5,6 +5,9 @@ using System;
 
 public class Trigger : Obj 
 {
+	public event Game.DVoid OnTriggerEnterPlayer;
+	public event Game.DVoid OnTriggerExitPlayer;
+
 	public enum TriggerType { OTHER, BALL, PLAYER, LIFT }
 	public TriggerType type = TriggerType.OTHER;
 	// GO's into triggers
@@ -126,6 +129,10 @@ public class Trigger : Obj
 		if((type == TriggerType.PLAYER || type == TriggerType.OTHER) && obj.tag == "Player")
 		{
 			playerStay = true;
+
+			if (OnTriggerEnterPlayer != null)
+				OnTriggerEnterPlayer ();
+
 			//Debug.Log("Player");
 		}
 
@@ -143,8 +150,13 @@ public class Trigger : Obj
 //			obj.gameObject.GetComponent<SphereCollider>().isTrigger = false;
 //		}
 
-		if((type == TriggerType.PLAYER || type == TriggerType.OTHER) && obj.tag == "Player")
+		if ((type == TriggerType.PLAYER || type == TriggerType.OTHER) && obj.tag == "Player")
+		{
 			playerStay = false;
+
+			if (OnTriggerExitPlayer != null)
+				OnTriggerExitPlayer ();
+		}
 
 		if(type == TriggerType.LIFT && obj.transform.parent == transform.parent)
 		{

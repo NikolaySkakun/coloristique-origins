@@ -38,6 +38,8 @@ public class Level_4 : LevelBahaviour
 		black = level.ball[1];
 		lift = level.lift[0];
 
+		lift.transform.localEulerAngles += Vector3.up * 180f;
+
 //		Vector3 boxSize = level.room[4].side[1].GetComponent<BoxCollider>().size;
 //		boxSize.z = 0.05f;
 //		level.room[4].side[1].GetComponent<BoxCollider>().size = boxSize;
@@ -129,6 +131,9 @@ public class Level_4 : LevelBahaviour
 		bool blackInDown = false, whiteInDown = false;
 		foreach(GameObject obj in level.room[2].trigger[0].innerObjs)
 		{
+			if (!obj)
+				continue;
+
 			if(obj == black.gameObject)
 				blackInDown = true;
 			else if(obj == white.gameObject)

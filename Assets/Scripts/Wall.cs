@@ -317,7 +317,7 @@ public class Wall : Obj
 					box.transform.localEulerAngles = euler;//Vector3.right * 32f;
 				
 					box.GetComponent<BoxCollider> ().size = new Vector3 (1, 3, 1);
-					box.GetComponent<BoxCollider> ().center = new Vector3 (0, -1.3f, -0.28f);
+					box.GetComponent<BoxCollider> ().center = new Vector3 (0, -1.32f, -0.28f);
 
 
 					box = GameObject.CreatePrimitive (PrimitiveType.Cube);
@@ -330,7 +330,7 @@ public class Wall : Obj
 					box.transform.localEulerAngles = -euler;//Vector3.right * (-32f);
 				
 					box.GetComponent<BoxCollider> ().size = new Vector3 (1, 1, 3);
-					box.GetComponent<BoxCollider> ().center = new Vector3 (0, 0.28f, 1.3f);
+					box.GetComponent<BoxCollider> ().center = new Vector3 (0, 0.28f, 1.32f);
 					//box.transform.localPosition = new Vector3(0, -0.16f, -0.16f);
 				}
 			}

@@ -13,7 +13,7 @@
 				<Trigger index="0" x="50" z="0" scaleX="5" scaleZ="4" type="Player"></Trigger>
 				<Trigger index="1" x="0" z="50" scaleX="4" scaleZ="5" type="Player"></Trigger>
 				<Trigger index="2" x="50" z="50" scaleX="10" scaleZ="10" type="Player"></Trigger>
-				
+				<Trigger index="3" x="0" z="0" scaleX="3" scaleZ="3" type="Player"></Trigger>
 			</trigger>
 		</Room>
 

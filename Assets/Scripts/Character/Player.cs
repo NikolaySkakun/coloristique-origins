@@ -443,6 +443,7 @@ public class Player : MonoBehaviour
 			//transform.localEulerAngles = Vector3.forward * 90f;
 		}
 	}
+
 	Vector3 JoystickMovement()
 	{
 		Vector3 joyKeyControl = Vector3.zero;
@@ -565,7 +566,7 @@ public class Player : MonoBehaviour
 		directionVector -= -Physics.gravity;
 		controller.Move(directionVector  * Time.deltaTime * speed);
 		
-		GravityControl();
+		//GravityControl();
 	}
 	
 	
@@ -975,7 +976,11 @@ public class Player : MonoBehaviour
 			{
 				
 				Level.current.outletDoor.destroyPreviousLevelTrigger.transform.GetComponentInChildren<Room>().side[5].gameObject.GetComponent<Renderer>().enabled = true;
-				
+
+
+
+
+
 				gunCamera.SetActive(true);
 				canRestart = false;
 				
@@ -990,7 +995,9 @@ public class Player : MonoBehaviour
 				if(!Level.current.inletDoor.gameObject.activeSelf)
 					Level.current.inletDoor.gameObject.SetActive(true);
 				
-				
+
+				Level.current.outletDoor.whiteBubble.layer = Level.current.outletDoor.blackBubble.layer = LayerMask.NameToLayer("Gun");
+
 				
 				if(Level.current.gun != null)
 				{

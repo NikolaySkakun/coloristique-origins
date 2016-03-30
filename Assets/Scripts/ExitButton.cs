@@ -110,6 +110,8 @@ public class ExitButton : MonoBehaviour
 
 	void ClickDown()
 	{
+		
+
 		Animation anim = GetComponent<Animation>();
 		
 		if(anim.isPlaying)
@@ -149,14 +151,17 @@ public class ExitButton : MonoBehaviour
 
 	void Update () 
 	{
-		
+	
+		if (GetComponent<Animation> ().IsPlaying ("Hide") || GetComponent<Animation> ().IsPlaying ("Show"))
+			return;
+
 		RaycastHit hit;
 		if(Physics.Raycast(Player.camera.transform.position, Player.camera.transform.forward, out hit))
 		{
 			if(hit.transform == transform)
 			{
 
-				if(!scale) // && !GetComponent<Animation>().isPlaying)
+				if(!scale && (!GetComponent<Animation>().IsPlaying("Hide") && !GetComponent<Animation>().IsPlaying("Show"))) // && !GetComponent<Animation>().isPlaying)
 				{
 					ScaleUp();
 					//GetComponent<Animation>().Play("ScaleUp");
@@ -166,7 +171,7 @@ public class ExitButton : MonoBehaviour
 					//Player.AimControl(true);
 				}
 
-				if( Game.IsInputActionButtonClickDown() )
+				if( Game.IsInputActionButtonClickDown())
 				{
 					ClickDown();
 
@@ -192,7 +197,7 @@ public class ExitButton : MonoBehaviour
 			}
 			else
 			{
-				if(scale) // && !GetComponent<Animation>().isPlaying)
+				if(scale && (!GetComponent<Animation>().IsPlaying("Hide") && !GetComponent<Animation>().IsPlaying("Show"))) // && !GetComponent<Animation>().isPlaying)
 				{
 					/*if(needAim)
 					{

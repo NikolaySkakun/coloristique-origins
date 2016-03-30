@@ -11,7 +11,7 @@
 				<Wall index="0" position="20" color="White" direction="2" hill="1"></Wall>
 			</wall>
 			<ledge class="Ledge">
-				<Ledge index="0" length="8" stage="1" stairsPosition="0" color="Black" sideIndex="5" x="100" stairs="true"></Ledge>
+				<Ledge index="0" length="5.2" stage="1" stairsPosition="0" color="Black" sideIndex="5" x="100" stairs="true"></Ledge>
 			</ledge>
 		</Room>
 		<Room index="1" x="3.6" y="10" z="3.6" color="White"></Room>

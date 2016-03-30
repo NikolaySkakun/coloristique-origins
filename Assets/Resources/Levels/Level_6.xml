@@ -9,7 +9,7 @@
 			</cell>
 			
 		</Room>
-		<Room index="1" x="3.2" y="2.8" z="3.5" color="White">
+		<Room index="1" x="2.8" y="2.8" z="3.5" color="White">
 			<wall class="Wall">
 				<Wall index="0" position="99.5" color="White" direction="2" hill="0"></Wall>
 			</wall>
@@ -37,7 +37,7 @@
 	
 	<ball class="Ball">
 		<Ball index="0" room="1" x="50" z="50" color="White"></Ball>
-		<Ball index="1" room="0" x="30" z="60" color="Black"></Ball>
+		<Ball index="1" room="0" x="20" z="40" color="Black"></Ball>
 
 	</ball>
 	

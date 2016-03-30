@@ -251,7 +251,7 @@ public class Settings : MonoBehaviour
 				l.transform.localPosition = new Vector3(
 					l.transform.localPosition.x, 
 					l.transform.localPosition.y, 
-					originalZ - 0.00005f);// -= Vector3.forward * 0.003f;
+					originalZ - 0.001f);// -= Vector3.forward * 0.003f;
 			}
 		}
 	}
@@ -336,6 +336,15 @@ public class Settings : MonoBehaviour
 
 	public void VisibleAnimation()
 	{
+		if (!Level_0.hideInfo)
+		{
+			Level_0.hideInfo = true;
+			Level_0 lvl = GameObject.FindObjectOfType<Level_0> ();
+
+			lvl.infoMouse.GetComponent<Animation> ().Play ("Destroy");
+			lvl.infoWalk.GetComponent<Animation> ().Play ("Destroy");
+		}
+
 		settingsClick = !settingsClick;
 		neutralMode = false;
 		SetActiveSettings(true);
@@ -407,6 +416,8 @@ public class Settings : MonoBehaviour
 
 	void ClickDown()
 	{
+
+
 		Animation anim = GetComponent<Animation>();
 		
 		if(anim.isPlaying)
@@ -426,6 +437,9 @@ public class Settings : MonoBehaviour
 
 	void Update () 
 	{
+
+		if (GetComponent<Animation> ().IsPlaying ("Hide") || GetComponent<Animation> ().IsPlaying ("Show"))
+			return;
 
 		RaycastHit hit;
 		if(Physics.Raycast(Player.camera.transform.position, Player.camera.transform.forward, out hit))
@@ -453,10 +467,12 @@ public class Settings : MonoBehaviour
 				}
 				else if(Game.IsInputActionButtonClickUp())
 				{
+					
 					ScaleUp();
 				}
-				if(!scale) // && !GetComponent<Animation>().isPlaying)
+				if(!scale && (!GetComponent<Animation>().IsPlaying("Hide") && !GetComponent<Animation>().IsPlaying("Show"))) // && !GetComponent<Animation>().isPlaying)
 				{
+					
 					ScaleUp();
 					//GetComponent<Animation>().Play("ScaleUp");
 					scale = true;
@@ -467,7 +483,7 @@ public class Settings : MonoBehaviour
 			}
 			else
 			{
-				if(scale) // && !GetComponent<Animation>().isPlaying)
+				if(scale && (!GetComponent<Animation>().IsPlaying("Hide") && !GetComponent<Animation>().IsPlaying("Show"))) // && !GetComponent<Animation>().isPlaying)
 				{
 					ScaleDown();
 					//GetComponent<Animation>().Play("ScaleDown");

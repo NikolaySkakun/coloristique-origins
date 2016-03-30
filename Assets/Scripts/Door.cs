@@ -307,7 +307,7 @@ public class Door : Obj
 				whiteBubble.transform.localEulerAngles = blackBubble.transform.localEulerAngles = -Vector3.right * 90f;
 				//whiteBubble.layer = blackBubble.layer = LayerMask.NameToLayer("Gun");
 
-				whiteBubble.layer = blackBubble.layer = LayerMask.NameToLayer("Gun");
+//				whiteBubble.layer = blackBubble.layer = LayerMask.NameToLayer("Gun");
 
 				door.whiteCircleAnimation = whiteBubble.GetComponent<Animation>();
 				door.blackCircleAnimation = blackBubble.GetComponent<Animation>();
