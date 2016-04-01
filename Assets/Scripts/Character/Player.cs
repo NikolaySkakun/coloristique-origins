@@ -66,12 +66,17 @@ public class Player : MonoBehaviour
 		}
 	}
 	
-	static public void ActiveControl(bool active)
+	static public void ActiveControl(bool active, bool destroyGun = false)
 	{
 		Player.speed = active ? 1f : 0f;
 		
 		Player.player.GetComponent<MouseLook> ().enabled = active;
 		Player.camera.GetComponent<MouseLook> ().enabled = active;
+
+		if (!active && destroyGun && (Level.current.gun != null && Level.current.gun.Length > 0))
+		{
+			Level.current.gun [0].Destroy ();
+		}
 	}
 	
 	static public IEnumerator DisableControl(float time)

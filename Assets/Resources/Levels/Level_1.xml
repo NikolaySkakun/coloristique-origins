@@ -25,7 +25,7 @@
 		<Room index1="1" index2="2" sideIndex="2" x="50" y="50"></Room>
 
 	</join>
-	
+
 	<ball class="Ball">
 		<Ball index="0" room="0" x="25" z="40" color="White"></Ball>
 

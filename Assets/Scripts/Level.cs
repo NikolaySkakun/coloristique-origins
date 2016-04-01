@@ -89,13 +89,43 @@ public class Level : Obj
 		Game.DrawEvent -= Draw;
 		drawing = true;
 		beginDrawing = Time.time;
-		StartCoroutine (OnPostDrawing());
+		if(Index > 0)
+			StartCoroutine (OnPostDrawing());
+
+		//if(Index > 0)
+		//	Player.ActiveControl (true);
 	}
+
+	bool postDrawing = false;
 
 	IEnumerator OnPostDrawing()
 	{
-		yield return new WaitForSeconds (Game.drawTime);
+		postDrawing = true;
 		PostDrawing ();
+		Player.speed = 0f;
+
+		MouseLook pm = Player.player.GetComponent<MouseLook>(), cm = Player.camera.GetComponent<MouseLook>();
+
+		float step = Game.drawTime / 10f;
+		float t = 1f / Game.drawTime;
+
+		pm.sensitivityX = cm.sensitivityY = 0;
+
+		for (float i = 0; i <= Game.drawTime; i += i < Game.drawTime/4f ? step/2f : step)
+		{
+			yield return new WaitForSeconds (step);
+
+			Player.speed = i * t;
+
+			pm.sensitivityX = cm.sensitivityY = Player.speed * 6f;
+		}
+
+		Player.speed = 1f;
+		pm.sensitivityX = cm.sensitivityY = 6;
+
+		postDrawing = false;
+//		yield return new WaitForSeconds (Game.drawTime);
+//		PostDrawing ();
 	}
 
 	override public void PostDrawing()
@@ -177,8 +207,8 @@ public class Level : Obj
 
 		if((nextLevelBubbles || (drawing && index != 0)) && this == Level.current)
 		{
-			Player.player.transform.localEulerAngles = Vector3.Lerp(Player.player.transform.localEulerAngles, Player.player.transform.localEulerAngles.y < 180 ? Vector3.zero : Vector3.up*360f, Time.fixedDeltaTime*Game.drawTime*1.5f);
-			Player.camera.transform.localEulerAngles = Vector3.Lerp(Player.camera.transform.localEulerAngles, Player.camera.transform.localEulerAngles.x < 180 ? Vector3.zero : Vector3.right*360f, Time.fixedDeltaTime*Game.drawTime*1.5f);
+			Player.player.transform.localEulerAngles = Vector3.Lerp(Player.player.transform.localEulerAngles, Player.player.transform.localEulerAngles.y < 180 ? Vector3.zero : Vector3.up*360f, Time.fixedDeltaTime*Game.drawTime*(1.5f));
+			Player.camera.transform.localEulerAngles = Vector3.Lerp(Player.camera.transform.localEulerAngles, Player.camera.transform.localEulerAngles.x < 180 ? Vector3.zero : Vector3.right*360f, Time.fixedDeltaTime*Game.drawTime*(1.5f));
 
 			//Player.camera.transform.localEulerAngles = Vector3.Lerp(Player.camera.transform.localEulerAngles, Vector3.zero, Time.fixedTime*0.1f);
 		}
@@ -243,7 +273,7 @@ public class Level : Obj
 					anim.AddClip(clip, "NextLevel");
 					anim.Play("NextLevel");
 
-					Player.ActiveControl(false);
+					Player.ActiveControl(false, true);
 					nextLevelBubbles = true;
 					//StartCoroutine( Player.DisableControl(Door.timeForUpDoor + Game.drawTime) );
 

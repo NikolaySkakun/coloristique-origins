@@ -606,7 +606,7 @@ public class Level_0 : MonoBehaviour
 					usedMouse = true;
 			}
 
-			if (usedKeys && usedMouse)
+			if (usedKeys && usedMouse && (!infoWalk.GetComponent<Animation> ().isPlaying && !infoMouse.GetComponent<Animation> ().isPlaying))
 			{
 				hideInfo = true;
 				infoWalk.GetComponent<Animation> ().Play ("Destroy");
