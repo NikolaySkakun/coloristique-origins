@@ -42,7 +42,7 @@ public class Game : MonoBehaviour
 	static public readonly float drawTime = 1.5f; //1.5f;
 	static public readonly int levelsCount = 6;
 
-	static public bool debugMode = false;
+	static public bool debugMode = true;
 
 	public string buildVersion = "0.0.0";
 	public int major, minor, build;

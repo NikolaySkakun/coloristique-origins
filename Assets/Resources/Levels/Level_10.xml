@@ -7,7 +7,13 @@
     			<Cell index="0" x="25" z="30" type="down" color="White"></Cell>
     			<Cell index="1" x="75" z="30" type="down" color="Black"></Cell>
 			</cell>
+
+			<trigger class="Trigger">
+				<Trigger index="0" x="100" z="50" scaleX="9.8" scaleZ="10" scaleY="5" type="Player"></Trigger>
+				<Trigger index="1" x="100" z="50" scaleX="9.8" scaleZ="10" scaleY="5" type="Player"></Trigger>
+			</trigger>
 		</Room>
+		<Room index="1" x="10" y="10" z="10" color="White"> </Room>
 	</room>
 	
 	<door class="Door">
@@ -22,7 +28,7 @@
 			<Cell room="0" index="1"></Cell>
 		</Door>
 		
-
+		<Room index1="0" index2="1" sideIndex="1" x="50" y="50"></Room>
 	</join>
 	
 	<ball class="Ball">
