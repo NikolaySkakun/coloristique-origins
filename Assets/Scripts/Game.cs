@@ -32,6 +32,13 @@ using System;
 public class Game : MonoBehaviour 
 {
 	public enum AnimationClipType { POSITION, ROTATION, SCALE };
+	public enum VRMode
+	{
+		NONE,
+		FIBRUM,
+		GEARVR,
+		OCULUS
+	};
 
 	public delegate void DVoid();
 

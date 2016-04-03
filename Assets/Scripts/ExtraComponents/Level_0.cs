@@ -602,7 +602,7 @@ public class Level_0 : MonoBehaviour
 
 			if (!usedMouse)
 			{
-				if (Input.GetAxis ("Mouse Y") != 0 || Input.GetAxis ("Joy Y") != 0)
+				if (Input.GetAxis ("Mouse Y") != 0 || Input.GetAxis ("Axis4") != 0) //"Joy Y"
 					usedMouse = true;
 			}
 

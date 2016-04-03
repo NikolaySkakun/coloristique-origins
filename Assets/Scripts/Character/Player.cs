@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Player : MonoBehaviour 
 {
+	
+
 	static public Player component;
 	static public GameObject camera, gunCamera, player, invisCamera, aim, smallAim;
 	static public CharacterController controller;
@@ -25,6 +27,16 @@ public class Player : MonoBehaviour
 	private float maximumY = 90f;//60F;
 	float originalRotation;
 	static public float speed = 1f;
+
+	static Game.VRMode vrmode = Game.VRMode.NONE;
+
+	static public Game.VRMode VRMode
+	{
+		get
+		{
+			return vrmode;
+		}
+	}
 	
 	
 	Texture2D tex = null;
