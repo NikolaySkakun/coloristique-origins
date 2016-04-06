@@ -160,7 +160,7 @@ public class Level_10 : MonoBehaviour
 //
 ////
 			//if(angle < 90f)
-			center.eulerAngles = Vector3.forward * (180f + angle);
+			center.eulerAngles = Vector3.Lerp(center.eulerAngles, Vector3.forward * (180f + angle), 1);
 
 			//level.transform.LookAt (Player.player.transform);
 			//level.transform.eulerAngles = new Vector3 (0, 0, level.transform.eulerAngles.y);

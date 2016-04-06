@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
 	static public CharacterController controller;
 	static public AudioController audio;
 	static public bool aimBall = false, inZero = false, scaleSmallAim = false;
+
+	static Camera leftVRCamera, rightVRCamera;
 	
 	static bool hasBall = false, canRestart = false, scaleAim = false, needAim = false;
 	
@@ -104,6 +106,40 @@ public class Player : MonoBehaviour
 		controller.enabled = true;
 		Player.player.GetComponent<MouseLook> ().enabled = true;
 		Player.camera.GetComponent<MouseLook> ().enabled = true;
+	}
+
+	void ActivateVR()
+	{
+		leftVRCamera = new GameObject ("Left VR Camera").AddComponent<Camera>();
+		rightVRCamera = new GameObject ("Right VR Camera").AddComponent<Camera>();
+
+		leftVRCamera.transform.parent = rightVRCamera.transform.parent = camera.transform;
+		leftVRCamera.transform.localPosition = -Vector3.right * 0.35f;
+		rightVRCamera.transform.localPosition = Vector3.right * 0.35f;
+
+		leftVRCamera.rect = new Rect (0, 0, 0.5f, 1);
+		rightVRCamera.rect = new Rect (0.5f, 0, 0.5f, 1);
+
+		leftVRCamera.fieldOfView = rightVRCamera.fieldOfView = 95;
+
+		leftVRCamera.gameObject.AddComponent<ChangeCameraEye> ();
+		rightVRCamera.gameObject.AddComponent<ChangeCameraEye> ();
+
+
+		NewLensCorrection lens;
+		lens = leftVRCamera.gameObject.AddComponent<NewLensCorrection> ();
+		lens.strengthX = lens.strengthY = 0.8f;
+		lens.LensCorrectionShader = Shader.Find ("Fibrum/LensCorrection");
+
+
+		lens = rightVRCamera.gameObject.AddComponent<NewLensCorrection> ();
+		lens.strengthX = lens.strengthY = 0.8f;
+		lens.LensCorrectionShader = Shader.Find ("Fibrum/LensCorrection");
+
+
+		leftVRCamera.clearFlags = rightVRCamera.clearFlags = CameraClearFlags.Color;
+		leftVRCamera.backgroundColor = rightVRCamera.backgroundColor = Color.white;
+
 	}
 	
 	static public void Create()
@@ -276,6 +312,8 @@ public class Player : MonoBehaviour
 		Cursor.visible = false;
 		Cursor.lockState = CursorLockMode.Locked;
 		originalRotation = transform.rotation.eulerAngles.y;// + 180f;
+
+		//ActivateVR ();
 	}
 	
 	static public void SetPosition(Room room, Vector2 position)
@@ -421,7 +459,7 @@ public class Player : MonoBehaviour
 	{
 		if(col.gameObject.tag == "Ball")
 		{
-			if(!col.gameObject.GetComponent<Ball>().InHands)
+			//if(!col.gameObject.GetComponent<Ball>().InHands)
 				Player.controller.stepOffset = 0.1f;
 		}
 	}

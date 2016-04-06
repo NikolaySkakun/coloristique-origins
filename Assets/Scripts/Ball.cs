@@ -112,7 +112,7 @@ public class Ball : Obj
 		inHands = false;
 		GetComponent<Rigidbody>().isKinematic = false;
 		Player.HasBall = false;
-
+		//GetComponent<Rigidbody> ().velocity = Vector3.zero;
 //		if(GetComponent<Animation>().isPlaying)
 //		{
 //			if(GetComponent<Animation>().IsPlaying("ScaleUp") || GetComponent<Animation>().IsPlaying("ScaleDown"))
