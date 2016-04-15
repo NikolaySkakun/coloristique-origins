@@ -23,7 +23,7 @@
 
 	<join> 
 		<Door roomIndex="0" doorIndex="0" sideIndex="5" x="50" y="0" type="r"></Door>
-		<Door roomIndex="0" doorIndex="1" sideIndex="5" x="50" y="0" type="d">
+		<Door roomIndex="0" doorIndex="1" sideIndex="5" x="50" y="100" type="d">
 			<Cell room="0" index="0"></Cell>
 			<Cell room="0" index="1"></Cell>
 		</Door>

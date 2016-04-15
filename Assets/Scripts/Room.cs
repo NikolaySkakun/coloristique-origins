@@ -426,16 +426,14 @@ public class Room : Obj
 			//room[0].side[3].line[3].gameObject.SetActive(true);
 		}*/
 
-		if( y == 0 && room1.Size[sideIndex/2] != room2.Size[sideIndex/2] )
+		if( (y == 0 || y == 100) && room1.Size[sideIndex/2] != room2.Size[sideIndex/2] )
 		{
-			//Debug.LogWarning("____");
-			//room[largeRoomX].side[largeSideX].name += "LARGE";
+			int lineIndex = y == 0 ? 3 : 2;
+
 			Transform[] line = {
-				room[largeRoomX].side[largeSideX].line[3].transform,
-				(Transform)UnityEngine.Object.Instantiate(room[largeRoomX].side[largeSideX].line[3].transform)
+				room[largeRoomX].side[largeSideX].line[lineIndex].transform,
+				(Transform)UnityEngine.Object.Instantiate(room[largeRoomX].side[largeSideX].line[lineIndex].transform)
 			};
-
-
 
 			line[1].transform.parent = line[0].transform.parent;
 			line[1].transform.eulerAngles = line[0].transform.eulerAngles;
@@ -468,6 +466,7 @@ public class Room : Obj
 
 			line[0].GetComponent<Line>().SetClone(line[1].GetComponent<Line>() as Line);
 		}
+
 
 		foreach (Transform p in part) 
 		{

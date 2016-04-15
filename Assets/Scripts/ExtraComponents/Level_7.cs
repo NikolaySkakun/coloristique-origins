@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Xml;
+using System.Collections.Generic;
 
 public class Level_7 : MonoBehaviour 
 {
@@ -80,6 +82,75 @@ public class Level_7 : MonoBehaviour
 			info.Draw();
 	}
 
+	Mesh GetUnityMesh()
+	{
+		Debug.LogWarning ("Unity");
+		XmlDocument doc = new XmlDocument();
+		doc.LoadXml( (Resources.Load("Sprites/Unity") as TextAsset).text );
+
+		List<Vector3> verts = new List<Vector3> ();
+
+		Mesh mesh = Triangulator.CreateMesh (SVGImporter.GetEdgeCollider (doc.DocumentElement as XmlNode, 10, 15));
+
+		for (int i = 0; i < mesh.vertexCount; ++i)
+		{
+			verts.Add ((mesh.vertices[i] - Vector3.right*0.7095f)); // * 1.002f
+		}
+		mesh.SetVertices (verts);
+
+
+		Mesh mesh2 = Object.Instantiate (mesh) as Mesh;
+		verts = new List<Vector3> ();
+		for (int i = 0; i < mesh2.vertexCount; ++i)
+		{
+			verts.Add (Quaternion.Euler(0, 0, 120) * mesh.vertices[i]);
+		}
+		mesh2.SetVertices (verts);
+
+		mesh = LetterAnimation.CombineMeshes (new Mesh[]{ mesh, mesh2 });
+
+		mesh2 = Object.Instantiate (mesh) as Mesh;
+		verts = new List<Vector3> ();
+		for (int i = 0; i < mesh2.vertexCount; ++i)
+		{
+			verts.Add (Quaternion.Euler(0, 0, 240) * mesh.vertices[i]);
+		}
+		mesh2.SetVertices (verts);
+
+		mesh = LetterAnimation.CombineMeshes (new Mesh[]{ mesh, mesh2 });
+
+		verts = new List<Vector3> ();
+		for (int i = 0; i < mesh.vertexCount; ++i)
+		{
+			verts.Add (Vector3.MoveTowards( mesh.vertices[i], -Vector3.forward * 5f, UnityEngine.Random.Range(1f, 4f)));
+		}
+		mesh.SetVertices (verts);
+
+		return mesh;
+	}
+
+	void CreateUnity()
+	{
+		
+
+
+		Mesh mesh = GetUnityMesh (); //unity.GetComponent<MeshFilter> ().sharedMesh;
+		GameObject unity = Word.GetGameObject(mesh);
+		unity.name = "U";
+
+		unity.transform.parent = new GameObject ("Unity").transform;
+		//unity.transform.localPosition = -Vector3.forward * 0.7095f;
+		unity.transform.localEulerAngles = -Vector3.up * 90f;
+		//unity = unity.transform.parent.gameObject;
+
+		unity.transform.position = new Vector3 (-4.9f, 1.88f, 1);
+
+
+
+
+
+
+	}
 
 	IEnumerator Start() 
 	{
@@ -112,6 +183,8 @@ public class Level_7 : MonoBehaviour
 		info.text.transform.localScale = Vector3.zero;
 		AddAnimationForInfo();
 
+
+		CreateUnity ();
 //
 		yield return new WaitForSeconds(Game.drawTime);
 

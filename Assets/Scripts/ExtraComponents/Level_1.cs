@@ -31,6 +31,28 @@ public class Level_1 : MonoBehaviour
 		
 	}
 
+	void CreateSymbol()
+	{
+		float thick = 0.18f;
+		float contourThick = 0.02f;
+		float radius = 0.8f;
+		GameObject[] symbols = new GameObject[] {
+			Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, contourThick).gameObject,
+			Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, -contourThick).gameObject,
+			Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick - contourThick, radius, Obj.Colour.BLACK).gameObject
+		};
+
+		GameObject symbol = new GameObject ("Symbol");
+		foreach (GameObject obj in symbols)
+		{
+			obj.transform.parent = symbol.transform;
+		}
+
+
+		symbol.transform.parent = level.room [2].transform;
+		Player.SetPosition (symbol, level.room [2], new Vector3 (50, 1.65f, 80));
+	}
+
 	Vector3 originalArrowPosition;
 
 	void AddAnimationForPointer()
@@ -131,7 +153,7 @@ public class Level_1 : MonoBehaviour
 
 
 
-
+		CreateSymbol ();
 		//info.gameObject.SetActive (false);
 	}
 

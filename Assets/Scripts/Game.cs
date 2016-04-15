@@ -584,7 +584,14 @@ public class Game : MonoBehaviour
 
 	void TestMethod()
 	{
-		Word.GetGameObject (CustomMesh.TestMesh (), Obj.Colour.BLACK);
+		//Word.GetGameObject (CustomMesh.TestMesh (), Obj.Colour.BLACK);
+		float thick = 0.18f;
+		float contourThick = 0.02f;
+		float radius = 0.8f;
+		Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, contourThick);
+		Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, -contourThick);
+		Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick - contourThick, radius, Obj.Colour.BLACK);
+		//Symbol.Create(Symbol.Type.MOBIUS_STRIP, 0.02f, 0.97f, Obj.Colour.BLACK);
 
 		//new Portal ();
 		//CustomObject.CreateObject().GetComponent<MeshFilter>().mesh = CustomMesh.Quad();
@@ -601,9 +608,9 @@ public class Game : MonoBehaviour
 		//Player.Create(mobilePlayer);
 		ShowMessage("Starting game...");
 
-		Player.Create();
-		LoadLevel(0);
-		//TestMethod();
+		//Player.Create();
+		//LoadLevel(0);
+		TestMethod();
 
 
 

@@ -354,10 +354,16 @@ public class Ledge : Obj
 		if(bool.Parse(xml.Attributes["stairs"].Value) )
 		{
 			ledge.stairs = new GameObject("Stairs");
+
+			float stairsWidth = ledgeWidth;
+
+			if (xml.Attributes ["stairsWidth"] != null)
+				stairsWidth = Game.GetFloat (xml, "stairsWidth");
+
 			//ledge.stairs.AddComponent<Rigidbody>().useGravity = false;
-			GameObject stairs = CreateBorderCube(ledge, Obj.Colour.WHITE, new Vector3(ledgeWidth, ledgeThick, int.Parse(xml.Attributes["stage"].Value) * stageHeight * Mathf.Sqrt(2.03f)), "Stairs");//GameObject.CreatePrimitive(PrimitiveType.Cube);
-			stairs.transform.localScale = new Vector3(ledgeWidth, ledgeThick, int.Parse(xml.Attributes["stage"].Value) * stageHeight * Mathf.Sqrt(2.03f));
-			ledge.stairs.transform.localPosition = new Vector3(-(length - ledgeWidth)/2f + ((length - ledgeWidth)/100f)*Game.GetFloat(xml, "stairsPosition"), 0, ledgeWidth/2f);
+			GameObject stairs = CreateBorderCube(ledge, Obj.Colour.WHITE, new Vector3(stairsWidth, ledgeThick, int.Parse(xml.Attributes["stage"].Value) * stageHeight * Mathf.Sqrt(2.03f)), "Stairs");//GameObject.CreatePrimitive(PrimitiveType.Cube);
+			stairs.transform.localScale = new Vector3(stairsWidth, ledgeThick, int.Parse(xml.Attributes["stage"].Value) * stageHeight * Mathf.Sqrt(2.03f));
+			ledge.stairs.transform.localPosition = new Vector3(-(length - stairsWidth)/2f + ((length - stairsWidth)/100f)*Game.GetFloat(xml, "stairsPosition"), 0, ledgeWidth/2f);
 			stairs.transform.localPosition = ledge.stairs.transform.localPosition + Vector3.forward*(stairs.transform.localScale.z/2f);
 			
 			stairs.transform.parent = ledge.stairs.transform;

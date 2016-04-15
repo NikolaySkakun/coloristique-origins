@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 	
 
 	static public Player component;
-	static public GameObject camera, gunCamera, player, invisCamera, aim, smallAim;
+	static public GameObject camera, gunCamera, player, invisCamera, aim, smallAim, skin;
 	static public CharacterController controller;
 	static public AudioController audio;
 	static public bool aimBall = false, inZero = false, scaleSmallAim = false;
@@ -234,7 +234,15 @@ public class Player : MonoBehaviour
 		//player.GetComponent<Player>().smallAim = aim2;
 		Player.aim = aim;
 		Player.smallAim = aim2;
-		
+
+
+//		Player.skin = new GameObject ("Skin");
+//		skin.transform.parent = player.transform;
+//		skin.transform.localPosition = -Vector3.up * 0.05f;
+//
+//		skin.AddComponent<CapsuleCollider> ().height = 1.8f;
+//		skin.GetComponent<CapsuleCollider> ().radius = 0.45f;
+//		skin.layer = LayerMask.NameToLayer ("PlayerSkin");
 		//audio.PlayForTest(true);
 		
 		//player.AddComponent<Gravity>();
@@ -324,6 +332,17 @@ public class Player : MonoBehaviour
 		pos.z += controller.radius - room.Size.z/2f + position.y*(room.Size.z - controller.radius*2f)/100f;
 		player.transform.position = pos;
 		
+		Game.ShowWarning("POS");
+	}
+
+	static public void SetPosition(GameObject obj, Room room, Vector3 position)
+	{
+		Vector3 pos = room.side[2].transform.position;
+		pos.y += position.y;
+		pos.x -=  -room.Size.x/2f + position.x*(room.Size.x)/100f;
+		pos.z += - room.Size.z/2f + position.z*(room.Size.z)/100f;
+		obj.transform.position = pos;
+
 		Game.ShowWarning("POS");
 	}
 	
@@ -470,6 +489,8 @@ public class Player : MonoBehaviour
 		if(col.gameObject.tag == "Ball")
 		{
 			Player.controller.stepOffset = 0.3f;
+			if(lastBall != null)
+				lastBall.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 		}
 	}
 	

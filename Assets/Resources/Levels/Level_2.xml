@@ -4,15 +4,15 @@
 	<room class="Room">	
 		<Room index="0" x="10" y="7.6" z="12" color="White">
 			<cell class="Cell">
-    			<Cell index="0" x="82.5" z="70" type="down" color="White"></Cell>
-    			<Cell index="1" x="82.5" z="90" type="down" color="Black"></Cell>
+    			<Cell index="0" x="86.5" z="70" type="down" color="White"></Cell>
+    			<Cell index="1" x="86.5" z="90" type="down" color="Black"></Cell>
 			</cell>
 			
 			<ledge class="Ledge">
-				<Ledge index="0" length="10" stage="1" stairsPosition="85" color="Black" sideIndex="5" x="50" stairs="true"></Ledge>
+				<Ledge index="0" length="10" stage="1" stairsPosition="100" color="Black" sideIndex="5" x="50" stairs="true" stairsWidth="3.25"></Ledge>
 			</ledge>
 		</Room>
-		<Room index="1" x="1.1" y="1.1" z="3" color="White"></Room>
+		<Room index="1" x="1.1" y="1.1" z="1.1" color="White"></Room>
 	</room>
 	
 	<door class="Door">
@@ -26,7 +26,7 @@
 			<Cell room="0" index="0"></Cell>
 		</Door>
 		<Ledge ledgeRoom="0" ledgeIndex="0" cellRoom="0" cellIndex="1"></Ledge>
-		<Room index1="0" index2="1" sideIndex="0" x="50" y="70"></Room>
+		<Room index1="0" index2="1" sideIndex="0" x="47" y="75"></Room>
 	</join>
 	
 	<ball class="Ball">
