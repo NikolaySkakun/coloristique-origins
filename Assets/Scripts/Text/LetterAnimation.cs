@@ -464,7 +464,8 @@ public class LetterAnimation : MonoBehaviour
 
 		for (int i=0, vertsCount = 0; i<meshes.Length; vertsCount += meshes[i++].vertexCount) 
 		{
-			foreach(int t in meshes[i].triangles)
+
+			foreach (int t in meshes[i].triangles)
 				tris.Add(t + vertsCount);
 
 			foreach(Vector3 v in meshes[i].vertices)
@@ -472,6 +473,7 @@ public class LetterAnimation : MonoBehaviour
 		}
 
 		mesh.SetVertices (verts);
+
 		mesh.SetTriangles (tris, 0);
 
 		return mesh;

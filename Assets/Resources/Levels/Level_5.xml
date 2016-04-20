@@ -14,7 +14,7 @@
 				<Ledge index="0" length="5.2" stage="1" stairsPosition="0" color="Black" sideIndex="5" x="100" stairs="true"></Ledge>
 			</ledge>
 		</Room>
-		<Room index="1" x="3.6" y="10" z="3.6" color="White"></Room>
+		<Room index="1" x="3.6" y="3" z="3.6" color="White"></Room>
 		<Room index="2" x="8" y="4" z="8" color="White">
 			<cell class="Cell">
 				<Cell index="0" x="10" z="10" type="down" color="Black"></Cell>
@@ -54,7 +54,7 @@
 	</gun>
 	
 	<lift class="Lift">
-		<Lift color="Black" roomIndex="2" x="50" z="50" height="14"></Lift>
+		<Lift color="Black" roomIndex="2" x="50" z="50" height="7"></Lift>
 	</lift>
 	
 </Level>

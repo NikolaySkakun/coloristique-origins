@@ -584,13 +584,30 @@ public class Game : MonoBehaviour
 
 	void TestMethod()
 	{
-		//Word.GetGameObject (CustomMesh.TestMesh (), Obj.Colour.BLACK);
-		float thick = 0.18f;
-		float contourThick = 0.02f;
-		float radius = 0.8f;
-		Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, contourThick);
-		Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, -contourThick);
-		Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick - contourThick, radius, Obj.Colour.BLACK);
+//		GameObject t2, t3;
+//		GameObject t1 = Word.GetGameObject (CustomMesh.PenroseTriangle (), Obj.Colour.WHITE);
+//		(t2 = Word.GetGameObject (CustomMesh.PenroseTriangle (-1), Obj.Colour.BLACK)).GetComponent<Renderer> ().material.color = Color.red;
+//		(t3 = Word.GetGameObject (CustomMesh.PenroseTriangle (), Obj.Colour.BLACK)).GetComponent<Renderer> ().material.color = Color.green;
+
+		Word.GetGameObject (LetterAnimation.CombineMeshes (new Mesh[] {
+			CustomMesh.PenroseTriangle (),
+			CustomMesh.PenroseTriangle (-1)
+		}));
+
+//		t1.transform.localEulerAngles = Vector3.up * 90f;
+//		t1.transform.position = new Vector3 (-27f, 20f, 33.4f);
+//
+//		t2.transform.position = new Vector3 (6.8f, 0, 0);
+//
+//		t3.transform.localEulerAngles = Vector3.right * 270f;
+//		t3.transform.position = new Vector3 (-13.3f, -14.5f, 15.2f);
+
+//		float thick = 0.18f;
+//		float contourThick = 0.02f;
+//		float radius = 0.8f;
+//		Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, contourThick);
+//		Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, -contourThick);
+//		Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick - contourThick, radius, Obj.Colour.BLACK);
 		//Symbol.Create(Symbol.Type.MOBIUS_STRIP, 0.02f, 0.97f, Obj.Colour.BLACK);
 
 		//new Portal ();
@@ -608,9 +625,9 @@ public class Game : MonoBehaviour
 		//Player.Create(mobilePlayer);
 		ShowMessage("Starting game...");
 
-		//Player.Create();
-		//LoadLevel(0);
-		TestMethod();
+		Player.Create();
+		LoadLevel(0);
+		//TestMethod();
 
 
 

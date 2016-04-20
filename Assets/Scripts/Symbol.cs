@@ -19,7 +19,7 @@ public class Symbol : MonoBehaviour
 	public bool test = false;
 	bool withSphere = false;
 
-	float angle = 0f;
+	public float angle = 0f;
 	public float thick = 0.05f;
 	public float radius = 1f;
 
@@ -31,12 +31,17 @@ public class Symbol : MonoBehaviour
 //		{
 //			sphere = GameObject.CreatePrimitive (PrimitiveType.Sphere);
 //			sphere.transform.localScale = Vector3.one * 0.1f;
-//			sphere.transform.localPosition = Vector3.up;
+//			//sphere.transform.localPosition = Vector3.up;
 //
-//			(sphere.GetComponent<Renderer> ().material = Game.BaseMaterial).color = Color.black;
+//			(sphere.GetComponent<Renderer> ().material = Game.BaseMaterial).color = Color.white;
+//
+//			GameObject o = new GameObject ("S");
+//			sphere.transform.parent = o.transform;
+//			sphere.transform.localPosition = Vector3.up * 0.1f;
+//			sphere = o;
 //		}
-		//if(withSphere)
-		//Invoke ("NextBone", 1f);
+//		if(withSphere)
+//		Invoke ("NextBone", 1f);
 
 		Debug.LogWarning (Vector3.Distance (transform.GetChild (0).position, transform.GetChild (1).position));
 	}
@@ -50,7 +55,11 @@ public class Symbol : MonoBehaviour
 		if (boneIndex == transform.childCount)
 			boneIndex = 0;
 
-		Invoke ("NextBone", 1f);
+		sphere.transform.parent = transform.GetChild (boneIndex).GetChild (0);
+		sphere.transform.localEulerAngles = Vector3.zero;
+
+
+		Invoke ("NextBone", 1f/2f);
 	}
 
 	void FixedUpdate()
@@ -58,7 +67,7 @@ public class Symbol : MonoBehaviour
 //		if (index == transform.childCount)
 //			index = 0;
 //
-		Create(Type.MOBIUS_STRIP, gameObject, angle += Time.fixedDeltaTime * 50f);
+		Create(Type.MOBIUS_STRIP, gameObject, angle += Time.fixedDeltaTime * 60f);
 
 		//Debug.LogWarning (GetComponent<SkinnedMeshRenderer> ().sharedMesh.vertices [0]);
 
@@ -67,11 +76,14 @@ public class Symbol : MonoBehaviour
 //			//transform.GetChild (i).localEulerAngles = transform.GetChild (i).localEulerAngles + Vector3.right * Time.fixedDeltaTime;
 //		}
 
-		if(withSphere)
-		{
-			//sphere.transform.position = Vector3.MoveTowards (sphere.transform.position, transform.GetChild (boneIndex).position, 0.1743115f*Time.fixedDeltaTime);
-			//sphere.transform.position = Vector3.Lerp (sphere.transform.position, transform.GetChild (boneIndex).position, 0.001f);
-		}
+//		if(withSphere)
+//		{
+//			sphere.transform.position = Vector3.MoveTowards (
+//				sphere.transform.position, 
+//				transform.GetChild (boneIndex).position,// + transform.GetChild (boneIndex).GetChild(0).up*0.3f, 
+//				0.06979098f*Time.fixedDeltaTime*2f);
+//			//sphere.transform.position = Vector3.Lerp (sphere.transform.position, transform.GetChild (boneIndex).position, 0.001f);
+//		}
 
 		//Transform t = transform.GetChild (index++);
 		//t.localEulerAngles = new Vector3 (t.localEulerAngles.x + 1, t.localEulerAngles.y, 0);
@@ -137,7 +149,7 @@ public class Symbol : MonoBehaviour
 //
 //					}
 
-					Transform b = obj.transform.GetChild (u / 2);//new GameObject("Bone").transform;
+					Transform b = obj.transform.GetChild (u / 2).GetChild(0);//new GameObject("Bone").transform;
 					//b.parent = obj.transform;
 					//b.localPosition = new Vector3 (Mathf.Sin (Mathf.Deg2Rad * i) * radius, Mathf.Cos (Mathf.Deg2Rad * i) * radius, 0);
 					b.localEulerAngles = Vector3.forward * (-i);
@@ -262,7 +274,13 @@ public class Symbol : MonoBehaviour
 					b.parent = obj.transform;
 					b.localPosition = new Vector3 (Mathf.Sin (Mathf.Deg2Rad * i) * radius, Mathf.Cos (Mathf.Deg2Rad * i) * radius, 0);
 					b.localEulerAngles = Vector3.forward * (-i);
-					bones.Add (b);
+
+					Transform bn = new GameObject("Bone").transform;
+					bn.parent = b;
+					bn.localEulerAngles = Vector3.zero;
+					bn.localPosition = Vector3.zero;
+
+					bones.Add (bn);
 
 
 
@@ -271,7 +289,7 @@ public class Symbol : MonoBehaviour
 						GameObject o = CustomObject.CreatePrimitive (PrimitiveType.Cube, false);// GameObject.CreatePrimitive (PrimitiveType.Cube);
 						o.transform.localScale = Vector3.one * 0.005f + Vector3.forward*0.32f;
 						o.GetComponent<Renderer> ().material = Ball.GetMaterial (Obj.Colour.WHITE);
-						o.transform.parent = b;
+						o.transform.parent = bn;
 						o.transform.localPosition = Vector3.zero;
 					}
 

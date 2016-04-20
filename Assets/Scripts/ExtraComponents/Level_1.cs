@@ -12,6 +12,8 @@ public class Level_1 : MonoBehaviour
 
 	bool drawingEnded = false;
 
+	bool gif = false;
+
 	void AddAnimationForInfo()
 	{
 		Vector3[] points = new Vector3[]
@@ -30,7 +32,7 @@ public class Level_1 : MonoBehaviour
 		info.text.GetComponent<Animation>().AddClip(clip, "Pulse");
 		
 	}
-
+	GameObject symbol;
 	void CreateSymbol()
 	{
 		float thick = 0.18f;
@@ -42,7 +44,7 @@ public class Level_1 : MonoBehaviour
 			Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick - contourThick, radius, Obj.Colour.BLACK).gameObject
 		};
 
-		GameObject symbol = new GameObject ("Symbol");
+		symbol = new GameObject ("Symbol");
 		foreach (GameObject obj in symbols)
 		{
 			obj.transform.parent = symbol.transform;
@@ -50,7 +52,7 @@ public class Level_1 : MonoBehaviour
 
 
 		symbol.transform.parent = level.room [2].transform;
-		Player.SetPosition (symbol, level.room [2], new Vector3 (50, 1.65f, 80));
+		Player.SetPosition (symbol, level.room [2], new Vector3 (50, 1.65f, 50));
 	}
 
 	Vector3 originalArrowPosition;
@@ -101,6 +103,8 @@ public class Level_1 : MonoBehaviour
 		if(!info.drawing)
 			info.Draw();
 	}
+
+
 
 
 	IEnumerator Start() 
@@ -204,12 +208,45 @@ public class Level_1 : MonoBehaviour
 		}
 	}
 
+	Symbol sym;
+
+	void FixedUpdate()
+	{
+		if (gif)
+		{
+			Player.player.transform.LookAt (symbol.transform);
+			Player.player.transform.eulerAngles = new Vector3 (0, Player.player.transform.eulerAngles.y, 0);
+
+			float angle = sym.angle;
+
+			Player.player.transform.position = new Vector3 (
+				symbol.transform.position.x + Mathf.Sin (angle * Mathf.Deg2Rad/4f) * 3f, 
+				Player.player.transform.position.y, 
+				symbol.transform.position.z + Mathf.Cos (angle * Mathf.Deg2Rad/4f) * 3f);
+		}
+	}
+
 	void Update()
 	{
 //		if(Player.HasBall && info.drawing)
 //		{
 //			info.Destroy();
 //		}
+
+		if (Input.GetKeyDown (KeyCode.G))
+		{
+			gif = !gif;
+
+			Player.controller.enabled = false;
+			StartCoroutine (Player.DisableControl (20));
+
+			foreach (Symbol s in GameObject.FindObjectsOfType<Symbol>())
+			{
+				s.angle = 0;
+			}
+
+			sym = GameObject.FindObjectOfType<Symbol> ();
+		}
 
 		if (arrow) {
 

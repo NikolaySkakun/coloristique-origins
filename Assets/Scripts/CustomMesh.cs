@@ -88,6 +88,101 @@ public class CustomMesh
 		return Vector3.Cross(side1, side2).normalized;
 	}
 
+	static public Mesh CombineMeshes(Mesh[] meshes)
+	{
+		Mesh mesh = new Mesh ();
+		mesh.subMeshCount = meshes.Length;
+		List<Vector3> verts = new List<Vector3> ();
+		List<int> tris = new List<int> ();
+
+		for (int i=0, vertsCount = 0; i<meshes.Length; vertsCount += meshes[i++].vertexCount) 
+		{
+			List<int> tr = new List<int> ();
+
+			foreach (int t in meshes[i].triangles)
+				tr.Add (t + vertsCount);
+			//tris.Add(t + vertsCount);
+
+			foreach(Vector3 v in meshes[i].vertices)
+				verts.Add(v);
+
+			mesh.SetVertices (verts);
+			mesh.SetTriangles (tr.ToArray (), i);
+		}
+
+		mesh.SetVertices (verts);
+		//		int s = 0;
+		//
+		//		foreach (Mesh m in meshes)
+		//		{
+		//			mesh.SetTriangles (m.triangles, s++);
+		//		}
+
+		//mesh.SetTriangles (tris, 0);
+
+		return mesh;
+	}
+
+	static public Mesh PenroseTriangle(int dir = 1)
+	{
+		float height = 10f;
+		float width = 5f;
+		float space = 2f;
+		int sections = 25;
+		List<int> tris = new List<int> ();
+		List<Vector3> verts = new List<Vector3> ();
+
+		float angle = 0;//270f;
+		float angleStep = angle / (float)(sections-1);
+
+		float c = 180f / (float)(sections-10);
+
+		for (int i=0; i<sections; ++i) 
+		{
+			for(int u=0; u<4; ++u)
+			{
+				int k = i < 5 ? 0 : (i >= 20 ? sections-1 - 10 : i - 5);
+				verts.Add( new Vector3(
+					width * (u%3 == 0 ? -1f : 1f) + Mathf.Cos(Mathf.Deg2Rad * (c * (float)k)) * height * (float)dir, 
+					width * (u < 2 ? -1f : 1f) + Mathf.Cos(Mathf.Deg2Rad * (c * (float)k)) * height * (float)dir,  
+					space * (float)i) + (dir < 0 ? Vector3.one*10f : Vector3.zero));
+			}
+		}
+
+		for (int i = 0; i<sections-1; ++i) 
+		{
+			int step = (i)*4;
+
+			for(int u=0; u<4; ++u)
+			{
+				int tmp = u < 3 ? 0 : -4;
+
+				tris.Add(u + 0 + step);
+				tris.Add(u + 1 + step + tmp);
+				tris.Add(u + 4 + step);
+
+
+				tris.Add(u + 4 + step);
+				tris.Add(u + 1 + step + tmp);
+
+				tris.Add(u + 5 + step + tmp);
+
+			}
+
+		}
+
+
+
+		Mesh mesh = new Mesh();
+
+		mesh.SetVertices(verts);
+		mesh.SetTriangles(tris, 0);
+		//mesh.vertices = verts;
+		//mesh.triangles = tris;
+		mesh.RecalculateNormals();
+		return mesh;
+	}
+
 	static public Mesh TestMesh()
 	{
 		float width = 5f;
