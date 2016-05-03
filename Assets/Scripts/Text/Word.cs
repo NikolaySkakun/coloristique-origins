@@ -155,6 +155,8 @@ public class Word
 
 			letter[i].GetComponent<Renderer>().material = Game.BaseMaterial;
 			letter[i].GetComponent<Renderer>().material.color = Game.GetColor(color);
+			//letter [i].GetComponent<Renderer> ().material.renderQueue += 1;
+			Game.SetRenderQueue(letter[i], 1);
 
 			letter[i].transform.localPosition += Vector3.forward * ( (i>0 ? letter[i-1].transform.localPosition.z-GetSize(s[i-1]) : 0) - GetSize(s[i])); // + (s[i] == 'j' ? -0.15f : 0)
 

@@ -17,14 +17,22 @@ public class Level_6 : MonoBehaviour
 		side.transform.localScale = new Vector3(size.x, size.y, 1);
 		
 		GameObject hill = new GameObject("Hill");
-		
 		side.transform.parent = hill.transform;
-		//side.transform.localPosition = Vector3.up * (size.x/2f + Line.height/2f + 0.05f);
-		
 		hill.transform.position = level.room[2].side[5].transform.position - Vector3.forward*level.room[2].Size[1]/2f + Vector3.up * 0.0015f;
-		//hill.transform.localEulerAngles = Vector3.up * (-90);
-		
 		hill.transform.parent = level.transform;
+
+
+
+		side = Side.Create(Obj.Colour.WHITE, size);
+		side.transform.localEulerAngles = new Vector3 (45.5f, 180f, 180f);
+		side.transform.localScale = new Vector3(size.x, size.y, 1);
+		hill = new GameObject("Hill");
+		side.transform.parent = hill.transform;
+		hill.transform.position = level.room[2].side[4].transform.position + Vector3.forward*level.room[2].Size[1]/2f + Vector3.up * 0.0015f;
+		hill.transform.parent = level.transform;
+
+
+
 
 		level.outletDoor.trigger.gameObject.SetActive(false);
 		//level.outletDoor.destroyPreviousLevelTrigger.gameObject.SetActive(false);

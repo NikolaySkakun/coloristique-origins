@@ -327,6 +327,7 @@ public class CustomObject
 	static public GameObject CreateSingleBubble(float radius, Obj.Colour color, float beginTime = 0.0f, float endTime = 1.5f, float scale = 1f, float beginScale = 0f)
 	{
 		GameObject circle = CustomObject.Circle(radius, color);
+		//circle.GetComponent<Renderer> ().material.renderQueue -= 1;
 
 		AnimationClip clip = new AnimationClip();
 		clip.legacy = true;
@@ -351,7 +352,7 @@ public class CustomObject
 		return circle;
 	}
 
-	static public GameObject CreateBubbles(int minCount, int maxCount, Vector2 size, Obj.Colour color)
+	static public GameObject CreateBubbles(int minCount, int maxCount, Vector2 size, Obj.Colour color, int renderQueue = 0)
 	{
 		int circleCount = UnityEngine.Random.Range(minCount, maxCount);
 		
@@ -369,7 +370,8 @@ public class CustomObject
 		{
 			//float area = size.x * size.y;
 			circle[i] = CustomObject.Circle(i==0 ? size.x*0.7f : UnityEngine.Random.Range(size.x/35f, size.x/2f), color); //size.x/35f, size.x/2f), color);
-			
+			Game.SetRenderQueue(circle[i], renderQueue);
+			//circle[i].GetComponent<Renderer>().material.renderQueue -= 1;
 			circle[i].transform.parent = circleParent.transform;
 			
 			if(i != 0 )

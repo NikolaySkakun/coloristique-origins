@@ -22,6 +22,8 @@ public class MouseLook : MonoBehaviour {
 	public float sensitivityX = 6F;
 	public float sensitivityY = 6F;
 
+	static public float sensitivity = 6f;
+
 	public float minimumX = -360F;
 	public float maximumX = 360F;
 
@@ -34,6 +36,11 @@ public class MouseLook : MonoBehaviour {
 	{
 		if(Level.current != null && Level.current.Index != 0)
 			rotationY = transform.localEulerAngles.x > 0 ? 0 : -transform.localEulerAngles.x;
+	}
+
+	private static Quaternion ConvertRotation(Quaternion q)
+	{
+		return new Quaternion(q.x, q.y, -q.z, -q.w);
 	}
 
 	void Update ()
@@ -52,14 +59,33 @@ public class MouseLook : MonoBehaviour {
 		}
 		else if (axes == RotationAxes.MouseX)
 		{
-			transform.Rotate(0, (Input.GetAxis("Mouse X") + Input.GetAxis("Axis3")) * sensitivityX, 0); //"Joy X"
+			if (Player.VRMode != Game.VRMode.NONE && Input.gyro.enabled)
+			{
+				//transform.eulerAngles = new Vector3 (0, Input.gyro.rotationRateUnbiased.y, 0);
+				var rot = ConvertRotation (Input.gyro.attitude);
+				Vector3 euler = (Quaternion.Euler (90f, 0f, 0f) * rot).eulerAngles;
+				transform.eulerAngles = new Vector3 (0, euler.y, 0);
+			}
+			else
+			{
+				transform.Rotate(0, (Input.GetAxis("Mouse X") + Input.GetAxis("Axis3")) * sensitivityX, 0); //"Joy X"
+			}
 		}
 		else
 		{
-			rotationY += (Input.GetAxis("Mouse Y") + Input.GetAxis("Axis4")) * sensitivityY; // "Joy Y"
-			rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
+
+			if (Player.VRMode != Game.VRMode.NONE && Input.gyro.enabled)
+			{
+				var rot = ConvertRotation (Input.gyro.attitude);
+				Vector3 euler = (Quaternion.Euler (90f, 0f, 0f) * rot).eulerAngles;
+				transform.localEulerAngles = new Vector3 (euler.x, 0, euler.z);
+			} else
+			{
+				rotationY += (Input.GetAxis ("Mouse Y") + Input.GetAxis ("Axis4")) * sensitivityY; // "Joy Y"
+				rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
 			
-			transform.localEulerAngles = new Vector3(-rotationY, transform.localEulerAngles.y, 0);
+				transform.localEulerAngles = new Vector3 (-rotationY, transform.localEulerAngles.y, 0);
+			}
 		}
 	}
 //	public Mesh mesh;

@@ -67,8 +67,6 @@ public class Level : Obj
 		if(Level.current == null)
 		{
 			Level.current = level;
-
-
 		}
 		else
 		{
@@ -117,11 +115,11 @@ public class Level : Obj
 
 			Player.speed = i * t;
 
-			pm.sensitivityX = cm.sensitivityY = Player.speed * 6f;
+			pm.sensitivityX = cm.sensitivityY = Player.speed * MouseLook.sensitivity;
 		}
 
 		Player.speed = 1f;
-		pm.sensitivityX = cm.sensitivityY = 6;
+		pm.sensitivityX = cm.sensitivityY = MouseLook.sensitivity;
 
 		postDrawing = false;
 //		yield return new WaitForSeconds (Game.drawTime);

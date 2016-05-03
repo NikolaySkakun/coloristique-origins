@@ -88,6 +88,7 @@ public class Settings : MonoBehaviour
 			float radius = 0.15f;
 
 			mousePoint[i] = CustomObject.CircleBorder(radius, Obj.Colour.BLACK);
+			Game.SetRenderQueue (mousePoint [i], 2);
 			mousePoint[i].transform.localEulerAngles = Vector3.forward * 90;
 
 			mousePoint[i].transform.parent = mouseSensitivity.transform;
@@ -98,7 +99,7 @@ public class Settings : MonoBehaviour
 			mousePoint[i].AddComponent<BoxCollider>();
 
 			GameObject point = CustomObject.Circle(radius, Obj.Colour.BLACK);
-
+			Game.SetRenderQueue (point, 2);
 			point.transform.parent = mousePoint[i].transform;
 			point.transform.localPosition = Vector3.zero;
 			point.transform.localEulerAngles = Vector3.zero;
@@ -154,6 +155,9 @@ public class Settings : MonoBehaviour
 
 			blackRing.mesh = CustomMesh.CircleBorder(ringScale*radius, 0.02f, 100);
 			whiteRing.mesh = CustomMesh.CircleBorder(25f, 25f - ringScale*radius, 100);
+
+			Game.SetRenderQueue (blackRing.gameObject, 1);
+			Game.SetRenderQueue (whiteRing.gameObject, 1);
 			//whiteRing.GetComponent<Renderer>().material.renderQueue = Shader.Find("Base").renderQueue - 1;
 
 			anim = true;
@@ -167,6 +171,8 @@ public class Settings : MonoBehaviour
 
 			blackRing.mesh = CustomMesh.CircleBorder(ringScale*radius, 0.02f, 100);
 			whiteRing.mesh = CustomMesh.CircleBorder(ringScale*radius - 0.01f, ringScale*radius - 0.01f - minScale/2f, 100);
+			Game.SetRenderQueue (blackRing.gameObject, 1);
+			Game.SetRenderQueue (whiteRing.gameObject, 1);
 			//whiteRing.GetComponent<Renderer>().material.renderQueue = Shader.Find("Base").renderQueue - 1;
 
 			if(ringScale >= maxScale)
@@ -214,8 +220,8 @@ public class Settings : MonoBehaviour
 		white.transform.eulerAngles = black.transform.eulerAngles = Vector3.forward * 90f;
 
 		white.transform.parent = black.transform.parent = Level.current.transform;
-		white.transform.localPosition -= Vector3.right*0.0005f;
-		black.transform.localPosition -= Vector3.right*0.0005f;
+		white.transform.localPosition -= Vector3.right*0.005f;
+		black.transform.localPosition -= Vector3.right*0.005f;
 
 		whiteRing = white.GetComponent<MeshFilter>();
 		blackRing = black.GetComponent<MeshFilter>();
@@ -262,7 +268,7 @@ public class Settings : MonoBehaviour
 
 		settings = new GameObject("Settings");
 		Room room = Level.current.room[1];
-		settings.transform.position = room.side[1].transform.position - Vector3.up*room.Size.y/2f + Vector3.forward*room.Size.z/2f - Vector3.right*0.0001f;
+		settings.transform.position = room.side[1].transform.position - Vector3.up*room.Size.y/2f + Vector3.forward*room.Size.z/2f - Vector3.right*0.001f;
 		settings.transform.localEulerAngles = Vector3.up*90f;
 		settings.transform.parent = Level.current.transform;
 
@@ -327,7 +333,7 @@ public class Settings : MonoBehaviour
 		//ySens.sensitivityY =1;
 		//xSens.sensitivityX = ySens.sensitivityY = mouseSensitivityValue
 		if(xSens != null)
-			xSens.sensitivityX = ySens.sensitivityY = mouseSensitivityValue/10f;
+			MouseLook.sensitivity = xSens.sensitivityX = ySens.sensitivityY = mouseSensitivityValue/10f;
 		animMouseSensitivity = false;
 	}
 	

@@ -107,6 +107,9 @@ public class Cell : Obj
 
 		anim.AddClip(clip, "Draw");
 		anim.Play("Draw");
+
+		Destroy (colorPlane, Game.drawTime);
+		Destroy (reverseColorPlane, Game.drawTime);
 	}
 
 	void Update()
@@ -173,9 +176,12 @@ public class Cell : Obj
 	public void JoinBall(Ball ball)
 	{
 
-		//Debug.LogWarning("JoinBall");
+
 
 		ball.transform.parent = trigger.transform;
+
+
+
 		/*AnimationCurve curveX = new AnimationCurve(new Keyframe(0, ball.transform.localPosition.x), new Keyframe(timeForJoinBall, 0));
 		AnimationCurve curveY = new AnimationCurve(new Keyframe(0, ball.transform.localPosition.y), new Keyframe(timeForJoinBall, 0));
 		AnimationCurve curveZ = new AnimationCurve(new Keyframe(0, ball.transform.localPosition.z), new Keyframe(timeForJoinBall, 0));
@@ -187,7 +193,7 @@ public class Cell : Obj
 		clip.SetCurve("", typeof(Transform), "localPosition.z", curveZ);*/
 
 
-
+		ball.transform.SetParent (trigger.transform);
 		ball.GetComponent<Animation>().AddClip(Game.CreateAnimationClip(Game.AnimationClipType.POSITION, ball.transform.localPosition, Vector3.zero, timeForJoinBall), "ConnectBall");
 		ball.GetComponent<Animation>().Play("ConnectBall");
 
@@ -286,7 +292,8 @@ public class Cell : Obj
 		{
 			position.x = 0.5f + lineThick - room.Size.x/2f + x*(room.Size.x - 1 - lineThick*2f)/100f;
 			position.z = 0.5f + lineThick - room.Size.z/2f + z*(room.Size.z - 1 - lineThick*2f)/100f;
-			cell.transform.localScale -= Vector3.up*2f;
+			//cell.transform.localScale -= Vector3.up*2f;
+			cell.transform.localEulerAngles += Vector3.forward * 180f;
 			cell.transform.position = room.side[3].transform.position - position;
 		}
 		else
@@ -312,6 +319,8 @@ public class Cell : Obj
 
 		cell.plane = CustomObject.CreatePrimitive(PrimitiveType.Quad, false);
 		cell.plane.GetComponent<Renderer>().material.color = Game.GetColor(cell.color);
+		//cell.plane.transform.localPosition = new Vector3(0, 0, -0.001f);
+		Game.SetRenderQueue (cell.plane, 3);
 		cell.plane.transform.parent = cell.cell.transform;
 		if(t == CellType.SMALL)
 		{
@@ -331,7 +340,7 @@ public class Cell : Obj
 		cell.colorPlane.transform.parent = cell.cell.transform;
 		cell.colorPlane.transform.localScale = Vector3.zero;
 		cell.colorPlane.AddComponent<Animation>().AddClip(Game.CreateAnimationClip(Game.AnimationClipType.SCALE, Vector3.one, Vector3.zero, 0.75f), "Anim");
-		cell.colorPlane.transform.localPosition = new Vector3(0, 0, -0.0002f);
+		cell.colorPlane.transform.localPosition = new Vector3(0, 0, -0.002f);
 
 
 		cell.reverseColorPlane = CustomObject.CreatePrimitive(PrimitiveType.Quad, false);
@@ -339,11 +348,11 @@ public class Cell : Obj
 		cell.reverseColorPlane.transform.parent = cell.cell.transform;
 		cell.reverseColorPlane.transform.localScale = Vector3.zero;
 		cell.reverseColorPlane.AddComponent<Animation>().AddClip(Game.CreateAnimationClip(Game.AnimationClipType.SCALE, Vector3.one, Vector3.zero, 0.75f, 0.015f), "Anim");
-		cell.reverseColorPlane.transform.localPosition = new Vector3(0, 0, -0.0001f);
+		cell.reverseColorPlane.transform.localPosition = new Vector3(0, 0, -0.001f);
 
 
 		gObject.transform.localEulerAngles = Vector3.right * 90;
-		gObject.transform.localPosition = Vector3.up / 1000f;
+		gObject.transform.localPosition = Vector3.up / 500f;
 		gObject.transform.parent = cell.transform;
 		
 		cell.trigger = Trigger.NonXmlCreate(t == CellType.SMALL ? Vector3.one/2f : Vector3.one, Trigger.TriggerType.BALL);

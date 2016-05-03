@@ -249,18 +249,21 @@ public class Level_0 : MonoBehaviour
 
 
 
-		infoMouse = Word.WriteString("use mouse to look around", 0.5f,  Obj.Colour.BLACK); //, true
+		//infoMouse = Word.WriteString("use mouse to look around", 0.5f,  Obj.Colour.BLACK); //, true
 		//Word.ApplyReverseColorShaderToString(infoMouse);
 		//float a = Mathf.Atan2( Mathf.Abs (Player.camera.transform.position.z - infoMouse.transform.position.z) , Mathf.Abs (Player.camera.transform.position.y - infoMouse.transform.position.y) ) * Mathf.Rad2Deg;
 
-		//GameObject infoMouse = Word.WriteString("use right stick to look around", 0.5f,  Obj.Colour.BLACK, true);
+		infoMouse = Word.WriteString(
+			Game.IsJoystickConnected ? "use right stick to look around" : "use mouse to look around", 
+			0.5f, 
+			Obj.Colour.BLACK); //, true
 		infoMouse.transform.localEulerAngles = new Vector3 (0, 90, 90);
 		infoMouse.transform.localScale = Vector3.one * 0.08f;
 		infoMouse.transform.position = 
 			level.room [1].side [4].transform.position 
 			+ Vector3.forward * 0.101f 
 			- Vector3.up * 0.8f 
-			+ Vector3.right * level.room [1].Size.x / 7.85f;
+			+ Vector3.right * level.room [1].Size.x / (Game.IsJoystickConnected ? 6.98f : 7.85f); //7.85f
 
 
 		AnimationClip clip =  Game.CreateAnimationClip (
@@ -282,18 +285,25 @@ public class Level_0 : MonoBehaviour
 		infoMouse.GetComponent<Animation> ().AddClip(clip, "Destroy");
 
 
-		infoWalk = Word.WriteString("use S W A D buttons to walk", 0.5f,  Obj.Colour.BLACK); //, true
-		//GameObject infoWalk = Word.WriteString("use left stick to walk", 0.5f,  Obj.Colour.BLACK, true);
+
+
+
+
+		//infoWalk = Word.WriteString("use S W A D buttons to walk", 0.5f,  Obj.Colour.BLACK); //, true
+		infoWalk = Word.WriteString(
+			Game.IsJoystickConnected ? "use left stick to walk" : "use S W A D buttons to walk", 
+			0.5f,  
+			Obj.Colour.BLACK); //, true
 		infoWalk.transform.localEulerAngles = new Vector3 (0, 90, 90);
 		infoWalk.transform.localScale = Vector3.one * 0.08f;
 		infoWalk.transform.position = 
 			level.room [1].side [4].transform.position 
 			+ Vector3.forward * 0.101f 
 			- Vector3.up * 1.05f 
-			+ Vector3.right * level.room [1].Size.x / 7.08f;//10.7f;
+			+ Vector3.right * level.room [1].Size.x / (Game.IsJoystickConnected ? 9.3f : 7.08f);//9.3f; //7.08f
 
-
-		infoWalk.transform.FindChild ("W").transform.localEulerAngles = Vector3.zero;
+		if(!Game.IsJoystickConnected)
+			infoWalk.transform.FindChild ("W").transform.localEulerAngles = Vector3.zero;
 
 		clip =  Game.CreateAnimationClip (
 			Quaternion.Euler (new Vector3 (0, 90, -5)), 
@@ -662,6 +672,40 @@ public class Level_0 : MonoBehaviour
 //				infoWalk.GetComponent<Animation> ().Play ("Destroy");
 //				infoMouse.GetComponent<Animation> ().Play ("Destroy");
 //			}
+
+			if (Input.GetKeyDown (KeyCode.JoystickButton8)) // L2
+			{
+				foreach (NewLensCorrection lens in GameObject.FindObjectsOfType<NewLensCorrection>())
+				{
+					lens.strengthX -= 0.1f;
+					lens.strengthY -= 0.1f;
+				}
+			} 
+			else if(Input.GetKeyDown (KeyCode.JoystickButton9)) // R2
+			{
+				foreach (NewLensCorrection lens in GameObject.FindObjectsOfType<NewLensCorrection>())
+				{
+					lens.strengthX += 0.1f;
+					lens.strengthY += 0.1f;
+				}
+			}
+
+			if (Input.GetKeyDown (KeyCode.JoystickButton10) || Input.GetKeyDown (KeyCode.LeftShift)) // L2
+			{
+				foreach (NewLensCorrection lens in GameObject.FindObjectsOfType<NewLensCorrection>())
+				{
+					lens.gameObject.GetComponent<Camera> ().fieldOfView -= 1;
+				}
+				//binary -= 1;
+			} 
+			else if(Input.GetKeyDown (KeyCode.JoystickButton11) || Input.GetKeyDown (KeyCode.RightShift)) // R2
+			{
+				foreach (NewLensCorrection lens in GameObject.FindObjectsOfType<NewLensCorrection>())
+				{
+					lens.gameObject.GetComponent<Camera> ().fieldOfView += 1;
+				}
+				//binary += 1;
+			}
 		}
 
 		//binary = 0;

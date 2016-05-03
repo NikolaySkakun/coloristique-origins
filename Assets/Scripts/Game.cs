@@ -28,6 +28,7 @@ using UnityEngine;
 using System.Xml;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 public class Game : MonoBehaviour 
 {
@@ -40,6 +41,8 @@ public class Game : MonoBehaviour
 		OCULUS,
 		CARDBOARD
 	};
+
+	public GameObject VRCam;
 
 	public delegate void DVoid();
 
@@ -89,6 +92,14 @@ public class Game : MonoBehaviour
 				PlayerPrefs.Save();
 			}
 
+		}
+	}
+
+	static public bool IsJoystickConnected
+	{
+		get
+		{
+			return Input.GetJoystickNames ().Length > 0;
 		}
 	}
 
@@ -178,6 +189,8 @@ public class Game : MonoBehaviour
 
 
 
+
+
 			for(int i=0; i<3; ++i)
 			{
 				for(int u=0; u<point.Length; ++u)
@@ -185,7 +198,14 @@ public class Game : MonoBehaviour
 					key[i][u] = new Keyframe(beginTime + (float)u*(time/(float)point.Length), point[u][i]);
 				}
 
-				clip.SetCurve("", typeof(Transform), "localPosition." + GetCoordinate(i), new AnimationCurve(key[i]));
+					AnimationCurve c = new AnimationCurve (key [i]);
+					for (int u = 0; u < point.Length; ++u)
+					{
+						c.SmoothTangents (u, 0);
+					}
+
+
+				clip.SetCurve("", typeof(Transform), "localPosition." + GetCoordinate(i), c);
 			}
 		} break;
 			
@@ -501,6 +521,30 @@ public class Game : MonoBehaviour
 
 	#region UNITY_MONOBEHAVIOUR_METHODS
 
+	private bool connected = false;
+
+	IEnumerator CheckForControllers() {
+		while (true) {
+			var controllers = Input.GetJoystickNames();
+			if (!connected && controllers.Length > 0) {
+				connected = true;
+				message = "Connected";
+			} else if (connected && controllers.Length == 0) {
+				connected = false;
+				message = "Disconnected";
+			}
+			yield return new WaitForSeconds(1f);
+		}
+	}
+
+	string message = "Disconnected";
+
+//	public void OnGUI()
+//	{
+//		GUILayout.Box (message);
+//	}
+
+
 	void Awake()
 	{
 		Cursor.visible = false;
@@ -540,11 +584,13 @@ public class Game : MonoBehaviour
 		{
 			Progress = 1;
 		}
+
+		StartCoroutine(CheckForControllers());
 	}
 
 	static public bool IsInputEscape()
 	{
-		return Input.GetKey(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton3); // || Input.GetKeyUp(KeyCode.R);
+		return Input.GetKey(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton0); // || Input.GetKeyUp(KeyCode.R);
 	}
 
 	static public bool IsInputRestart()
@@ -554,22 +600,22 @@ public class Game : MonoBehaviour
 
 	static public bool IsInputUseItemDown()
 	{
-		return Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton2) || Input.GetKeyDown(KeyCode.JoystickButton13);
+		return Input.GetKeyDown (KeyCode.E) || Input.GetKeyDown (KeyCode.JoystickButton2) || Input.GetKeyDown (KeyCode.JoystickButton13); //|| IsInputActionButtonClickDown(); Input.GetKeyDown (KeyCode.E) || 
 	}
 
 	static public bool IsInputActionButtonClickDown()
 	{
-		return Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)|| Input.GetKeyDown(KeyCode.JoystickButton14);
+		return Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)|| Input.GetKeyDown(KeyCode.JoystickButton14); //Input.GetMouseButtonDown(0) || 
 	}
 
 	static public bool IsInputActionButtonClickUp()
 	{
-		return Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)|| Input.GetKeyUp(KeyCode.JoystickButton14);
+		return Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)|| Input.GetKeyUp(KeyCode.JoystickButton14); //Input.GetMouseButtonUp(0) || 
 	}
 
 	static public bool IsInputActionButtonClick()
 	{
-		return Input.GetMouseButton(0) || Input.GetMouseButton(1)|| Input.GetKey(KeyCode.JoystickButton14);
+		return Input.GetMouseButton(0) || Input.GetMouseButton(1)|| Input.GetKey(KeyCode.JoystickButton14); //Input.GetMouseButton(0) || 
 	}
 
 	static public void ShowMessage(string msg)
@@ -589,11 +635,14 @@ public class Game : MonoBehaviour
 //		(t2 = Word.GetGameObject (CustomMesh.PenroseTriangle (-1), Obj.Colour.BLACK)).GetComponent<Renderer> ().material.color = Color.red;
 //		(t3 = Word.GetGameObject (CustomMesh.PenroseTriangle (), Obj.Colour.BLACK)).GetComponent<Renderer> ().material.color = Color.green;
 
-		Word.GetGameObject (LetterAnimation.CombineMeshes (new Mesh[] {
-			CustomMesh.PenroseTriangle (),
-			CustomMesh.PenroseTriangle (-1)
-		}));
+		//Tesseract.Create ();
 
+
+//		Word.GetGameObject (LetterAnimation.CombineMeshes (new Mesh[] {
+//			CustomMesh.PenroseTriangle (),
+//			CustomMesh.PenroseTriangle (-1)
+//		}));
+//
 //		t1.transform.localEulerAngles = Vector3.up * 90f;
 //		t1.transform.position = new Vector3 (-27f, 20f, 33.4f);
 //
@@ -602,12 +651,17 @@ public class Game : MonoBehaviour
 //		t3.transform.localEulerAngles = Vector3.right * 270f;
 //		t3.transform.position = new Vector3 (-13.3f, -14.5f, 15.2f);
 
-//		float thick = 0.18f;
-//		float contourThick = 0.02f;
-//		float radius = 0.8f;
-//		Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, contourThick);
-//		Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, -contourThick);
-//		Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick - contourThick, radius, Obj.Colour.BLACK);
+		float thick = 0.18f;
+		float contourThick = 0.02f;
+		float radius = 0.8f;
+		Symbol firstStrip = Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, contourThick);
+		Symbol secondStrip = Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, -contourThick);
+		//Destroy (firstStrip.GetComponent<Symbol> ());
+		//Destroy (firstStrip.GetComponent<Symbol> ());
+
+		Symbol mainStrip = Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick - contourThick, radius, Obj.Colour.BLACK);
+		mainStrip.firstStrip = firstStrip.gameObject;
+		mainStrip.secondStrip = secondStrip.gameObject;
 		//Symbol.Create(Symbol.Type.MOBIUS_STRIP, 0.02f, 0.97f, Obj.Colour.BLACK);
 
 		//new Portal ();
@@ -615,6 +669,11 @@ public class Game : MonoBehaviour
 		//Word.GetGameObject(CustomMesh.Test());
 		//CustomObject.Hill(13, 0.1f);
 		//Physics.gravity = 9.8f * Vector3.up;
+	}
+
+	static public void SetRenderQueue(GameObject obj, int queue)
+	{
+		obj.GetComponent<Renderer> ().material.renderQueue += queue;
 	}
 
 	void Start() 
@@ -626,9 +685,19 @@ public class Game : MonoBehaviour
 		ShowMessage("Starting game...");
 
 		Player.Create();
+//
+		if (Player.VRMode != VRMode.NONE)
+		{
+			Player.camera.GetComponent<Camera> ().enabled = false;
+			VRCam.transform.SetParent (Player.camera.transform);
+			VRCam.transform.localPosition = Vector3.zero;
+			VRCam.transform.rotation = Quaternion.identity;
+		}
 		LoadLevel(0);
-		//TestMethod();
 
+
+		//TestMethod();
+		//Player.camera.GetComponent<Camera>().nearClipPlane= 0.01f;
 
 
 		//CustomObject.ArrowButton();
@@ -654,6 +723,7 @@ public class Game : MonoBehaviour
 
 	void Update()
 	{
+		
 		//UpdateAimTextureScale();
 
 		/*if(Input.GetKeyUp(KeyCode.P))
@@ -679,47 +749,49 @@ public class Game : MonoBehaviour
 
 		if(debugMode)
 		{
-			if(Input.GetKeyUp(KeyCode.Alpha1))
-			{
-				Progress = 1;
-			}
-			else if(Input.GetKeyUp(KeyCode.Alpha2))
-			{
-				Progress = 2;
-			}
-			else if(Input.GetKeyUp(KeyCode.Alpha3))
-			{
-				Progress = 3;
-			}
-			else if(Input.GetKeyUp(KeyCode.Alpha4))
-			{
-				Progress = 4;
-			}
-			else if(Input.GetKeyUp(KeyCode.Alpha5))
-			{
-				Progress = 5;
-			}
-			else if(Input.GetKeyUp(KeyCode.Alpha6))
-			{
-				Progress = 6;
-			}
-			else if(Input.GetKeyUp(KeyCode.Alpha7))
-			{
-				Progress = 7;
-			}
-			else if(Input.GetKeyUp(KeyCode.Alpha8))
-			{
-				Progress = 8;
-			}
-			else if(Input.GetKeyUp(KeyCode.Alpha9))
-			{
-				Progress = 9;
-			}
-			else if(Input.GetKeyUp(KeyCode.Space))
-			{
-				foreach(Ball obj in GameObject.FindObjectsOfType<Ball>())
-					obj.GetComponent<Rigidbody>().velocity = Vector3.zero;
-			}
+//			if(Input.GetKeyUp(KeyCode.Alpha1))
+//			{
+//				Progress = 1;
+//			}
+//			else if(Input.GetKeyUp(KeyCode.Alpha2))
+//			{
+//				Progress = 2;
+//			}
+//			else if(Input.GetKeyUp(KeyCode.Alpha3))
+//			{
+//				Progress = 3;
+//			}
+//			else if(Input.GetKeyUp(KeyCode.Alpha4))
+//			{
+//				Progress = 4;
+//			}
+//			else if(Input.GetKeyUp(KeyCode.Alpha5))
+//			{
+//				Progress = 5;
+//			}
+//			else if(Input.GetKeyUp(KeyCode.Alpha6))
+//			{
+//				Progress = 6;
+//			}
+//			else if(Input.GetKeyUp(KeyCode.Alpha7))
+//			{
+//				Progress = 7;
+//			}
+//			else if(Input.GetKeyUp(KeyCode.Alpha8))
+//			{
+//				Progress = 8;
+//			}
+//			else if(Input.GetKeyUp(KeyCode.Alpha9))
+//			{
+//				Progress = 9;
+//			}
+//			else if(Input.GetKeyUp(KeyCode.Space))
+//			{
+////				foreach(Ball obj in GameObject.FindObjectsOfType<Ball>())
+////					obj.GetComponent<Rigidbody>().velocity = Vector3.zero;
+//			}
+
+
 		}
 	}
 	#endregion // UNITY_MONOBEHAVIOUR_METHODS

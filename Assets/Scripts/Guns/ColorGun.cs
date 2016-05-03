@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ColorGun : MonoBehaviour 
 {
-	GameObject gun, nameGun;
+	public GameObject gun, nameGun;
 	Gun gunComponent;
 	
 	static float distance = 12f;
@@ -63,6 +63,9 @@ public class ColorGun : MonoBehaviour
 		nameGun.SetActive(false);
 		
 		SetLayerForName(nameGun);
+
+		gun.AddComponent<BoxCollider> ().size = new Vector3 (1, 5, 1);
+		gun.GetComponent<BoxCollider> ().isTrigger = true;
 	}
 	
 	void Start()
@@ -151,26 +154,29 @@ public class ColorGun : MonoBehaviour
 				nameGun.SetActive(true);
 
 			RaycastHit hit;
-			if(Physics.Raycast(Player.camera.transform.position, Player.camera.transform.forward, out hit))
-			{
-				if(hit.transform.tag == "Ball" && !Player.HasBall)
-				{
-					Player.AimControl(true);
-					needAim = true;
-				}
-				else
-				{
-					if(needAim)
-					{
-						needAim = false;
-						Player.AimControl(false);
-					}
-				}
-			}
 
-			if(Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) ||
+			//#######################
+//			if(Physics.Raycast(Player.camera.transform.position, Player.camera.transform.forward, out hit))
+//			{
+//				if(hit.transform.tag == "Ball" && !Player.HasBall)
+//				{
+//					Player.AimControl(true);
+//					needAim = true;
+//				}
+//				else
+//				{
+//					
+//					if(needAim)
+//					{
+//						needAim = false;
+//						Player.AimControl(false);
+//					}
+//
+//				}
+//			}
+			//#######################
 
-			   Input.GetKeyDown(KeyCode.JoystickButton14))
+			if(Game.IsInputActionButtonClickDown())
 			{
 				/*Vector3[] points = new Vector3[]{
 					transform.localPosition,

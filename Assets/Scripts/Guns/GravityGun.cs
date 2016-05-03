@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GravityGun : MonoBehaviour 
 {
-	GameObject gun, indicator, nameGun;
+	public GameObject gun, indicator, nameGun;
 	Gun gunComponent;
 	MeshFilter arrowMeshFilter;
 
@@ -90,6 +90,10 @@ public class GravityGun : MonoBehaviour
 		indicator.GetComponent<Animation>().AddClip(clip, "On");
 
 		indicator.SetActive(false);
+
+
+		gun.AddComponent<BoxCollider> ().size = new Vector3 (1, 5, 1);
+		gun.GetComponent<BoxCollider> ().isTrigger = true;
 
 		/*GameObject arrow = CustomObject.ArrowForGravityGun(0.11f, 2f);
 		arrowMeshFilter = arrow.GetComponent<MeshFilter>();
@@ -191,8 +195,10 @@ public class GravityGun : MonoBehaviour
 		{
 			if(hit.transform.tag == "Ball" && !hit.transform.gameObject.GetComponent<Ball>().InHands)
 			{
-				Player.AimControl(true);
-				needAim = true;
+				//#######################
+//				Player.AimControl(true);
+//				needAim = true;
+				//#######################
 
 				if(!canDrag)
 				{
@@ -211,11 +217,13 @@ public class GravityGun : MonoBehaviour
 			else if(canDrag)
 			{
 				canDrag = false;
-				if(needAim)
-				{
-					needAim = false;
-					Player.AimControl(false);
-				}
+				//#######################
+//				if(needAim)
+//				{
+//					needAim = false;
+//					Player.AimControl(false);
+//				}
+				//#######################
 
 				AnimationClip clip = Game.CreateAnimationClip(Game.AnimationClipType.POSITION, indicator.transform.localPosition, new Vector3(0, 2f, -0.5f), 0.5f);
 				
@@ -228,11 +236,13 @@ public class GravityGun : MonoBehaviour
 		else if(canDrag)
 		{
 			canDrag = false;
-			if(needAim)
-			{
-				needAim = false;
-				Player.AimControl(false);
-			}
+			//#######################
+//			if(needAim)
+//			{
+//				needAim = false;
+//				Player.AimControl(false);
+//			}
+			//#######################
 			
 			AnimationClip clip = Game.CreateAnimationClip(Game.AnimationClipType.POSITION, indicator.transform.localPosition, new Vector3(0, 2f, -0.5f), 0.5f);
 			
@@ -413,9 +423,8 @@ public class GravityGun : MonoBehaviour
 				return;
 			}
 
-			if(!Player.HasBall && (Input.GetMouseButton(1) || Input.GetMouseButton(0) ||
-			                       Input.GetKey(KeyCode.JoystickButton14) || 
-			                       Input.GetKey(KeyCode.JoystickButton9) || TouchControl()))
+			if(!Player.HasBall && (Game.IsInputActionButtonClick() || 
+				TouchControl())) //Input.GetKey(KeyCode.JoystickButton9) || 
 			{
 				RaycastHit hit;
 				if(Physics.Raycast(Player.camera.transform.position, Player.camera.transform.forward, out hit, distance))
@@ -442,9 +451,8 @@ public class GravityGun : MonoBehaviour
 				else
 					ball = null;
 			}
-			else if(Player.HasBall && (Input.GetMouseButton(1) || Input.GetMouseButton(0) ||
-			                           Input.GetKey(KeyCode.JoystickButton14) || 
-			                           Input.GetKey(KeyCode.JoystickButton9) || TouchControl()))
+			else if(Player.HasBall && (Game.IsInputActionButtonClick() || 
+				TouchControl())) // Input.GetKey(KeyCode.JoystickButton9) || 
 			{
 				//Debug.LogWarning(power);
 				if(power < maxPower)
@@ -453,9 +461,8 @@ public class GravityGun : MonoBehaviour
 				ball = null;
 
 			}
-			else if(Player.HasBall && (Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(0) ||
-			                           Input.GetKeyUp(KeyCode.JoystickButton14) || 
-			                           Input.GetKeyUp(KeyCode.JoystickButton9) || TouchControlUp()))
+			else if(Player.HasBall && (Game.IsInputActionButtonClickUp() || 
+				TouchControlUp())) //Input.GetKeyUp(KeyCode.JoystickButton9) || 
 			{
 				AnimationClip clip = Game.CreateAnimationClip(Game.AnimationClipType.POSITION, new Vector3(.4f, -0.3f, .38f), new Vector3(.4f, -0.3f, .5f), 0.23f);
 				GetComponent<Animation>().AddClip(clip, "Recoil_");
@@ -484,7 +491,7 @@ public class GravityGun : MonoBehaviour
 
 			if(Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(0) ||
 			   Input.GetKeyUp(KeyCode.JoystickButton14) || 
-			   Input.GetKeyUp(KeyCode.JoystickButton9) || TouchControlUp())
+				TouchControlUp()) //Input.GetKeyUp(KeyCode.JoystickButton9) ||
 			{
 				AnimationClip clip = Game.CreateAnimationClip(Game.AnimationClipType.POSITION, new Vector3(.4f, -0.3f, .38f), new Vector3(.4f, -0.3f, .5f), 0.23f);
 				GetComponent<Animation>().AddClip(clip, "Recoil_");
@@ -494,7 +501,7 @@ public class GravityGun : MonoBehaviour
 			}
 			else if(Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) ||
 			        Input.GetKeyDown(KeyCode.JoystickButton14) || 
-			        Input.GetKeyDown(KeyCode.JoystickButton9) || TouchControlDown())
+				TouchControlDown()) //Input.GetKeyDown(KeyCode.JoystickButton9) || 
 			{
 				AnimationClip clip = Game.CreateAnimationClip(Game.AnimationClipType.POSITION, new Vector3(.4f, -0.3f, .5f), new Vector3(.4f, -0.3f, .38f), 0.23f);
 				GetComponent<Animation>().AddClip(clip, "Recoil");

@@ -13,10 +13,11 @@ public class Line : Obj
 	static public Line Create(float hei)
 	{
 		GameObject line = CustomObject.CreatePrimitive(PrimitiveType.Quad, false, true);
+		Game.SetRenderQueue (line, 1);
 		//Object.Destroy(line.collider);
 		line.GetComponent<Collider>().enabled = false;
 		line.transform.localScale = new Vector3(height / hei, 1, 1);
-		line.transform.localPosition -= Vector3.forward / 100000f;
+		line.transform.localPosition -= Vector3.forward / 1000f;
 
 		return line.AddComponent<Line>() as Line;
 	}

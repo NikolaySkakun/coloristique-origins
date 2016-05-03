@@ -35,13 +35,39 @@ public class Level_1 : MonoBehaviour
 	GameObject symbol;
 	void CreateSymbol()
 	{
+//		float thick = 0.18f;
+//		float contourThick = 0.02f;
+//		float radius = 0.8f;
+//		GameObject[] symbols = new GameObject[] {
+//			Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, contourThick).gameObject,
+//			Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, -contourThick).gameObject,
+//			Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick - contourThick, radius, Obj.Colour.BLACK).gameObject
+//		};
+//
+//		symbol = new GameObject ("Symbol");
+//		foreach (GameObject obj in symbols)
+//		{
+//			obj.transform.parent = symbol.transform;
+//		}
+
+
+
 		float thick = 0.18f;
 		float contourThick = 0.02f;
 		float radius = 0.8f;
+		Symbol firstStrip = Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, contourThick);
+		Symbol secondStrip = Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, -contourThick);
+		//Destroy (firstStrip.GetComponent<Symbol> ());
+		//Destroy (firstStrip.GetComponent<Symbol> ());
+
+		Symbol mainStrip = Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick - contourThick, radius, Obj.Colour.BLACK);
+		mainStrip.firstStrip = firstStrip.gameObject;
+		mainStrip.secondStrip = secondStrip.gameObject;
+
 		GameObject[] symbols = new GameObject[] {
-			Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, contourThick).gameObject,
-			Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, -contourThick).gameObject,
-			Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick - contourThick, radius, Obj.Colour.BLACK).gameObject
+			firstStrip.gameObject,
+			secondStrip.gameObject,
+			mainStrip.gameObject
 		};
 
 		symbol = new GameObject ("Symbol");
@@ -52,7 +78,18 @@ public class Level_1 : MonoBehaviour
 
 
 		symbol.transform.parent = level.room [2].transform;
-		Player.SetPosition (symbol, level.room [2], new Vector3 (50, 1.65f, 50));
+		symbol.transform.localEulerAngles = Vector3.up * 90f;
+		Player.SetPosition (symbol, level.room [2], new Vector3 (30, 1.65f, 50)); //30, 1.65f, 50
+
+//		GameObject tes = symbol = Tesseract.Create ().gameObject;
+//		//tes.transform.localEulerAngles = Vector3.up * 45f;
+//		Player.SetPosition(tes, level.room [2], new Vector3 (50, 1.6f, 50));
+
+//		foreach (Side s in level.room[2].side)
+//		{
+//			foreach (Line l in s.line)
+//				l.Repaint ();
+//		}
 	}
 
 	Vector3 originalArrowPosition;
@@ -96,7 +133,7 @@ public class Level_1 : MonoBehaviour
 
 	void CreateInfo()
 	{
-		string useItemButtonName = Input.GetJoystickNames().Length > 0 ? "O" : "E";
+		string useItemButtonName = Game.IsJoystickConnected ? "O" : "E";
 		info = InfoTable.NonXmlCreate (useItemButtonName, level.ball [0].gameObject, 0.2f, 0, -0.5f, 0.2f);//0.153f);
 		info.transform.GetChild(0).localScale = new Vector3(1.5f, 1.5f, -1.5f);
 		info.transform.parent = Level.current.transform;
@@ -208,7 +245,7 @@ public class Level_1 : MonoBehaviour
 		}
 	}
 
-	Symbol sym;
+	Tesseract sym;
 
 	void FixedUpdate()
 	{
@@ -217,12 +254,12 @@ public class Level_1 : MonoBehaviour
 			Player.player.transform.LookAt (symbol.transform);
 			Player.player.transform.eulerAngles = new Vector3 (0, Player.player.transform.eulerAngles.y, 0);
 
-			float angle = sym.angle;
+			float angle = Time.time - sym.angle;
 
 			Player.player.transform.position = new Vector3 (
-				symbol.transform.position.x + Mathf.Sin (angle * Mathf.Deg2Rad/4f) * 3f, 
+				symbol.transform.position.x + Mathf.Sin (angle * Mathf.Deg2Rad*8f) * 3f, 
 				Player.player.transform.position.y, 
-				symbol.transform.position.z + Mathf.Cos (angle * Mathf.Deg2Rad/4f) * 3f);
+				symbol.transform.position.z + Mathf.Cos (angle * Mathf.Deg2Rad*8f) * 3f);
 		}
 	}
 
@@ -240,12 +277,12 @@ public class Level_1 : MonoBehaviour
 			Player.controller.enabled = false;
 			StartCoroutine (Player.DisableControl (20));
 
-			foreach (Symbol s in GameObject.FindObjectsOfType<Symbol>())
-			{
-				s.angle = 0;
-			}
+//			foreach (Tesseract s in GameObject.FindObjectsOfType<Symbol>())
+//			{
+//				s.angle = 0;
+//			}
 
-			sym = GameObject.FindObjectOfType<Symbol> ();
+			sym = GameObject.FindObjectOfType<Tesseract> ();
 		}
 
 		if (arrow) {

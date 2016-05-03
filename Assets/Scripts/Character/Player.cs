@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 	
 
 	static public Player component;
-	static public GameObject camera, gunCamera, player, invisCamera, aim, smallAim, skin;
+	static public GameObject camera, gunCamera, player, invisCamera, aim, smallAim, skin, aim2, smallAim2;
 	static public CharacterController controller;
 	static public AudioController audio;
 	static public bool aimBall = false, inZero = false, scaleSmallAim = false;
@@ -30,13 +30,17 @@ public class Player : MonoBehaviour
 	float originalRotation;
 	static public float speed = 1f;
 
-	static Game.VRMode vrmode = Game.VRMode.NONE;
+	static Game.VRMode vrmode = Game.VRMode.FIBRUM;
 
 	static public Game.VRMode VRMode
 	{
 		get
 		{
 			return vrmode;
+		}
+		set
+		{
+			vrmode = value;
 		}
 	}
 	
@@ -108,39 +112,39 @@ public class Player : MonoBehaviour
 		Player.camera.GetComponent<MouseLook> ().enabled = true;
 	}
 
-	void ActivateVR()
-	{
-		leftVRCamera = new GameObject ("Left VR Camera").AddComponent<Camera>();
-		rightVRCamera = new GameObject ("Right VR Camera").AddComponent<Camera>();
-
-		leftVRCamera.transform.parent = rightVRCamera.transform.parent = camera.transform;
-		leftVRCamera.transform.localPosition = -Vector3.right * 0.35f;
-		rightVRCamera.transform.localPosition = Vector3.right * 0.35f;
-
-		leftVRCamera.rect = new Rect (0, 0, 0.5f, 1);
-		rightVRCamera.rect = new Rect (0.5f, 0, 0.5f, 1);
-
-		leftVRCamera.fieldOfView = rightVRCamera.fieldOfView = 95;
-
-		leftVRCamera.gameObject.AddComponent<ChangeCameraEye> ();
-		rightVRCamera.gameObject.AddComponent<ChangeCameraEye> ();
-
-
-		NewLensCorrection lens;
-		lens = leftVRCamera.gameObject.AddComponent<NewLensCorrection> ();
-		lens.strengthX = lens.strengthY = 0.8f;
-		lens.LensCorrectionShader = Shader.Find ("Fibrum/LensCorrection");
-
-
-		lens = rightVRCamera.gameObject.AddComponent<NewLensCorrection> ();
-		lens.strengthX = lens.strengthY = 0.8f;
-		lens.LensCorrectionShader = Shader.Find ("Fibrum/LensCorrection");
-
-
-		leftVRCamera.clearFlags = rightVRCamera.clearFlags = CameraClearFlags.Color;
-		leftVRCamera.backgroundColor = rightVRCamera.backgroundColor = Color.white;
-
-	}
+//	void ActivateVR()
+//	{
+//		leftVRCamera = new GameObject ("Left VR Camera").AddComponent<Camera>();
+//		rightVRCamera = new GameObject ("Right VR Camera").AddComponent<Camera>();
+//
+//		leftVRCamera.transform.parent = rightVRCamera.transform.parent = camera.transform;
+//		leftVRCamera.transform.localPosition = -Vector3.right * 0.35f;
+//		rightVRCamera.transform.localPosition = Vector3.right * 0.35f;
+//
+//		leftVRCamera.rect = new Rect (0, 0, 0.5f, 1);
+//		rightVRCamera.rect = new Rect (0.5f, 0, 0.5f, 1);
+//
+//		leftVRCamera.fieldOfView = rightVRCamera.fieldOfView = 95;
+//
+//		leftVRCamera.gameObject.AddComponent<ChangeCameraEye> ();
+//		rightVRCamera.gameObject.AddComponent<ChangeCameraEye> ();
+//
+//
+//		NewLensCorrection lens;
+//		lens = leftVRCamera.gameObject.AddComponent<NewLensCorrection> ();
+//		lens.strengthX = lens.strengthY = 0.8f;
+//		lens.LensCorrectionShader = Shader.Find ("Fibrum/LensCorrection");
+//
+//
+//		lens = rightVRCamera.gameObject.AddComponent<NewLensCorrection> ();
+//		lens.strengthX = lens.strengthY = 0.8f;
+//		lens.LensCorrectionShader = Shader.Find ("Fibrum/LensCorrection");
+//
+//
+//		leftVRCamera.clearFlags = rightVRCamera.clearFlags = CameraClearFlags.Color;
+//		leftVRCamera.backgroundColor = rightVRCamera.backgroundColor = Color.white;
+//
+//	}
 	
 	static public void Create()
 	{
@@ -166,6 +170,7 @@ public class Player : MonoBehaviour
 		camera.tag = "MainCamera";
 		camera.GetComponent<Camera>().depth = -1;
 		camera.GetComponent<Camera>().clearFlags = CameraClearFlags.Color; //CameraClearFlags.Depth;
+
 		
 		//camera.AddComponent<ExampleClass>();
 		(gunCamera = new GameObject("GunCamera")).AddComponent<Camera>().depth = 1;
@@ -211,31 +216,56 @@ public class Player : MonoBehaviour
 		//player.AddComponent("FPSInputController");
 		player.AddComponent<Player>();
 		audio = player.AddComponent<AudioController>();
+
+		NewLensCorrection[] lens = GameObject.FindObjectsOfType<NewLensCorrection> ();
 		
 		
 		GameObject aim = CustomObject.Circle(0.0018f, Obj.Colour.WHITE, false, 16);
-		aim.transform.parent = camera.transform;
+		aim.transform.parent = VRMode != Game.VRMode.NONE ? lens[0].transform : camera.transform;
 		aim.transform.localEulerAngles = Vector3.right * (-90f);
 		aim.transform.localPosition = Vector3.forward * (camera.GetComponent<Camera>().nearClipPlane + 0.0002f);
 		aim.GetComponent<Renderer>().material.shader = Shader.Find("InverseColor");
 		aim.AddComponent<Animation>();
-		aim.layer = LayerMask.NameToLayer("Ignore Raycast");
+		aim.layer = LayerMask.NameToLayer("LeftEye");//LayerMask.NameToLayer("Ignore Raycast");
 		
 		GameObject aim2 = CustomObject.Circle(0.0018f, Obj.Colour.WHITE, false, 16); //30
-		aim2.transform.parent = camera.transform;
+		aim2.transform.parent = VRMode != Game.VRMode.NONE ? lens[0].transform : camera.transform;
 		aim2.transform.localEulerAngles = Vector3.right * (-90f);
 		aim2.transform.localScale = Vector3.zero;
 		aim2.transform.localPosition = Vector3.forward * (camera.GetComponent<Camera>().nearClipPlane + 0.0001f);
 		aim2.GetComponent<Renderer>().material.shader = Shader.Find("InverseColor");
 		aim2.AddComponent<Animation>();
-		aim2.layer = LayerMask.NameToLayer("Ignore Raycast");
+		aim2.layer = LayerMask.NameToLayer("LeftEye");//LayerMask.NameToLayer("Ignore Raycast");
 		
 		//player.GetComponent<Player>().aim = aim;
 		//player.GetComponent<Player>().smallAim = aim2;
 		Player.aim = aim;
 		Player.smallAim = aim2;
 
+		if (VRMode != Game.VRMode.NONE)
+		{
 
+			aim = CustomObject.Circle (0.0018f, Obj.Colour.WHITE, false, 16);
+			aim.transform.parent = VRMode != Game.VRMode.NONE ? lens [1].transform : camera.transform;
+			aim.transform.localEulerAngles = Vector3.right * (-90f);
+			aim.transform.localPosition = Vector3.forward * (camera.GetComponent<Camera> ().nearClipPlane + 0.0002f);
+			aim.GetComponent<Renderer> ().material.shader = Shader.Find ("InverseColor");
+			aim.AddComponent<Animation> ();
+			aim.layer = LayerMask.NameToLayer ("RightEye");//LayerMask.NameToLayer("Ignore Raycast");
+
+			aim2 = CustomObject.Circle (0.0018f, Obj.Colour.WHITE, false, 16); //30
+			aim2.transform.parent = VRMode != Game.VRMode.NONE ? lens [1].transform : camera.transform;
+			aim2.transform.localEulerAngles = Vector3.right * (-90f);
+			aim2.transform.localScale = Vector3.zero;
+			aim2.transform.localPosition = Vector3.forward * (camera.GetComponent<Camera> ().nearClipPlane + 0.0001f);
+			aim2.GetComponent<Renderer> ().material.shader = Shader.Find ("InverseColor");
+			aim2.AddComponent<Animation> ();
+			aim2.layer = LayerMask.NameToLayer ("RightEye");//LayerMask.NameToLayer("Ignore Raycast");
+
+			Player.aim2 = aim;
+			Player.smallAim2 = aim2;
+
+		}
 //		Player.skin = new GameObject ("Skin");
 //		skin.transform.parent = player.transform;
 //		skin.transform.localPosition = -Vector3.up * 0.05f;
@@ -435,19 +465,29 @@ public class Player : MonoBehaviour
 			{
 				
 				Ball ball = lastBall = hit.transform.GetComponent<Ball>() as Ball;
-				if(ball.InHands)
+
+
+
+				if (ball.InHands)
 				{
-					ball.Throw();
+					ball.Throw ();
 					aimBall = false;
 					return false;
-				}
-				else
+				} 
+				else if (!HasBall)
 				{
-					ball.Take();
+					ball.Take ();
 					//ball.GetComponent<Rigidbody>().isKinematic = false;
 					aimBall = true;
 					return true;
-				}
+				} 
+//				if (!ball.InHands && HasBall)
+//				{
+//					lastBall.Throw();
+//					lastBall = null;
+//					hasBall = false;
+//					return;
+//				}
 			}
 			else
 			{
@@ -520,22 +560,75 @@ public class Player : MonoBehaviour
 		}
 	}
 
+//	Vector3 JoystickMovement()
+//	{
+//		Vector3 joyKeyControl = Vector3.zero;
+//		
+//		if(Input.GetKeyDown(KeyCode.JoystickButton4)) // Up
+//			joyKeyControl.z = 1;
+//		if(Input.GetKeyDown(KeyCode.JoystickButton6)) // Down
+//			joyKeyControl.z = -1;
+//		
+//		
+//		if(Input.GetKeyDown(KeyCode.JoystickButton7)) // Left
+//			joyKeyControl.x = -1;
+//		if(Input.GetKeyDown(KeyCode.JoystickButton5)) // Right
+//			joyKeyControl.x = 1;
+//		
+//		
+//		if(Input.GetKeyUp(KeyCode.JoystickButton4))
+//		{
+//			if(Input.GetKey(KeyCode.JoystickButton6))
+//				joyKeyControl.z = -1;
+//			else
+//				joyKeyControl.z = 0;
+//		}
+//		
+//		if(Input.GetKeyUp(KeyCode.JoystickButton6))
+//		{
+//			if(Input.GetKey(KeyCode.JoystickButton4))
+//				joyKeyControl.z = 1;
+//			else
+//				joyKeyControl.z = 0;
+//		}
+//		
+//		if(Input.GetKeyUp(KeyCode.JoystickButton7))
+//		{
+//			if(Input.GetKey(KeyCode.JoystickButton5))
+//				joyKeyControl.x = 1;
+//			else
+//				joyKeyControl.x = 0;
+//		}
+//		
+//		if(Input.GetKeyUp(KeyCode.JoystickButton5))
+//		{
+//			if(Input.GetKey(KeyCode.JoystickButton7))
+//				joyKeyControl.x = -1;
+//			else
+//				joyKeyControl.x = 0;
+//		}
+//		
+//		return joyKeyControl;
+//	}
+
+	Vector3 jcontrol = Vector3.zero;
+
 	Vector3 JoystickMovement()
 	{
-		Vector3 joyKeyControl = Vector3.zero;
-		
+		Vector3 joyKeyControl = jcontrol;//Vector3.zero;
+
 		if(Input.GetKeyDown(KeyCode.JoystickButton4)) // Up
 			joyKeyControl.z = 1;
 		if(Input.GetKeyDown(KeyCode.JoystickButton6)) // Down
 			joyKeyControl.z = -1;
-		
-		
+
+
 		if(Input.GetKeyDown(KeyCode.JoystickButton7)) // Left
 			joyKeyControl.x = -1;
 		if(Input.GetKeyDown(KeyCode.JoystickButton5)) // Right
 			joyKeyControl.x = 1;
-		
-		
+
+
 		if(Input.GetKeyUp(KeyCode.JoystickButton4))
 		{
 			if(Input.GetKey(KeyCode.JoystickButton6))
@@ -543,7 +636,7 @@ public class Player : MonoBehaviour
 			else
 				joyKeyControl.z = 0;
 		}
-		
+
 		if(Input.GetKeyUp(KeyCode.JoystickButton6))
 		{
 			if(Input.GetKey(KeyCode.JoystickButton4))
@@ -551,7 +644,7 @@ public class Player : MonoBehaviour
 			else
 				joyKeyControl.z = 0;
 		}
-		
+
 		if(Input.GetKeyUp(KeyCode.JoystickButton7))
 		{
 			if(Input.GetKey(KeyCode.JoystickButton5))
@@ -559,7 +652,7 @@ public class Player : MonoBehaviour
 			else
 				joyKeyControl.x = 0;
 		}
-		
+
 		if(Input.GetKeyUp(KeyCode.JoystickButton5))
 		{
 			if(Input.GetKey(KeyCode.JoystickButton7))
@@ -567,8 +660,8 @@ public class Player : MonoBehaviour
 			else
 				joyKeyControl.x = 0;
 		}
-		
-		return joyKeyControl;
+
+		return jcontrol = joyKeyControl;
 	}
 	
 	Vector3 KeyboardMovement()
@@ -803,6 +896,17 @@ public class Player : MonoBehaviour
 	bool squareAim = false;
 	float squareVerts = 16f;
 
+	void TakeGun()
+	{
+		RaycastHit hit;
+		if (Physics.Raycast (camera.transform.position, camera.transform.forward, out hit, takeDistance * 1.1f, 1 << LayerMask.NameToLayer("Gun")))
+		{
+			if (hit.transform.parent.GetComponent<Gun>())
+			{
+				hit.transform.parent.GetComponent<Gun> ().Take ();
+			}
+		}
+	}
 	
 	void Update ()
 	{
@@ -925,7 +1029,10 @@ public class Player : MonoBehaviour
 		}
 		else */if( Game.IsInputUseItemDown() )
 		{
-			TakeThrowBall();
+			if (!TakeThrowBall () && Level.current.gun != null && Level.current.gun.Length > 0)
+			{
+				TakeGun ();
+			}
 		}
 		
 		if(Input.touchCount > 0)
@@ -947,8 +1054,13 @@ public class Player : MonoBehaviour
 		//			}
 		//		}
 		
-		
-		
+
+		//aim2.transform.localScale = aim.transform.localScale;
+		//smallAim2.transform.localScale = smallAim.transform.localScale;
+
+		//aim2.GetComponent<MeshFilter> ().mesh = aim.GetComponent<MeshFilter> ().mesh;
+		//smallAim2.GetComponent<MeshFilter> ().mesh = smallAim.GetComponent<MeshFilter> ().mesh;
+
 		if(Level.current.Index != 0 && !InZeroRoom)
 		{
 			if( Game.IsInputEscape() )

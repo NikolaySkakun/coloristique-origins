@@ -5,7 +5,7 @@
 		_Color ("Main Color", Color) = (1,1,1,1)
 		_MainTex ("Base (RGB)", 2D) = "white" {}
       
-		_Border ("BorderSize", Range (0.0, 0.1)) = 0.01
+		_Border ("BorderSize", Range (0.0, 0.1)) = 0.01 //0.01
 		_BorderColor("BorderColor", Color) = (0,0,0,1)   
 		_Illum ("Illumin (A)", 2D) = "white" {}
 	}

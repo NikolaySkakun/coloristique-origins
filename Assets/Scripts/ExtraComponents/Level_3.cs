@@ -142,7 +142,6 @@ public class Level_2_ : MonoBehaviour
 //		Line line2 = level.room[2].side[2].line[1];
 //		line2.Repaint();
 
-
 		//line2.transform.localScale = new Vector3(line2.transform.localScale.x*1.5f, line2.transform.localScale.y, line2.transform.localScale.z);
 		//line2.transform.position -= Vector3.right * Line.height;
 
@@ -181,6 +180,7 @@ public class Level_2_ : MonoBehaviour
 		}
 		
 	}
+
 
 	void MessageControl()
 	{

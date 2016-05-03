@@ -65,34 +65,46 @@ public class Gun : Obj
 	{
 		if(trigger != null && trigger.PlayerStay)
 		{
-			//gun.animation.Stop();
-			UnityEngine.Object.Destroy( gun.GetComponent<Animation>() );
-			//Game.DestroyEvent -= trigger.Destroy;
-			//UnityEngine.Object.Destroy( trigger.gameObject );
-			trigger.DestroyAnyway();
-
-			gun.transform.localPosition = Vector3.zero;
-			gun.transform.localEulerAngles = Vector3.zero;
-
-			transform.parent = Player.camera.transform;
-
-			transform.localEulerAngles = Vector3.right * 90f;
-			transform.localPosition = new Vector3(.4f, -0.3f, .5f);
-
-
-			gun.transform.localEulerAngles = Vector3.up * 45f;
-
-
-
-
-			inHands = true;
-			Player.gunCamera.SetActive(true);
-
-			AnimationClip clip = Game.CreateAnimationClip(Game.AnimationClipType.POSITION, new Vector3(transform.localPosition.x, transform.localPosition.y, -transform.localPosition.z), transform.localPosition, animationTime);
-
-			GetComponent<Animation>().AddClip(clip, "Take");
-			GetComponent<Animation>().Play("Take");
+			Take ();
 		}
+	}
+
+	public void Take()
+	{
+		//gun.animation.Stop();
+		UnityEngine.Object.Destroy( gun.GetComponent<Animation>() );
+		//Game.DestroyEvent -= trigger.Destroy;
+		//UnityEngine.Object.Destroy( trigger.gameObject );
+		trigger.DestroyAnyway();
+
+		gun.transform.localPosition = Vector3.zero;
+		gun.transform.localEulerAngles = Vector3.zero;
+
+		transform.parent = Player.camera.transform;
+
+		transform.localEulerAngles = Vector3.right * 90f;
+		transform.localPosition = new Vector3(.4f, -0.3f, .5f);
+
+
+		gun.transform.localEulerAngles = Vector3.up * 45f;
+
+
+		if (type == GunType.GRAVITY)
+		{
+			UnityEngine.Object.Destroy (GetComponent<GravityGun> ().gun.GetComponent<BoxCollider> ());
+		} 
+		else if (type == GunType.COLOR)
+		{
+			UnityEngine.Object.Destroy (GetComponent<ColorGun> ().gun.GetComponent<BoxCollider> ());
+		}
+
+		inHands = true;
+		Player.gunCamera.SetActive(true);
+
+		AnimationClip clip = Game.CreateAnimationClip(Game.AnimationClipType.POSITION, new Vector3(transform.localPosition.x, transform.localPosition.y, -transform.localPosition.z), transform.localPosition, animationTime);
+
+		GetComponent<Animation>().AddClip(clip, "Take");
+		GetComponent<Animation>().Play("Take");
 	}
 
 	public override void Destroy ()

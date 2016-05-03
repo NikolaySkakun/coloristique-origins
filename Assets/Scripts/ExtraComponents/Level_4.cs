@@ -46,10 +46,52 @@ public class Level_4 : LevelBahaviour
 //		Vector3 boxCenter = level.room[4].side[1].GetComponent<BoxCollider>().center;
 //		boxCenter.z = 0.025f;
 //		level.room[4].side[1].GetComponent<BoxCollider>().center = boxCenter;
-
+		CreateInfo();
 
 		Game.DestroyEvent += Destroy;
 		//Player.player.AddComponent<TimeMachine>();
+	}
+
+	GameObject firstStr, secondStr, thirdStr;
+	bool hiddenInfo = false;
+
+	void CreateInfo()
+	{
+		firstStr = Word.WriteString ("drop the ball here", 0.023f);
+
+		firstStr.transform.SetParent (level.room [3].side[0].transform);
+		firstStr.transform.localPosition = Vector3.zero - Vector3.forward * 0.001f - Vector3.right * 0.37f + Vector3.up * 0.1f;
+		firstStr.transform.localEulerAngles = new Vector3 (0, 270, 90);
+
+		firstStr.AddComponent<Animation> ().AddClip (Game.CreateAnimationClip(
+			Game.AnimationClipType.POSITION, 
+			firstStr.transform.localPosition,
+			firstStr.transform.localPosition - Vector3.up * 3f,
+			1f), "Hide");
+
+
+		secondStr = Word.WriteString ("wait a few seconds", 0.023f);
+		secondStr.transform.SetParent (level.room [3].side [0].transform);
+		secondStr.transform.localPosition = Vector3.zero - Vector3.forward * 0.001f - Vector3.right * 0.41f - Vector3.up * 0.1f;
+		secondStr.transform.localEulerAngles = new Vector3 (0, 270, 90);
+
+		secondStr.AddComponent<Animation> ().AddClip (Game.CreateAnimationClip(
+			Game.AnimationClipType.POSITION, 
+			secondStr.transform.localPosition,
+			secondStr.transform.localPosition - Vector3.up * 3f,
+			1f), "Hide");
+
+
+		thirdStr = Word.WriteString ("and", 0.023f);
+		thirdStr.transform.SetParent (level.room [3].side [0].transform);
+		thirdStr.transform.localPosition = Vector3.zero - Vector3.forward * 0.001f - Vector3.right * 0.06f;
+		thirdStr.transform.localEulerAngles = new Vector3 (0, 270, 90);
+
+		thirdStr.AddComponent<Animation> ().AddClip (Game.CreateAnimationClip(
+			Game.AnimationClipType.POSITION, 
+			thirdStr.transform.localPosition,
+			thirdStr.transform.localPosition - Vector3.up * 3f,
+			1f), "Hide");
 	}
 
 	void Destroy()
@@ -134,9 +176,9 @@ public class Level_4 : LevelBahaviour
 			if (!obj)
 				continue;
 
-			if(obj == black.gameObject)
+			if(black != null && obj == black.gameObject)
 				blackInDown = true;
-			else if(obj == white.gameObject)
+			else if(white != null && obj == white.gameObject)
 				whiteInDown = true;
 		}
 
@@ -174,11 +216,31 @@ public class Level_4 : LevelBahaviour
 		}
 	}
 
+	IEnumerator HideInfo()
+	{
+		secondStr.GetComponent<Animation> ().Play ("Hide");
+
+		yield return new WaitForSeconds (0.1f);
+
+		thirdStr.GetComponent<Animation> ().Play ("Hide");
+
+		yield return new WaitForSeconds (0.1f);
+
+		firstStr.GetComponent<Animation> ().Play ("Hide");
+	}
+
 	void Update () 
 	{
 
 		if(!showMessage)
 			MessageControl();
+
+		if (!hiddenInfo && level.room [0].ledge [0].cell.IsActive)
+		{
+			hiddenInfo = true;
+			StartCoroutine (HideInfo ());
+
+		}
 	}
 
 }

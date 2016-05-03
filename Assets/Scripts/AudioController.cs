@@ -11,7 +11,7 @@ public class AudioController : MonoBehaviour
 
 	void Awake () 
 	{
-		gameObject.AddComponent<AudioListener>();
+		//gameObject.AddComponent<AudioListener>();
 		audioSource = gameObject.AddComponent<AudioSource>();
 		audioSource.loop = true;
 	}

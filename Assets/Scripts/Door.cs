@@ -40,7 +40,7 @@ public class Door : Obj
 		}
 	}
 
-	static public Vector3 sizeTemplate = new Vector3(3.5f, 2.8f, 0.2f);
+	static public Vector3 sizeTemplate = new Vector3(3.5f, 2.8f, 0.2f); //0.2
 
 
 	/*public IEnumerator Start()
@@ -94,6 +94,7 @@ public class Door : Obj
 		for (int i=0, b = 0, w = 0; i<cell.Length; ++i) 
 		{
 			dot[i] = CustomObject.CreateSingleBubble(0.05f, Game.ReverseColor(cell[i].color), 0, Game.drawTime, 0.1f);
+			Game.SetRenderQueue (dot [i], -1);
 				//CustomObject.Circle(0.05f, Game.ReverseColor(cell[i].color));
 
 			if(cell[i].color == Colour.BLACK)
@@ -122,7 +123,7 @@ public class Door : Obj
 
 		drawing = true;
 
-		GameObject[] c = new GameObject[]{ CustomObject.CreateBubbles(13, 16, sizeTemplate, color), CustomObject.CreateBubbles(13, 16, sizeTemplate, color) };
+		GameObject[] c = new GameObject[]{ CustomObject.CreateBubbles(13, 16, sizeTemplate, color, -1), CustomObject.CreateBubbles(13, 16, sizeTemplate, color, -1) };
 
 		c[0].transform.localEulerAngles += Vector3.right * 90f;
 		c[1].transform.localEulerAngles += Vector3.right * 90f;
@@ -131,7 +132,7 @@ public class Door : Obj
 		c[1].transform.position = door.transform.position;
 
 		Vector3 pos = Vector3.zero;
-		pos[orientation] += sizeTemplate.z/2.005f;
+		pos[orientation] += sizeTemplate.z*0.5f - 0.001f;
 
 		c[0].transform.localPosition += pos;
 		c[1].transform.localPosition -= pos;
@@ -177,6 +178,7 @@ public class Door : Obj
 					GameObject circle = CustomObject.Circle(0.05f, Game.ReverseColor(door.cell[i].color));
 					circle.transform.SetParent(door.cell[i].plane.transform);
 					circle.transform.localPosition = -Vector3.forward*0.003f;
+					Game.SetRenderQueue (circle, 5);
 					circle.transform.localEulerAngles = -Vector3.right*90f * (door.cell[i].transform.localScale.y < 0 ? -1 : 1);
 					// int.Parse( xml.ChildNodes[i].Attributes["room"].Value )
 					// int.Parse( xml.ChildNodes[i].Attributes["index"].Value )
@@ -243,8 +245,10 @@ public class Door : Obj
 		Vector3 size = sizeTemplate;
 		Vector3 triggerPosition = new Vector3(0, size.y/2f, 0), triggerPosition_ = new Vector3(0, size.y/2f, 0);
 		int tmpIndex = 2;
+		bool zIsZ = true;
 		if(xml.Attributes["orientation"].Value == "x")
 		{
+			zIsZ = false;
 			float tmp = size.x;
 			size.x = size.z;
 			size.z = tmp;
@@ -259,8 +263,10 @@ public class Door : Obj
 			triggerPosition_.z = sizeTemplate.z * 4f;
 
 		door.door = CustomObject.CreatePrimitive(PrimitiveType.Cube);
-		door.door.transform.localScale = size - Vector3.one/1000f;
+		door.door.transform.localScale = size - Vector3.one/1000f - (zIsZ ? Vector3.forward : Vector3.right) * 0.005f;
 		door.door.GetComponent<Renderer>().material.color = Game.ReverseColor(Game.GetColor(door.color));
+		Game.SetRenderQueue (door.door, -2);
+		//door.door.GetComponent<Renderer> ().material.renderQueue -= 2;
 		door.door.transform.localPosition += new Vector3(0, size.y/2f, 0);
 		door.door.transform.parent = door.transform;
 		door.door.AddComponent<Animation>();
@@ -301,7 +307,7 @@ public class Door : Obj
 				whiteBubble.transform.position = blackBubble.transform.position = r.side[5].transform.position + Vector3.forward*4f;//- Vector3.forward * 0.0001f;
 				r.side[5].gameObject.GetComponent<Renderer>().enabled = false;
 				r.side[5].gameObject.layer = LayerMask.NameToLayer("Outlet");
-				whiteBubble.transform.position -= Vector3.forward * 0.0001f;
+				whiteBubble.transform.position -= Vector3.forward * 0.005f;
 				whiteBubble.transform.parent = blackBubble.transform.parent = r.transform;
 
 				whiteBubble.transform.localEulerAngles = blackBubble.transform.localEulerAngles = -Vector3.right * 90f;
@@ -374,8 +380,10 @@ public class Door : Obj
 		line[0].transform.localPosition += tmpDir;
 		line[1].transform.localPosition -= tmpDir;
 
-		line[0].transform.localPosition -= Vector3.forward*0.0001f;
-		line[1].transform.localPosition -= Vector3.forward*0.0001f;
+		line[0].transform.localPosition -= Vector3.forward*0.001f;
+		line[1].transform.localPosition -= Vector3.forward*0.001f;
+		Game.SetRenderQueue (line [0].gameObject, 3);
+		Game.SetRenderQueue (line [1].gameObject, 3);
 
 		line[0].GetComponent<Renderer>().material.color = Color.white;
 		line[1].GetComponent<Renderer>().material.color = Color.white;
