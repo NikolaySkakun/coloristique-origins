@@ -123,7 +123,7 @@ public class CustomMesh
 		return mesh;
 	}
 
-	static public Mesh PenroseTriangle(int dir = 1)
+	static public Mesh PenroseTriangle(int dir, Vector3 pos, Vector3 euler)
 	{
 		float height = 10f;
 		float width = 5f;
@@ -142,10 +142,13 @@ public class CustomMesh
 			for(int u=0; u<4; ++u)
 			{
 				int k = i < 5 ? 0 : (i >= 20 ? sections-1 - 10 : i - 5);
-				verts.Add( new Vector3(
+				verts.Add(
+					(Quaternion.Euler(euler) *
+					new Vector3(
 					width * (u%3 == 0 ? -1f : 1f) + Mathf.Cos(Mathf.Deg2Rad * (c * (float)k)) * height * (float)dir, 
 					width * (u < 2 ? -1f : 1f) + Mathf.Cos(Mathf.Deg2Rad * (c * (float)k)) * height * (float)dir,  
-					space * (float)i) + (dir < 0 ? Vector3.one*10f : Vector3.zero));
+							space * (float)i) + (dir < 0 ? Vector3.one*10f : Vector3.zero)) + pos
+				);
 			}
 		}
 

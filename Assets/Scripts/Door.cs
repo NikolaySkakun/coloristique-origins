@@ -380,8 +380,8 @@ public class Door : Obj
 		line[0].transform.localPosition += tmpDir;
 		line[1].transform.localPosition -= tmpDir;
 
-		line[0].transform.localPosition -= Vector3.forward*0.001f;
-		line[1].transform.localPosition -= Vector3.forward*0.001f;
+		line[0].transform.localPosition -= Vector3.forward*0.0001f;
+		line[1].transform.localPosition -= Vector3.forward*0.0001f;
 		Game.SetRenderQueue (line [0].gameObject, 3);
 		Game.SetRenderQueue (line [1].gameObject, 3);
 

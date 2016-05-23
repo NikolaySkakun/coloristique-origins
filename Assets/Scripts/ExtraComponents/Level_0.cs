@@ -230,6 +230,11 @@ public class Level_0 : MonoBehaviour
 
 		(esc.gameSettings = settingsButton.GetComponent<Settings>()).exit = esc;
 
+		if (Player.VRMode == Game.VRMode.FIBRUM)
+		{
+			settingsButton.SetActive (false);
+			exitButton.SetActive (false);
+		}
 
 		Player.SetPosition(level.room[1], new Vector2(50, 50));
 		Player.player.transform.localEulerAngles = Vector3.up * 180f;
@@ -253,75 +258,147 @@ public class Level_0 : MonoBehaviour
 		//Word.ApplyReverseColorShaderToString(infoMouse);
 		//float a = Mathf.Atan2( Mathf.Abs (Player.camera.transform.position.z - infoMouse.transform.position.z) , Mathf.Abs (Player.camera.transform.position.y - infoMouse.transform.position.y) ) * Mathf.Rad2Deg;
 
-		infoMouse = Word.WriteString(
-			Game.IsJoystickConnected ? "use right stick to look around" : "use mouse to look around", 
-			0.5f, 
-			Obj.Colour.BLACK); //, true
-		infoMouse.transform.localEulerAngles = new Vector3 (0, 90, 90);
-		infoMouse.transform.localScale = Vector3.one * 0.08f;
-		infoMouse.transform.position = 
-			level.room [1].side [4].transform.position 
-			+ Vector3.forward * 0.101f 
-			- Vector3.up * 0.8f 
+		if (Player.VRMode != Game.VRMode.FIBRUM)
+		{
+			infoMouse = Word.WriteString (
+				Game.IsJoystickConnected ? "use right stick to look around" : "use mouse to look around", 
+				0.5f, 
+				Obj.Colour.BLACK); //, true
+			infoMouse.transform.localEulerAngles = new Vector3 (0, 90, 90);
+			infoMouse.transform.localScale = Vector3.one * 0.08f;
+			infoMouse.transform.position = 
+			level.room [1].side [4].transform.position
+			+ Vector3.forward * 0.101f
+			- Vector3.up * 0.8f
 			+ Vector3.right * level.room [1].Size.x / (Game.IsJoystickConnected ? 6.98f : 7.85f); //7.85f
 
 
-		AnimationClip clip =  Game.CreateAnimationClip (
-			Quaternion.Euler (new Vector3 (0, 90, -2)), 
-			Quaternion.Euler (infoMouse.transform.localEulerAngles),
-			Game.drawTime / 2f, Game.drawTime / 2f);
+			AnimationClip clip = Game.CreateAnimationClip (
+				                     Quaternion.Euler (new Vector3 (0, 90, -2)), 
+				                     Quaternion.Euler (infoMouse.transform.localEulerAngles),
+				                     Game.drawTime / 2f, Game.drawTime / 2f);
 
-		clip = Game.CreateAnimationClip (Game.AnimationClipType.SCALE, Vector3.zero, infoMouse.transform.localScale, 0.0001f, Game.drawTime / 2f, clip);
-
-
-		infoMouse.AddComponent<Animation> ().AddClip (clip, "Draw");
-		infoMouse.GetComponent<Animation> ().Play ("Draw");
-
-		clip = Game.CreateAnimationClip (
-			Game.AnimationClipType.POSITION, 
-			infoMouse.transform.position, 
-			infoMouse.transform.position - Vector3.up * 2f - Vector3.forward*0.1f, 
-			0.85f, 2.25f);
-		infoMouse.GetComponent<Animation> ().AddClip(clip, "Destroy");
+			clip = Game.CreateAnimationClip (Game.AnimationClipType.SCALE, Vector3.zero, infoMouse.transform.localScale, 0.0001f, Game.drawTime / 2f, clip);
 
 
+			infoMouse.AddComponent<Animation> ().AddClip (clip, "Draw");
+			infoMouse.GetComponent<Animation> ().Play ("Draw");
+
+			clip = Game.CreateAnimationClip (
+				Game.AnimationClipType.POSITION, 
+				infoMouse.transform.position, 
+				infoMouse.transform.position - Vector3.up * 2f - Vector3.forward * 0.1f, 
+				0.85f, 2.25f);
+			infoMouse.GetComponent<Animation> ().AddClip (clip, "Destroy");
 
 
 
 
-		//infoWalk = Word.WriteString("use S W A D buttons to walk", 0.5f,  Obj.Colour.BLACK); //, true
-		infoWalk = Word.WriteString(
-			Game.IsJoystickConnected ? "use left stick to walk" : "use S W A D buttons to walk", 
-			0.5f,  
-			Obj.Colour.BLACK); //, true
-		infoWalk.transform.localEulerAngles = new Vector3 (0, 90, 90);
-		infoWalk.transform.localScale = Vector3.one * 0.08f;
-		infoWalk.transform.position = 
-			level.room [1].side [4].transform.position 
-			+ Vector3.forward * 0.101f 
-			- Vector3.up * 1.05f 
+
+
+			//infoWalk = Word.WriteString("use S W A D buttons to walk", 0.5f,  Obj.Colour.BLACK); //, true
+			infoWalk = Word.WriteString (
+				Game.IsJoystickConnected ? "use left stick to walk" : "use S W A D buttons to walk", 
+				0.5f,  
+				Obj.Colour.BLACK); //, true
+			infoWalk.transform.localEulerAngles = new Vector3 (0, 90, 90);
+			infoWalk.transform.localScale = Vector3.one * 0.08f;
+			infoWalk.transform.position = 
+			level.room [1].side [4].transform.position
+			+ Vector3.forward * 0.101f
+			- Vector3.up * 1.05f
 			+ Vector3.right * level.room [1].Size.x / (Game.IsJoystickConnected ? 9.3f : 7.08f);//9.3f; //7.08f
 
-		if(!Game.IsJoystickConnected)
-			infoWalk.transform.FindChild ("W").transform.localEulerAngles = Vector3.zero;
+			if (!Game.IsJoystickConnected)
+				infoWalk.transform.FindChild ("W").transform.localEulerAngles = Vector3.zero;
 
-		clip =  Game.CreateAnimationClip (
-			Quaternion.Euler (new Vector3 (0, 90, -5)), 
-			Quaternion.Euler (infoWalk.transform.localEulerAngles),
-			Game.drawTime / 2f, Game.drawTime / 2f);
+			clip = Game.CreateAnimationClip (
+				Quaternion.Euler (new Vector3 (0, 90, -5)), 
+				Quaternion.Euler (infoWalk.transform.localEulerAngles),
+				Game.drawTime / 2f, Game.drawTime / 2f);
 
-		clip = Game.CreateAnimationClip (Game.AnimationClipType.SCALE, Vector3.zero, infoWalk.transform.localScale, 0.0001f, Game.drawTime / 2f, clip);
+			clip = Game.CreateAnimationClip (Game.AnimationClipType.SCALE, Vector3.zero, infoWalk.transform.localScale, 0.0001f, Game.drawTime / 2f, clip);
 
-		infoWalk.AddComponent<Animation> ().AddClip (clip, "Draw");
-		infoWalk.GetComponent<Animation> ().Play ("Draw");
+			infoWalk.AddComponent<Animation> ().AddClip (clip, "Draw");
+			infoWalk.GetComponent<Animation> ().Play ("Draw");
 
-		clip = Game.CreateAnimationClip (
-			Game.AnimationClipType.POSITION, 
-			infoWalk.transform.position, 
-			infoWalk.transform.position - Vector3.up * 2f - Vector3.forward*0.1f, 
-			1f, 2f);
-		infoWalk.GetComponent<Animation> ().AddClip(clip, "Destroy");
+			clip = Game.CreateAnimationClip (
+				Game.AnimationClipType.POSITION, 
+				infoWalk.transform.position, 
+				infoWalk.transform.position - Vector3.up * 2f - Vector3.forward * 0.1f, 
+				1f, 2f);
+			infoWalk.GetComponent<Animation> ().AddClip (clip, "Destroy");
+		} else
+		{
+			infoMouse = Word.WriteString (
+				Game.IsJoystickConnected ? "use right stick to look around" : "use mouse to look around", 
+				0.8f, 
+				Obj.Colour.BLACK); //, true
+			infoMouse.transform.localEulerAngles = new Vector3 (0, 90, 90);
+			infoMouse.transform.localScale = Vector3.one * 0.08f;
+			infoMouse.transform.position = 
+				level.room [1].side [4].transform.position
+				+ Vector3.forward * 0.101f
+				- Vector3.up * 1f
+				+ Vector3.right * level.room [1].Size.x / (Game.IsJoystickConnected ? 6.98f : 7.85f); //7.85f
 
+
+			AnimationClip clip = Game.CreateAnimationClip (
+				Quaternion.Euler (new Vector3 (0, 90, -2)), 
+				Quaternion.Euler (infoMouse.transform.localEulerAngles),
+				Game.drawTime / 2f, Game.drawTime / 2f);
+
+			clip = Game.CreateAnimationClip (Game.AnimationClipType.SCALE, Vector3.zero, infoMouse.transform.localScale, 0.0001f, Game.drawTime / 2f, clip);
+
+
+			infoMouse.AddComponent<Animation> ().AddClip (clip, "Draw");
+			infoMouse.GetComponent<Animation> ().Play ("Draw");
+
+			clip = Game.CreateAnimationClip (
+				Game.AnimationClipType.POSITION, 
+				infoMouse.transform.position, 
+				infoMouse.transform.position - Vector3.up * 2f - Vector3.forward * 0.1f, 
+				0.85f, 2.25f);
+			infoMouse.GetComponent<Animation> ().AddClip (clip, "Destroy");
+
+
+
+
+
+
+			//infoWalk = Word.WriteString("use S W A D buttons to walk", 0.5f,  Obj.Colour.BLACK); //, true
+			infoWalk = Word.WriteString (
+				Game.IsJoystickConnected ? "use left stick to walk" : "use S W A D buttons to walk", 
+				0.8f,  
+				Obj.Colour.BLACK); //, true
+			infoWalk.transform.localEulerAngles = new Vector3 (0, 90, 90);
+			infoWalk.transform.localScale = Vector3.one * 0.08f;
+			infoWalk.transform.position = 
+				level.room [1].side [4].transform.position
+				+ Vector3.forward * 0.101f
+				- Vector3.up * 1.35f
+				+ Vector3.right * level.room [1].Size.x / (Game.IsJoystickConnected ? 9.3f : 7.08f);//9.3f; //7.08f
+
+			if (!Game.IsJoystickConnected)
+				infoWalk.transform.FindChild ("W").transform.localEulerAngles = Vector3.zero;
+
+			clip = Game.CreateAnimationClip (
+				Quaternion.Euler (new Vector3 (0, 90, -5)), 
+				Quaternion.Euler (infoWalk.transform.localEulerAngles),
+				Game.drawTime / 2f, Game.drawTime / 2f);
+
+			clip = Game.CreateAnimationClip (Game.AnimationClipType.SCALE, Vector3.zero, infoWalk.transform.localScale, 0.0001f, Game.drawTime / 2f, clip);
+
+			infoWalk.AddComponent<Animation> ().AddClip (clip, "Draw");
+			infoWalk.GetComponent<Animation> ().Play ("Draw");
+
+			clip = Game.CreateAnimationClip (
+				Game.AnimationClipType.POSITION, 
+				infoWalk.transform.position, 
+				infoWalk.transform.position - Vector3.up * 2f - Vector3.forward * 0.1f, 
+				1f, 2f);
+			infoWalk.GetComponent<Animation> ().AddClip (clip, "Destroy");
+		}
 
 		GameObject author = Word.WriteString("the game by nikolay skakun"); //most original gameplay
 		author.transform.localEulerAngles = new Vector3(0, 90, 90);
@@ -502,7 +579,8 @@ public class Level_0 : MonoBehaviour
 			levelIndex = new GameObject("LevelIndex");
 
 		levelIndex.transform.parent = door.door.transform;
-		levelIndex.transform.localPosition = Vector3.forward * (-Door.sizeTemplate.z*3f) - Vector3.right * 0.125f;
+		//if(Player.VRMode != Game.VRMode.FIBRUM)
+		levelIndex.transform.localPosition = Vector3.forward * (-Door.sizeTemplate.z*3f ) - Vector3.right * (0.125f + (Player.VRMode == Game.VRMode.FIBRUM ? 0.1f : 0));
 		levelIndex.transform.localEulerAngles = new Vector3(0, 270, 90);
 		levelIndex.transform.localScale = Vector3.one*0.15f;
 	}
@@ -690,6 +768,8 @@ public class Level_0 : MonoBehaviour
 				}
 			}
 
+
+
 			if (Input.GetKeyDown (KeyCode.JoystickButton10) || Input.GetKeyDown (KeyCode.LeftShift)) // L2
 			{
 				foreach (NewLensCorrection lens in GameObject.FindObjectsOfType<NewLensCorrection>())
@@ -731,33 +811,67 @@ public class Level_0 : MonoBehaviour
 					levelIndex.transform.localPosition = Vector3.forward * (-Door.sizeTemplate.z*3f) - Vector3.right * 0.22f;
 
 				//Debug.Log(binary);
-				if(levelIndex.transform.childCount == 0 || previousBinary != binary || (levelIndex.transform.childCount > 0 && levelIndex.transform.GetChild(0).name == "DELETED"))
-				{
-					level.outletDoor.openDoorTrigger = level.room[1].trigger[0];
-					nextLevel = binary;
+				//if (Player.VRMode != Game.VRMode.FIBRUM)
+				//{
+					if (levelIndex.transform.childCount == 0 || previousBinary != binary || (levelIndex.transform.childCount > 0 && levelIndex.transform.GetChild (0).name == "DELETED"))
+					{
+						level.outletDoor.openDoorTrigger = level.room [1].trigger [0];
+						nextLevel = binary;
 
-				 	if(levelIndex.transform.childCount > 0)
-						Destroy(levelIndex.transform.GetChild(0).gameObject);
+						if (levelIndex.transform.childCount > 0)
+							Destroy (levelIndex.transform.GetChild (0).gameObject);
+					if (Player.VRMode != Game.VRMode.FIBRUM)
+					{
+						if (binary == 1)
+							levelIndex.transform.localPosition = Vector3.forward * (-Door.sizeTemplate.z * 3f) - Vector3.right * 0.22f;
+						else
+							levelIndex.transform.localPosition = Vector3.forward * (-Door.sizeTemplate.z * 3f) - Vector3.right * 0.125f;
+					}
 
-					if(binary == 1)
-						levelIndex.transform.localPosition = Vector3.forward * (-Door.sizeTemplate.z*3f) - Vector3.right * 0.22f;
-					else
-						levelIndex.transform.localPosition = Vector3.forward * (-Door.sizeTemplate.z*3f) - Vector3.right * 0.125f;
+					if (Player.VRMode != Game.VRMode.FIBRUM)
+					{
+						GameObject nxtlvl;
 
-					GameObject nxtlvl;
+						if (binary == 1)
+						{
+							nxtlvl = Word.WriteString ("enter here", 0.5f, Obj.Colour.WHITE, false, false, previousBinary);
+							nxtlvl.transform.parent = levelIndex.transform;
+							nxtlvl.transform.localPosition = Vector3.zero + Vector3.forward*(1.4f);
+							nxtlvl.transform.localEulerAngles = Vector3.zero;
+							nxtlvl.transform.localScale = Vector3.one*0.5f + Vector3.right*0.1f;
 
-					if(previousBinary != binary && levelIndex.transform.childCount > 0)
-						nxtlvl = Word.WriteString(nextLevel.ToString(), 0.5f, Obj.Colour.WHITE, true, false, previousBinary);
-					else
-						nxtlvl = Word.WriteString(nextLevel.ToString(), 0.5f, Obj.Colour.WHITE, true);
 
-					nxtlvl.transform.parent = levelIndex.transform;
-					nxtlvl.transform.localPosition = Vector3.zero;
-					nxtlvl.transform.localEulerAngles = Vector3.zero;
-					nxtlvl.transform.localScale = Vector3.one;
+						} else
+						{
+							if (previousBinary != binary && levelIndex.transform.childCount > 0)
+								nxtlvl = Word.WriteString (nextLevel.ToString (), 0.5f, Obj.Colour.WHITE, true, false, previousBinary);
+							else
+								nxtlvl = Word.WriteString (nextLevel.ToString (), 0.5f, Obj.Colour.WHITE, true);
 
-					previousBinary = binary;
-				}
+							nxtlvl.transform.parent = levelIndex.transform;
+							nxtlvl.transform.localPosition = Vector3.zero;
+							nxtlvl.transform.localEulerAngles = Vector3.zero;
+							nxtlvl.transform.localScale = Vector3.one;
+						}
+
+
+					} else
+					{
+						GameObject nxtlvl;
+
+						//if (previousBinary != binary && levelIndex.transform.childCount > 0)
+						nxtlvl = Word.WriteString ("enter here", 0.5f, Obj.Colour.WHITE, false, false, previousBinary);
+						//else
+							//nxtlvl = Word.WriteString (nextLevel.ToString (), 0.5f, Obj.Colour.WHITE, true);
+
+						nxtlvl.transform.parent = levelIndex.transform;
+						nxtlvl.transform.localPosition = Vector3.zero + Vector3.forward*(1.4f);
+						nxtlvl.transform.localEulerAngles = Vector3.zero;
+						nxtlvl.transform.localScale = Vector3.one*0.5f;
+					}
+						previousBinary = binary;
+					}
+				//}
 				/*else 
 				{
 					if(previousBinary != binary)
@@ -789,28 +903,29 @@ public class Level_0 : MonoBehaviour
 
 				if(levelIndex.transform.childCount > 0)
 				{
-
-					if(levelIndex.transform.GetChild(0).name != "DELETED")
+					if (Player.VRMode != Game.VRMode.FIBRUM)
 					{
-						Destroy(levelIndex.transform.GetChild(0).gameObject);
+						if (levelIndex.transform.GetChild (0).name != "DELETED")
+						{
+							Destroy (levelIndex.transform.GetChild (0).gameObject);
 
-						//Digit.thick = 0f;
-						GameObject nxtlvl = Word.WriteString(nextLevel.ToString(), 0.5f, Obj.Colour.WHITE, true, true);
-						//Renderer[] rend = nxtlvl.GetComponentsInChildren<Renderer>();
-						//foreach(Renderer r in rend)
-						//	r.material.color = Color.white;
-						nxtlvl.name = "DELETED";
-						nxtlvl.transform.parent = levelIndex.transform;
-						nxtlvl.transform.localPosition = Vector3.zero;
-						nxtlvl.transform.localEulerAngles = Vector3.zero;
-						nxtlvl.transform.localScale = Vector3.one;
+							//Digit.thick = 0f;
+							GameObject nxtlvl = Word.WriteString (nextLevel.ToString (), 0.5f, Obj.Colour.WHITE, true, true);
+							//Renderer[] rend = nxtlvl.GetComponentsInChildren<Renderer>();
+							//foreach(Renderer r in rend)
+							//	r.material.color = Color.white;
+							nxtlvl.name = "DELETED";
+							nxtlvl.transform.parent = levelIndex.transform;
+							nxtlvl.transform.localPosition = Vector3.zero;
+							nxtlvl.transform.localEulerAngles = Vector3.zero;
+							nxtlvl.transform.localScale = Vector3.one;
 
-						//Destroy(nxtlvl, 1f);
-					}
-					else
-					{
-						if(levelIndex.transform.GetChild(0).childCount == 0)
-							Destroy(levelIndex.transform.GetChild(0).gameObject);
+							//Destroy(nxtlvl, 1f);
+						} else
+						{
+							if (levelIndex.transform.GetChild (0).childCount == 0)
+								Destroy (levelIndex.transform.GetChild (0).gameObject);
+						}
 					}
 					/*Transform parent = levelIndex.transform.GetChild(0);
 

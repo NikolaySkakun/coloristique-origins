@@ -46,7 +46,7 @@ public class Level_4 : LevelBahaviour
 //		Vector3 boxCenter = level.room[4].side[1].GetComponent<BoxCollider>().center;
 //		boxCenter.z = 0.025f;
 //		level.room[4].side[1].GetComponent<BoxCollider>().center = boxCenter;
-		CreateInfo();
+		//CreateInfo();
 
 		Game.DestroyEvent += Destroy;
 		//Player.player.AddComponent<TimeMachine>();
@@ -235,12 +235,12 @@ public class Level_4 : LevelBahaviour
 		if(!showMessage)
 			MessageControl();
 
-		if (!hiddenInfo && level.room [0].ledge [0].cell.IsActive)
-		{
-			hiddenInfo = true;
-			StartCoroutine (HideInfo ());
-
-		}
+//		if (!hiddenInfo && level.room [8].ledge [0].cell.IsActive)
+//		{
+//			hiddenInfo = true;
+//			StartCoroutine (HideInfo ());
+//
+//		}
 	}
 
 }

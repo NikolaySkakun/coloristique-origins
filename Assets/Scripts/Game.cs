@@ -51,7 +51,7 @@ public class Game : MonoBehaviour
 	static public event DVoid PostDrawEvent;
 
 	static public readonly float drawTime = 1.5f; //1.5f;
-	static public readonly int levelsCount = 6;
+	static public readonly int levelsCount = 3;
 
 	static public bool debugMode = true;
 
@@ -638,10 +638,11 @@ public class Game : MonoBehaviour
 		//Tesseract.Create ();
 
 
-//		Word.GetGameObject (LetterAnimation.CombineMeshes (new Mesh[] {
-//			CustomMesh.PenroseTriangle (),
-//			CustomMesh.PenroseTriangle (-1)
-//		}));
+		Word.GetGameObject (LetterAnimation.CombineMeshes (new Mesh[] {
+			CustomMesh.PenroseTriangle (1, new Vector3 (-27f, 20f, 33.4f), Vector3.up * 90f),
+			CustomMesh.PenroseTriangle (-1, new Vector3 (-3.3f, -9.3f, -9.3f), Vector3.zero),
+			CustomMesh.PenroseTriangle (1, new Vector3 (-13.3f, -14.5f, 15.2f), Vector3.right * 270f)
+		}));
 //
 //		t1.transform.localEulerAngles = Vector3.up * 90f;
 //		t1.transform.position = new Vector3 (-27f, 20f, 33.4f);
@@ -651,17 +652,17 @@ public class Game : MonoBehaviour
 //		t3.transform.localEulerAngles = Vector3.right * 270f;
 //		t3.transform.position = new Vector3 (-13.3f, -14.5f, 15.2f);
 
-		float thick = 0.18f;
-		float contourThick = 0.02f;
-		float radius = 0.8f;
-		Symbol firstStrip = Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, contourThick);
-		Symbol secondStrip = Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, -contourThick);
-		//Destroy (firstStrip.GetComponent<Symbol> ());
-		//Destroy (firstStrip.GetComponent<Symbol> ());
-
-		Symbol mainStrip = Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick - contourThick, radius, Obj.Colour.BLACK);
-		mainStrip.firstStrip = firstStrip.gameObject;
-		mainStrip.secondStrip = secondStrip.gameObject;
+//		float thick = 0.18f;
+//		float contourThick = 0.02f;
+//		float radius = 0.8f;
+//		Symbol firstStrip = Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, contourThick);
+//		Symbol secondStrip = Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, -contourThick);
+//		//Destroy (firstStrip.GetComponent<Symbol> ());
+//		//Destroy (firstStrip.GetComponent<Symbol> ());
+//
+//		Symbol mainStrip = Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick - contourThick, radius, Obj.Colour.BLACK);
+//		mainStrip.firstStrip = firstStrip.gameObject;
+//		mainStrip.secondStrip = secondStrip.gameObject;
 		//Symbol.Create(Symbol.Type.MOBIUS_STRIP, 0.02f, 0.97f, Obj.Colour.BLACK);
 
 		//new Portal ();
@@ -697,6 +698,7 @@ public class Game : MonoBehaviour
 
 
 		//TestMethod();
+
 		//Player.camera.GetComponent<Camera>().nearClipPlane= 0.01f;
 
 

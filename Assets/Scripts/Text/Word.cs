@@ -172,6 +172,18 @@ public class Word
 			}
 		}
 		radius = 0.5f;
+
+
+//		List<Mesh> meshes = new List<Mesh> ();
+//
+//		foreach (Renderer renderer in str.GetComponentsInChildren<Renderer>())
+//		{
+//			if(renderer.enabled)
+//				meshes.Add(renderer.GetComponent<MeshFilter>().mesh);
+//		}
+//
+//		str = GetGameObject (LetterAnimation.CombineMeshes(meshes.ToArray()));
+
 		return str;
 	}
 

@@ -4,7 +4,7 @@ using System.Xml;
 
 public class Line : Obj 
 {
-	public static float height = 0.012f;//0.008f;//0.003f; 
+	public static float height = Player.VRMode == Game.VRMode.FIBRUM ? 0.02f : 0.012f;//0.008f;//0.003f; 
 
 	public Line clone;
 	public Vector3 originalScale, originalPosition;
@@ -17,7 +17,7 @@ public class Line : Obj
 		//Object.Destroy(line.collider);
 		line.GetComponent<Collider>().enabled = false;
 		line.transform.localScale = new Vector3(height / hei, 1, 1);
-		line.transform.localPosition -= Vector3.forward / 1000f;
+		line.transform.localPosition -= Vector3.forward / (Player.VRMode == Game.VRMode.FIBRUM ? 10000f : 100000f);
 
 		return line.AddComponent<Line>() as Line;
 	}

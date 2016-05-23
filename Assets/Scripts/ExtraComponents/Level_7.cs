@@ -152,7 +152,7 @@ public class Level_7 : MonoBehaviour
 
 	}
 
-	IEnumerator Start() 
+	void Start() 
 	{
 		level = Level.current;
 		cell = level.room[0].cell[0];
@@ -164,43 +164,46 @@ public class Level_7 : MonoBehaviour
 		//level.room[0].side[0].gameObject.AddComponent<KineticSide>();
 		//info = InfoTable.NonXmlCreate("press E to grab the ball", level.ball[1].gameObject, 2.2f, 0.238f);
 
-		CreateInfo ();
+		//CreateInfo ();
 
 		circle = level.room[0].cell[0].plane.transform.GetChild(0).gameObject;
 		if(circle.GetComponent<Animation>() == null)
 			circle.AddComponent<Animation>();
 
+
+		level.room [0].cell [0].transform.position = new Vector3 (0, level.room [0].cell [0].transform.position.y, 1);
+
 		//Test ();
 
-		arrow = CustomObject.Arrow ();
-
-		arrow.transform.parent = level.transform;
-		arrow.transform.position = level.ball [0].transform.position + Vector3.up;//*0.85f;
-//info.text.transform.localScale = Vector3.zero;
-		AddAnimationForPointer ();
-		arrow.GetComponent<Animation> ().Play ("Draw");
-
-		info.text.transform.localScale = Vector3.zero;
-		AddAnimationForInfo();
+//		arrow = CustomObject.Arrow ();
+//
+//		arrow.transform.parent = level.transform;
+//		arrow.transform.position = level.ball [0].transform.position + Vector3.up;//*0.85f;
+////info.text.transform.localScale = Vector3.zero;
+//		//AddAnimationForPointer ();
+//		arrow.GetComponent<Animation> ().Play ("Draw");
+//
+//		info.text.transform.localScale = Vector3.zero;
+//		AddAnimationForInfo();
 
 
 		CreateUnity ();
 //
-		yield return new WaitForSeconds(Game.drawTime);
-
-		int[] m_queues = new int[]{3000};
-		Material[] materials = level.room[0].cell[0].plane.GetComponent<Renderer>().materials;
-		for (int i = 0; i < materials.Length && i < m_queues.Length; ++i)
-			materials[i].renderQueue = m_queues[i];
-		
-		circle.GetComponent<Renderer>().material = new Material(Shader.Find("DepthMask"));
-		level.room[0].side[2].GetComponent<MeshRenderer>().enabled = false;
-
-		circle.AddComponent<BoxCollider>().isTrigger = true;
-
-		drawingEnded = true;
-
-		Game.DestroyEvent += Destroy;
+//		yield return new WaitForSeconds(Game.drawTime);
+//
+//		int[] m_queues = new int[]{3000};
+//		Material[] materials = level.room[0].cell[0].plane.GetComponent<Renderer>().materials;
+//		for (int i = 0; i < materials.Length && i < m_queues.Length; ++i)
+//			materials[i].renderQueue = m_queues[i];
+//		
+//		circle.GetComponent<Renderer>().material = new Material(Shader.Find("DepthMask"));
+//		level.room[0].side[2].GetComponent<MeshRenderer>().enabled = false;
+//
+//		circle.AddComponent<BoxCollider>().isTrigger = true;
+//
+//		drawingEnded = true;
+//
+//		Game.DestroyEvent += Destroy;
 
 
 

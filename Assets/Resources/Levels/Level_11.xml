@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Level index="11">
+
+	<room class="Room">	
+		<Room index="0" x="10" y="4" z="10" color="Black">
+		</Room>
+	</room>
+	
+</Level>
+

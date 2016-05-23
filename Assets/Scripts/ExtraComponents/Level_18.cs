@@ -111,9 +111,10 @@ public class Level_18 : MonoBehaviour
 
 				if(i > 0)
 				{
-				if(s.GetComponent<BoxCollider>().enabled)
+					if(s.GetComponent<BoxCollider>() && s.GetComponent<BoxCollider>().enabled)
 					s.gameObject.AddComponent<MeshCollider>();
 
+					if(s.GetComponent<BoxCollider>())
 				s.GetComponent<BoxCollider>().enabled = false;
 				}
 				GameObject side = (GameObject)Instantiate(s.gameObject);

@@ -2,10 +2,10 @@
 <Level index="2">
 
 	<room class="Room">	
-		<Room index="0" x="10" y="7.6" z="12" color="White">
+		<Room index="0" x="10" y="7.6" z="15" color="White">
 			<cell class="Cell">
-    			<Cell index="0" x="86.5" z="70" type="down" color="White"></Cell>
-    			<Cell index="1" x="86.5" z="90" type="down" color="Black"></Cell>
+    			<Cell index="0" x="86.5" z="52.5" type="down" color="White"></Cell>
+    			<Cell index="1" x="86.5" z="67.5" type="down" color="Black"></Cell>
 			</cell>
 			
 			<ledge class="Ledge">
@@ -26,11 +26,11 @@
 			<Cell room="0" index="0"></Cell>
 		</Door>
 		<Ledge ledgeRoom="0" ledgeIndex="0" cellRoom="0" cellIndex="1"></Ledge>
-		<Room index1="0" index2="1" sideIndex="0" x="47" y="75"></Room>
+		<Room index1="0" index2="1" sideIndex="0" x="58.75" y="75"></Room>
 	</join>
 	
 	<ball class="Ball">
-		<Ball index="0" room="0" x="25" z="60" color="Black"></Ball>
+		<Ball index="0" room="0" x="90" z="85" color="Black"></Ball>
 		<Ball index="0" room="1" x="50" z="50" color="White"></Ball>
 	</ball>
 

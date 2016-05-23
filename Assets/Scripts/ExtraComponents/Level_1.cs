@@ -33,25 +33,9 @@ public class Level_1 : MonoBehaviour
 		
 	}
 	GameObject symbol;
-	void CreateSymbol()
+
+	void CreateMobiusStrip()
 	{
-//		float thick = 0.18f;
-//		float contourThick = 0.02f;
-//		float radius = 0.8f;
-//		GameObject[] symbols = new GameObject[] {
-//			Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, contourThick).gameObject,
-//			Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, -contourThick).gameObject,
-//			Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick - contourThick, radius, Obj.Colour.BLACK).gameObject
-//		};
-//
-//		symbol = new GameObject ("Symbol");
-//		foreach (GameObject obj in symbols)
-//		{
-//			obj.transform.parent = symbol.transform;
-//		}
-
-
-
 		float thick = 0.18f;
 		float contourThick = 0.02f;
 		float radius = 0.8f;
@@ -80,7 +64,53 @@ public class Level_1 : MonoBehaviour
 		symbol.transform.parent = level.room [2].transform;
 		symbol.transform.localEulerAngles = Vector3.up * 90f;
 		Player.SetPosition (symbol, level.room [2], new Vector3 (30, 1.65f, 50)); //30, 1.65f, 50
+	}
 
+	void CreateTesseract()
+	{
+				GameObject tes = symbol = Tesseract.Create ().gameObject;
+				//tes.transform.localEulerAngles = Vector3.up * 45f;
+				Player.SetPosition(tes, level.room [2], new Vector3 (50, 1.6f, 50));
+
+				foreach (Side s in level.room[2].side)
+				{
+					foreach (Line l in s.line)
+						l.Repaint ();
+				}
+	}
+
+	void CreatePenroseTriangle()
+	{
+		symbol = PenroseTriangle.Create (GameObject.FindObjectsOfType<Camera>());
+
+		symbol.transform.parent = level.room [2].transform;
+		symbol.transform.localScale = Vector3.one * 0.02f;
+		//symbol.transform.localEulerAngles = Vector3.up * 90f;
+		Player.SetPosition (symbol, level.room [2], new Vector3 (30, 1.65f, 50));
+	}
+
+	void CreateSymbol()
+	{
+//		float thick = 0.18f;
+//		float contourThick = 0.02f;
+//		float radius = 0.8f;
+//		GameObject[] symbols = new GameObject[] {
+//			Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, contourThick).gameObject,
+//			Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, -contourThick).gameObject,
+//			Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick - contourThick, radius, Obj.Colour.BLACK).gameObject
+//		};
+//
+//		symbol = new GameObject ("Symbol");
+//		foreach (GameObject obj in symbols)
+//		{
+//			obj.transform.parent = symbol.transform;
+//		}
+
+
+		//CreateTesseract ();
+		CreateMobiusStrip ();
+		//CreatePenroseTriangle();
+		//symbol.transform.localScale = Vector3.one * 0.02f;
 //		GameObject tes = symbol = Tesseract.Create ().gameObject;
 //		//tes.transform.localEulerAngles = Vector3.up * 45f;
 //		Player.SetPosition(tes, level.room [2], new Vector3 (50, 1.6f, 50));

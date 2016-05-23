@@ -343,6 +343,9 @@ public class Ledge : Obj
 		Ledge ledge = Obj.Create<Ledge>();
 		float length;
 
+		if (xml.Attributes ["ledgeWidth"] != null && Game.GetFloat (xml, "ledgeWidth") != ledgeWidth)
+			ledgeWidth = Game.GetFloat (xml, "ledgeWidth");
+
 		ledge.ledge = CreateBorderCube(ledge, Obj.Colour.WHITE, new Vector3(length = Game.GetFloat(xml, "length"), ledgeThick, ledgeWidth));//GameObject.CreatePrimitive(PrimitiveType.Cube);
 
 		ledge.ledge.transform.localScale = new Vector3(length = Game.GetFloat(xml, "length"), ledgeThick, ledgeWidth);
@@ -419,6 +422,7 @@ public class Ledge : Obj
 		}
 
 		JoinToRoom(ledge, Obj.objStack[Obj.objStack.Count-1] as Room, Game.GetInt(xml, "sideIndex"), Game.GetInt(xml, "stage"), Game.GetFloat(xml, "x"));
+		ledgeWidth = 1.5f;
 		return ledge;
 	}
 }

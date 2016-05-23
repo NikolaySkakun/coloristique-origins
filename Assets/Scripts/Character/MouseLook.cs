@@ -43,6 +43,8 @@ public class MouseLook : MonoBehaviour {
 		return new Quaternion(q.x, q.y, -q.z, -q.w);
 	}
 
+	float xExtraAngle = 0;
+
 	void Update ()
 	{
 		if(Input.touchCount > 0)
@@ -59,35 +61,94 @@ public class MouseLook : MonoBehaviour {
 		}
 		else if (axes == RotationAxes.MouseX)
 		{
-			if (Player.VRMode != Game.VRMode.NONE && Input.gyro.enabled)
-			{
-				//transform.eulerAngles = new Vector3 (0, Input.gyro.rotationRateUnbiased.y, 0);
-				var rot = ConvertRotation (Input.gyro.attitude);
-				Vector3 euler = (Quaternion.Euler (90f, 0f, 0f) * rot).eulerAngles;
-				transform.eulerAngles = new Vector3 (0, euler.y, 0);
-			}
-			else
-			{
-				transform.Rotate(0, (Input.GetAxis("Mouse X") + Input.GetAxis("Axis3")) * sensitivityX, 0); //"Joy X"
-			}
+			
+
+				if (Player.VRMode != Game.VRMode.NONE)
+				{
+				#if UNITY_ANDROID
+				{
+					Vector3 gravity = Input.acceleration;
+					float fi   = Mathf.Rad2Deg*Mathf.Atan(-gravity.z/(Mathf.Sign(gravity.y)*Mathf.Sqrt(gravity.y*gravity.y+gravity.x*gravity.x*0.01f)));
+					float teta = Mathf.Rad2Deg*Mathf.Atan(-gravity.x/(Mathf.Sqrt(gravity.z*gravity.z+gravity.y*gravity.y)));
+					rotation = Quaternion.Slerp(rotation,Quaternion.Euler(-fi,Input.compass.magneticHeading-initCompassHeading,teta),Time.deltaTime*4.0f);
+					transform.localEulerAngles = new Vector3(0, rotation.eulerAngles.y + xExtraAngle, 0);
+				}
+				#else
+				{
+				if(Input.gyro.enabled)
+				{
+					xExtraAngle += Input.GetAxis("Axis3") * sensitivityX;
+					//transform.eulerAngles = new Vector3 (0, Input.gyro.rotationRateUnbiased.y, 0);
+					var rot = ConvertRotation (Input.gyro.attitude);
+					Vector3 euler = (Quaternion.Euler (90f, 0f, 0f) * rot).eulerAngles;
+					transform.eulerAngles = new Vector3 (0, euler.y + xExtraAngle, 0);
+				}                                                                                                                                                                                      
+				}
+				#endif
+				}
+				else
+				{
+					transform.Rotate(0, (Input.GetAxis("Mouse X") + Input.GetAxis("Axis3")) * sensitivityX, 0); //"Joy X"
+				}
+
 		}
 		else
 		{
-
-			if (Player.VRMode != Game.VRMode.NONE && Input.gyro.enabled)
-			{
-				var rot = ConvertRotation (Input.gyro.attitude);
-				Vector3 euler = (Quaternion.Euler (90f, 0f, 0f) * rot).eulerAngles;
-				transform.localEulerAngles = new Vector3 (euler.x, 0, euler.z);
-			} else
-			{
-				rotationY += (Input.GetAxis ("Mouse Y") + Input.GetAxis ("Axis4")) * sensitivityY; // "Joy Y"
-				rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
 			
-				transform.localEulerAngles = new Vector3 (-rotationY, transform.localEulerAngles.y, 0);
-			}
+				if (Player.VRMode != Game.VRMode.NONE)
+			{
+				#if UNITY_ANDROID
+				{
+					Vector3 gravity = Input.acceleration;
+					float fi   = Mathf.Rad2Deg*Mathf.Atan(-gravity.z/(Mathf.Sign(gravity.y)*Mathf.Sqrt(gravity.y*gravity.y+gravity.x*gravity.x*0.01f)));
+					float teta = Mathf.Rad2Deg*Mathf.Atan(-gravity.x/(Mathf.Sqrt(gravity.z*gravity.z+gravity.y*gravity.y)));
+					rotation = Quaternion.Slerp(rotation,Quaternion.Euler(-fi,Input.compass.magneticHeading-initCompassHeading,teta),Time.deltaTime*4.0f);
+					transform.localEulerAngles = new Vector3(-rotation.eulerAngles.y, transform.localEulerAngles.y, 0);
+				}
+				#else
+				{
+				if(Input.gyro.enabled)
+				{
+					var rot = ConvertRotation (Input.gyro.attitude);
+					Vector3 euler = (Quaternion.Euler (90f, 0f, 0f) * rot).eulerAngles;
+					transform.localEulerAngles = new Vector3 (euler.x, 0, euler.z);
+				}
+				} 
+				#endif
+				}
+
+				else
+				{
+					rotationY += (Input.GetAxis ("Mouse Y") + Input.GetAxis ("Axis4")) * sensitivityY; // "Joy Y"
+					rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
+
+					transform.localEulerAngles = new Vector3 (-rotationY, transform.localEulerAngles.y, 0);
+				}
+			
 		}
 	}
+
+	public void EnableCompass(bool on)
+	{
+		if( on )
+		{
+			Input.compass.enabled = true;
+			CancelInvoke ("InitCompassHeading");
+			Invoke ("InitCompassHeading",0.1f);
+		}
+		else
+		{
+			Input.compass.enabled = false;
+			CancelInvoke ("InitCompassHeading");
+		}
+	}
+
+	void InitCompassHeading()
+	{
+		initCompassHeading = -rotationY+Input.compass.magneticHeading;
+	}
+	private float initCompassHeading=0f;
+	Quaternion rotation;
 //	public Mesh mesh;
 //	public Material mat;
 //	public void OnPostRender() {
@@ -99,6 +160,10 @@ public class MouseLook : MonoBehaviour {
 	
 	void Start ()
 	{
+
+		#if UNITY_ANDROID
+			EnableCompass(true);
+		#endif
 //		mat = Game.BaseMaterial;
 //		mat.color = Color.black;
 //		mesh = CustomMesh.Circle ();

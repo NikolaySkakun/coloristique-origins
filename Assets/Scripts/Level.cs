@@ -193,6 +193,7 @@ public class Level : Obj
 			foreach(Side s in r.side)
 				s.AddDrawAnimation();
 
+		if(door != null)
 		foreach(Door d in door)
 			foreach(Side s in d.room.side)
 				s.AddDrawAnimation();
