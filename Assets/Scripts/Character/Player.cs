@@ -1096,8 +1096,11 @@ public class Player : MonoBehaviour
 
 				ActiveControl(true);
 
-				foreach(Ball ball in Level.current.ball)
-					ball.Destroy();
+				if (Level.current.ball != null)
+				{
+					foreach (Ball ball in Level.current.ball)
+						ball.Destroy ();
+				}
 
 				if(!Level.ZeroRoom.transform.parent.gameObject.activeSelf)
 					Level.ZeroRoom.transform.parent.gameObject.SetActive(true);

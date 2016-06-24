@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Xml;
+using System.Collections.Generic;
 
 public class Level_0 : MonoBehaviour 
 {
@@ -400,7 +401,7 @@ public class Level_0 : MonoBehaviour
 			infoWalk.GetComponent<Animation> ().AddClip (clip, "Destroy");
 		}
 
-		GameObject author = Word.WriteString("the game by nikolay skakun"); //most original gameplay
+		GameObject author = Word.WriteString("made with unity"); //most original gameplay // the game by nikolay skakun
 		author.transform.localEulerAngles = new Vector3(0, 90, 90);
 		author.transform.localScale = Vector3.one * 0.2f;
 		author.transform.position = level.room[1].side[4].transform.position;
@@ -565,7 +566,105 @@ public class Level_0 : MonoBehaviour
 		//Escape();
 		//yield return new WaitForSeconds(Game.drawTime*1.5f);
 		//level.door[2].gameObject.SetActive(true);
+		CreateUnity();
 	}
+
+
+
+
+	Mesh GetUnityMesh()
+	{
+		Debug.LogWarning ("Unity");
+		XmlDocument doc = new XmlDocument();
+		doc.LoadXml( (Resources.Load("Sprites/Unity") as TextAsset).text );
+
+		List<Vector3> verts = new List<Vector3> ();
+
+		Mesh mesh = Triangulator.CreateMesh (SVGImporter.GetEdgeCollider (doc.DocumentElement as XmlNode, 10, 15));
+
+		for (int i = 0; i < mesh.vertexCount; ++i)
+		{
+			verts.Add ((mesh.vertices[i] - Vector3.right*0.7095f)); // * 1.002f
+		}
+		mesh.SetVertices (verts);
+
+
+		Mesh mesh2 = Object.Instantiate (mesh) as Mesh;
+		verts = new List<Vector3> ();
+		for (int i = 0; i < mesh2.vertexCount; ++i)
+		{
+			verts.Add (Quaternion.Euler(0, 0, 120) * mesh.vertices[i]);
+		}
+		mesh2.SetVertices (verts);
+
+		mesh = LetterAnimation.CombineMeshes (new Mesh[]{ mesh, mesh2 });
+
+		mesh2 = Object.Instantiate (mesh) as Mesh;
+		verts = new List<Vector3> ();
+		for (int i = 0; i < mesh2.vertexCount; ++i)
+		{
+			verts.Add (Quaternion.Euler(0, 0, 240) * mesh.vertices[i]);
+		}
+		mesh2.SetVertices (verts);
+
+		mesh = LetterAnimation.CombineMeshes (new Mesh[]{ mesh, mesh2 });
+
+		//		List<Vector3> v = new List<Vector3> ();
+		//		List<int> t = new List<int> ();
+		//
+		//		for (int i = 0; i < mesh.triangles.Length; ++i)
+		//		{
+		//			int triangle = mesh.triangles [i];
+		//
+		//			Vector3 vertex = mesh.vertices [triangle];
+		//
+		//			v.Add (vertex);
+		//			t.Add (i);
+		//		}
+		//
+		//		mesh.SetVertices (v);
+		//		mesh.triangles = t.ToArray();
+		//
+		//		verts = new List<Vector3> ();
+		//		for (int i = 0; i < mesh.vertexCount; ++i)
+		//		{
+		//			verts.Add (Vector3.MoveTowards( mesh.vertices[i], -Vector3.forward * 5f, UnityEngine.Random.Range(1f, 4f)));
+		//		}
+		//		mesh.SetVertices (verts);
+
+		return mesh;
+	}
+
+	void CreateUnity()
+	{
+
+
+
+		Mesh mesh = GetUnityMesh (); //unity.GetComponent<MeshFilter> ().sharedMesh;
+		GameObject unity = Word.GetGameObject(mesh);
+		unity.name = "U";
+
+		unity.transform.parent = new GameObject ("Unity").transform;
+		//unity.transform.localPosition = -Vector3.forward * 0.7095f;
+		unity.transform.localEulerAngles = -Vector3.up * 90f;
+		//unity = unity.transform.parent.gameObject;
+
+		unity.transform.position = new Vector3 (-4.9f, 1.88f, 1);
+
+
+		unity.transform.parent.position -= Vector3.forward * 12;
+
+		GameObject cube = CustomObject.Cube (Vector3.one*0.3f);
+		cube.transform.SetParent (unity.transform);
+		cube.transform.localPosition = -Vector3.forward * 2;
+		cube.transform.localEulerAngles = new Vector3 (0, 125, 315);
+		//cube.transform.localScale = Vector3.one * 0.3f;
+		//cube.transform.position = unity.transform.parent.position + Vector3.right * 2;
+
+
+	}
+
+
 
 	static public bool hideInfo = false;
 	bool inLoadLevelRoom = false, usedMouse = false, usedKeys = false;

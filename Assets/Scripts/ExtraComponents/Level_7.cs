@@ -119,6 +119,22 @@ public class Level_7 : MonoBehaviour
 
 		mesh = LetterAnimation.CombineMeshes (new Mesh[]{ mesh, mesh2 });
 
+//		List<Vector3> v = new List<Vector3> ();
+//		List<int> t = new List<int> ();
+//
+//		for (int i = 0; i < mesh.triangles.Length; ++i)
+//		{
+//			int triangle = mesh.triangles [i];
+//
+//			Vector3 vertex = mesh.vertices [triangle];
+//
+//			v.Add (vertex);
+//			t.Add (i);
+//		}
+//
+//		mesh.SetVertices (v);
+//		mesh.triangles = t.ToArray();
+//
 		verts = new List<Vector3> ();
 		for (int i = 0; i < mesh.vertexCount; ++i)
 		{

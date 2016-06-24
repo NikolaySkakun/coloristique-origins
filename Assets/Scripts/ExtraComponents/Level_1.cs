@@ -107,8 +107,8 @@ public class Level_1 : MonoBehaviour
 //		}
 
 
-		//CreateTesseract ();
-		CreateMobiusStrip ();
+		CreateTesseract ();
+		//CreateMobiusStrip ();
 		//CreatePenroseTriangle();
 		//symbol.transform.localScale = Vector3.one * 0.02f;
 //		GameObject tes = symbol = Tesseract.Create ().gameObject;

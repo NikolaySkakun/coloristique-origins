@@ -638,11 +638,11 @@ public class Game : MonoBehaviour
 		//Tesseract.Create ();
 
 
-		Word.GetGameObject (LetterAnimation.CombineMeshes (new Mesh[] {
-			CustomMesh.PenroseTriangle (1, new Vector3 (-27f, 20f, 33.4f), Vector3.up * 90f),
-			CustomMesh.PenroseTriangle (-1, new Vector3 (-3.3f, -9.3f, -9.3f), Vector3.zero),
-			CustomMesh.PenroseTriangle (1, new Vector3 (-13.3f, -14.5f, 15.2f), Vector3.right * 270f)
-		}));
+//		Word.GetGameObject (LetterAnimation.CombineMeshes (new Mesh[] {
+//			CustomMesh.PenroseTriangle (1, new Vector3 (-27f, 20f, 33.4f), Vector3.up * 90f),
+//			CustomMesh.PenroseTriangle (-1, new Vector3 (-3.3f, -9.3f, -9.3f), Vector3.zero),
+//			CustomMesh.PenroseTriangle (1, new Vector3 (-13.3f, -14.5f, 15.2f), Vector3.right * 270f)
+//		}));
 //
 //		t1.transform.localEulerAngles = Vector3.up * 90f;
 //		t1.transform.position = new Vector3 (-27f, 20f, 33.4f);
@@ -664,13 +664,48 @@ public class Game : MonoBehaviour
 //		mainStrip.firstStrip = firstStrip.gameObject;
 //		mainStrip.secondStrip = secondStrip.gameObject;
 		//Symbol.Create(Symbol.Type.MOBIUS_STRIP, 0.02f, 0.97f, Obj.Colour.BLACK);
-
+		CreateMobiusStrip();
 		//new Portal ();
 		//CustomObject.CreateObject().GetComponent<MeshFilter>().mesh = CustomMesh.Quad();
 		//Word.GetGameObject(CustomMesh.Test());
 		//CustomObject.Hill(13, 0.1f);
 		//Physics.gravity = 9.8f * Vector3.up;
 	}
+
+	void CreateMobiusStrip()
+	{
+		GameObject symbol;
+		float thick = 0.18f;
+		float contourThick = 0.02f;
+		float radius = 0.8f;
+		Symbol firstStrip = Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, contourThick);
+		Symbol secondStrip = Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick, radius, Obj.Colour.WHITE, -contourThick);
+		//Destroy (firstStrip.GetComponent<Symbol> ());
+		//Destroy (firstStrip.GetComponent<Symbol> ());
+
+		Symbol mainStrip = Symbol.Create(Symbol.Type.MOBIUS_STRIP, thick - contourThick, radius, Obj.Colour.BLACK);
+		mainStrip.firstStrip = firstStrip.gameObject;
+		mainStrip.secondStrip = secondStrip.gameObject;
+
+		GameObject[] symbols = new GameObject[] {
+			firstStrip.gameObject,
+			secondStrip.gameObject,
+			mainStrip.gameObject
+		};
+
+		symbol = new GameObject ("Symbol");
+		foreach (GameObject obj in symbols)
+		{
+			obj.transform.parent = symbol.transform;
+		}
+
+
+		//symbol.transform.parent = level.room [2].transform;
+		symbol.transform.localEulerAngles = Vector3.up * 90f;
+		//Player.SetPosition (symbol, level.room [2], new Vector3 (30, 1.65f, 50)); //30, 1.65f, 50
+	}
+
+
 
 	static public void SetRenderQueue(GameObject obj, int queue)
 	{
@@ -696,6 +731,7 @@ public class Game : MonoBehaviour
 		}
 		LoadLevel(0);
 
+		//Player.camera.GetComponent<Camera> ().projectionMatrix.
 
 		//TestMethod();
 

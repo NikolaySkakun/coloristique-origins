@@ -81,6 +81,43 @@ public class CustomMesh
 		return mesh;
 	}
 
+	static public Mesh Plane(int size)
+	{
+		Mesh mesh = new Mesh();
+
+		Vector3[] verts = new Vector3[size * size];
+		int[] tris = new int[((size-1)*(size - 1)) * 2 * 3];
+		int t = 0;
+
+		for (int i = 0; i < size; ++i)
+		{
+			for (int u = 0; u < size; ++u)
+			{
+				int index = size * i + u;
+				verts [index] = new Vector3 (u, 0, i);
+
+
+				if (i < size-1 && u < size-1)
+				{
+					Debug.LogWarning (i);
+					tris [t++] = index + size;
+					tris [t++] = index + 1;
+					tris [t++] = index;
+
+					tris [t++] = index +size + 1;
+					tris [t++] = index + 1;
+					tris [t++] = index + size;
+				}
+
+
+			}
+		}
+
+		mesh.vertices = verts;
+		mesh.triangles = tris;
+
+		return mesh;
+	}
 
 	static Vector3 GetNormal(Vector3 a, Vector3 b, Vector3 c) {
 		Vector3 side1 = b - a;

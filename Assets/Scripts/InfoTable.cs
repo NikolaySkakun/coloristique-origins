@@ -62,6 +62,9 @@ public class InfoTable : Obj
 		{
 
 		}
+
+
+
 		Game.DrawEvent -= Draw;
 
 

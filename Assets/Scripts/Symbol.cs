@@ -93,6 +93,7 @@ public class Symbol : MonoBehaviour
 	}
 
 	SkinnedMeshRenderer[] skin;
+	public float testValue = 5f;
 
 	void Create(Symbol.Type t, GameObject obj, GameObject obj2, GameObject obj3, float angle)
 	{
@@ -116,8 +117,8 @@ public class Symbol : MonoBehaviour
 
 				//float a = 0;
 				//int i = 0;
-
-		for(int i = 0, u = 0; i<count; ++i, u+=5)
+		float u = 0;
+		for(int i = 0; i<count; ++i, u+=testValue)
 		{
 			//for (int j = 0; j < skin.Length; ++j)
 			//{
