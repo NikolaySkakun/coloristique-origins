@@ -204,6 +204,7 @@ public class Ledge : Obj
 			side[i].transform.parent = container.transform;
 		}
 
+		cube.GetComponent<Renderer> ().material.color = sideColor;
 		cube.transform.localScale = new Vector3(1f - Line.height/width, 0.8f, 1f - Line.height/height);
 		cube.transform.parent = container.transform;
 

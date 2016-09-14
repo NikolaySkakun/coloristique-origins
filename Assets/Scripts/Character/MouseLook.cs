@@ -47,6 +47,7 @@ public class MouseLook : MonoBehaviour {
 
 	void Update ()
 	{
+		
 		if(Input.touchCount > 0)
 			this.enabled = false;
 
@@ -75,19 +76,27 @@ public class MouseLook : MonoBehaviour {
 				}
 				#else
 				{
+					Debug.LogWarning("sssss");
 				if(Input.gyro.enabled)
 				{
+						
 					xExtraAngle += Input.GetAxis("Axis3") * sensitivityX;
 					//transform.eulerAngles = new Vector3 (0, Input.gyro.rotationRateUnbiased.y, 0);
 					var rot = ConvertRotation (Input.gyro.attitude);
 					Vector3 euler = (Quaternion.Euler (90f, 0f, 0f) * rot).eulerAngles;
 					transform.eulerAngles = new Vector3 (0, euler.y + xExtraAngle, 0);
-				}                                                                                                                                                                                      
+				}  
+					else
+					{
+						transform.Rotate(0, (Input.GetAxis("Mouse X") + Input.GetAxis("Axis3")) * sensitivityX, 0); //"Joy X"
+
+					}
 				}
 				#endif
 				}
 				else
 				{
+				
 					transform.Rotate(0, (Input.GetAxis("Mouse X") + Input.GetAxis("Axis3")) * sensitivityX, 0); //"Joy X"
 				}
 
@@ -113,6 +122,13 @@ public class MouseLook : MonoBehaviour {
 					Vector3 euler = (Quaternion.Euler (90f, 0f, 0f) * rot).eulerAngles;
 					transform.localEulerAngles = new Vector3 (euler.x, 0, euler.z);
 				}
+					else
+					{
+						rotationY += (Input.GetAxis ("Mouse Y") + Input.GetAxis ("Axis4")) * sensitivityY; // "Joy Y"
+						rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
+
+						transform.localEulerAngles = new Vector3 (-rotationY, transform.localEulerAngles.y, 0);
+					}
 				} 
 				#endif
 				}

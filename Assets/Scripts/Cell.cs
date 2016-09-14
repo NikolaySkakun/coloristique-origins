@@ -377,7 +377,7 @@ public class Cell : Obj
 		
 		ParticleSystem prtcl = psystem.AddComponent<ParticleSystem>();
 		prtcl.GetComponent<Renderer>().material = Game.BaseMaterial;
-		prtcl.GetComponent<Renderer>().material.color = Color.black;
+		prtcl.GetComponent<Renderer>().material.color = Game.Black;
 		prtcl.startSize = 0.1f;
 		//Join(xml, Level.current, cell);
 	}

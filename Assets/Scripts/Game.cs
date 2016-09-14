@@ -42,6 +42,9 @@ public class Game : MonoBehaviour
 		CARDBOARD
 	};
 
+	//public GameObject teaser;
+
+
 	public GameObject VRCam;
 
 	public delegate void DVoid();
@@ -67,12 +70,36 @@ public class Game : MonoBehaviour
 	Texture2D aim;
 	Rect aimRect;
 
+	public Material baseMaterial;
+	static Material _baseMaterial;
+
+	//static public Material BaseMaterial;
+
 
 	static public Material BaseMaterial
 	{
 		get
 		{
-			return new Material(Shader.Find("Base"));
+			return _baseMaterial;
+			//return new Material(Shader.Find("Base"));
+		}
+	}
+
+	static Color white, black;
+
+	static public Color Black
+	{
+		get
+		{
+			return black;
+		}
+	}
+
+	static public Color White
+	{
+		get
+		{
+			return white;
 		}
 	}
 
@@ -366,9 +393,9 @@ public class Game : MonoBehaviour
 	static public Color GetColor(Obj.Colour color)
 	{
 		if(color == Obj.Colour.WHITE)
-			return Color.white;
+			return White;
 		else if(color == Obj.Colour.BLACK)
-			return Color.black;
+			return Black;
 		else
 		{
 			Debug.LogError("Game -> GetColor()");
@@ -378,10 +405,10 @@ public class Game : MonoBehaviour
 	
 	static public Color ReverseColor(Color color)
 	{
-		if(color == Color.white)
-			return Color.black;
-		else if(color == Color.black)
-			return Color.white;
+		if(color == White)
+			return Black;
+		else if(color == Black)
+			return White;
 		else
 		{
 			Debug.LogError("Game -> ReverseColor()");
@@ -544,9 +571,21 @@ public class Game : MonoBehaviour
 //		GUILayout.Box (message);
 //	}
 
+	static void SetupColors()
+	{
+		float c = 1f / 255f;
+		black = Color.black;//new Color (c * 20f, c * 20f, c * 20f, 1);
+		white = Color.white;//new Color (c * 250f, c * 250f, c * 245f, 1);
+	}
 
 	void Awake()
 	{
+		_baseMaterial = baseMaterial;
+		SetupColors ();
+		//baseMaterial = new Material(Shader.Find("Base"));
+
+		//BaseMaterial = GetComponent<Renderer> ().sharedMaterial;
+
 		Cursor.visible = false;
 		//CreateAimTexture();
 
@@ -558,7 +597,7 @@ public class Game : MonoBehaviour
 		//	RenderSettings.fogColor = 
 		//		RenderSettings.ambientGroundColor = 
 		//			RenderSettings.ambientSkyColor = 
-						Color.white;
+			White;
 
 
 		gameObject.AddComponent<Digit>();
@@ -664,12 +703,24 @@ public class Game : MonoBehaviour
 //		mainStrip.firstStrip = firstStrip.gameObject;
 //		mainStrip.secondStrip = secondStrip.gameObject;
 		//Symbol.Create(Symbol.Type.MOBIUS_STRIP, 0.02f, 0.97f, Obj.Colour.BLACK);
-		CreateMobiusStrip();
+		//CreateMobiusStrip();
 		//new Portal ();
 		//CustomObject.CreateObject().GetComponent<MeshFilter>().mesh = CustomMesh.Quad();
 		//Word.GetGameObject(CustomMesh.Test());
 		//CustomObject.Hill(13, 0.1f);
 		//Physics.gravity = 9.8f * Vector3.up;
+
+		CreatePenroseTriangle ();
+	}
+
+	void CreatePenroseTriangle()
+	{
+		GameObject symbol = PenroseTriangle.Create (GameObject.FindObjectsOfType<Camera>());
+
+		//symbol.transform.parent = level.room [2].transform;
+		//symbol.transform.localScale = Vector3.one * 0.02f;
+		//symbol.transform.localEulerAngles = Vector3.up * 90f;
+		//Player.SetPosition (symbol, level.room [2], new Vector3 (30, 1.65f, 50));
 	}
 
 	void CreateMobiusStrip()
@@ -714,6 +765,7 @@ public class Game : MonoBehaviour
 
 	void Start() 
 	{
+		
 //		gameProgress = 3;
 //		PlayerPrefs.SetInt("progress", 3);
 //		PlayerPrefs.Save();
@@ -761,7 +813,13 @@ public class Game : MonoBehaviour
 
 	void Update()
 	{
-		
+
+//		if (Input.GetKeyDown (KeyCode.T))
+//			teaser.SetActive (!teaser.activeSelf);
+
+		if (Input.GetKeyDown (KeyCode.O))
+			Application.LoadLevel (0);
+
 		//UpdateAimTextureScale();
 
 		/*if(Input.GetKeyUp(KeyCode.P))

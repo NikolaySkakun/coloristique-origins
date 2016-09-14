@@ -401,7 +401,7 @@ public class Level_0 : MonoBehaviour
 			infoWalk.GetComponent<Animation> ().AddClip (clip, "Destroy");
 		}
 
-		GameObject author = Word.WriteString("made with unity"); //most original gameplay // the game by nikolay skakun
+		GameObject author = Word.WriteString("the game by nikolay skakun"); //most original gameplay // the game by nikolay skakun
 		author.transform.localEulerAngles = new Vector3(0, 90, 90);
 		author.transform.localScale = Vector3.one * 0.2f;
 		author.transform.position = level.room[1].side[4].transform.position;
@@ -566,7 +566,7 @@ public class Level_0 : MonoBehaviour
 		//Escape();
 		//yield return new WaitForSeconds(Game.drawTime*1.5f);
 		//level.door[2].gameObject.SetActive(true);
-		CreateUnity();
+		//CreateUnity();
 	}
 
 

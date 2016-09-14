@@ -107,9 +107,9 @@ public class Level_1 : MonoBehaviour
 //		}
 
 
-		CreateTesseract ();
+		//CreateTesseract ();
 		//CreateMobiusStrip ();
-		//CreatePenroseTriangle();
+		CreatePenroseTriangle();
 		//symbol.transform.localScale = Vector3.one * 0.02f;
 //		GameObject tes = symbol = Tesseract.Create ().gameObject;
 //		//tes.transform.localEulerAngles = Vector3.up * 45f;
@@ -397,7 +397,7 @@ public class Level_1 : MonoBehaviour
 			if(cell.IsActive && !level.room[0].side[2].GetComponent<MeshRenderer>().enabled)
 			{
 				level.room[0].side[2].GetComponent<MeshRenderer>().enabled = true;
-				(level.room[0].cell[0].plane.transform.GetChild(0).GetComponent<Renderer>().material = Game.BaseMaterial).color = Color.black;
+				(level.room[0].cell[0].plane.transform.GetChild(0).GetComponent<Renderer>().material = Game.BaseMaterial).color = Game.Black;
 			}
 			else if(!cell.IsActive && level.room[0].side[2].GetComponent<MeshRenderer>().enabled && !cell.cell.GetComponent<Animation>().isPlaying)
 			{

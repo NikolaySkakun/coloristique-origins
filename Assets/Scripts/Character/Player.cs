@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.ImageEffects;
 
 public class Player : MonoBehaviour 
 {
@@ -22,7 +23,7 @@ public class Player : MonoBehaviour
 	float rotationY = 0f;
 	private float sensitivityX = 2000f;
 	private float sensitivityY = 900F;
-	public float Sensitivity = 1.5f;
+	public float Sensitivity = 0.005f;//1.5f;
 	float DPI= Screen.dpi/100;
 	float RotateCoef = 1f;
 	private float minimumY = -90f;//-60F;
@@ -194,7 +195,7 @@ public class Player : MonoBehaviour
 
 		camera.transform.localEulerAngles = Vector3.right * (-5f);
 
-		camera.GetComponent<Camera>().backgroundColor = Color.white;
+		camera.GetComponent<Camera>().backgroundColor = Game.White;
 		//camera.GetComponent<Camera>().nearClipPlane = 0.2f;
 		camera.transform.localPosition = Vector3.up * 0.8f;//1.3f;
 		camera.AddComponent<MouseLook>().axes = MouseLook.RotationAxes.MouseY;
@@ -224,6 +225,8 @@ public class Player : MonoBehaviour
 
 		aimParent = new GameObject ("Aim");
 
+
+
 		aimParent.transform.parent = camera.transform;
 		aimParent.transform.localPosition = Vector3.forward * (camera.GetComponent<Camera>().nearClipPlane + 0.0004f);
 
@@ -246,6 +249,8 @@ public class Player : MonoBehaviour
 		aim2.layer = LayerMask.NameToLayer("Aim");//LayerMask.NameToLayer("Ignore Raycast");
 		//if(VRMode == Game.VRMode.FIBRUM)
 			//aim2.GetComponent<Renderer>().enabled = false;
+
+		aim.GetComponent<Renderer> ().material.color = aim2.GetComponent<Renderer> ().material.color = Color.white;
 
 		//player.GetComponent<Player>().aim = aim;
 		//player.GetComponent<Player>().smallAim = aim2;
@@ -351,6 +356,39 @@ public class Player : MonoBehaviour
 	}*/
 
 
+	void SetupColorChanger()
+	{
+		float black = 0.06f;
+		float white = -0.2f;
+
+		Camera[] cams = GameObject.FindObjectsOfType<Camera> ();
+
+		foreach (Camera cam in cams)
+		{
+			cam.gameObject.AddComponent<SepiaTone> ().UpdateMaterial (white);
+			cam.gameObject.AddComponent<SepiaTone> ().UpdateMaterial (black);
+		}
+
+
+//		if (leftVRCamera != null)
+//		{
+//			leftVRCamera.gameObject.AddComponent<SepiaTone> ().UpdateMaterial (white);
+//			leftVRCamera.gameObject.AddComponent<SepiaTone> ().UpdateMaterial (black);
+//		}
+//
+//		if (rightVRCamera != null)
+//		{
+//			rightVRCamera.gameObject.AddComponent<SepiaTone> ().UpdateMaterial (white);
+//			rightVRCamera.gameObject.AddComponent<SepiaTone> ().UpdateMaterial (black);
+//		}
+//
+//		camera.AddComponent<SepiaTone> ().UpdateMaterial (white);
+//		camera.AddComponent<SepiaTone> ().UpdateMaterial (black);
+//
+//		gunCamera.AddComponent<SepiaTone> ().UpdateMaterial (white);
+//		gunCamera.AddComponent<SepiaTone> ().UpdateMaterial (black);
+	}
+
 	void Start()
 	{
 		//Test2 ();
@@ -363,6 +401,8 @@ public class Player : MonoBehaviour
 		Cursor.visible = false;
 		Cursor.lockState = CursorLockMode.Locked;
 		originalRotation = transform.rotation.eulerAngles.y;// + 180f;
+
+		//SetupColorChanger ();
 
 		//ActivateVR ();
 	}
@@ -698,13 +738,20 @@ public class Player : MonoBehaviour
 			{
 				Vector2 Window2InputSlide = touch.deltaPosition*Time.smoothDeltaTime;
 
-				float InputX = (Window2InputSlide.x  * ((sensitivityX*Sensitivity)*0.01f)) /DPI;
-				float InputY = (Window2InputSlide.y * ((sensitivityY*Sensitivity)*0.01f)) /DPI;
+//				float InputX = (Window2InputSlide.x  * ((sensitivityX*Sensitivity)*0.01f)) /DPI;
+//				float InputY = (Window2InputSlide.y * ((sensitivityY*Sensitivity)*0.01f)) /DPI;
+
+				float InputX = (Window2InputSlide.x * Sensitivity) * Screen.dpi;
+				float InputY = (Window2InputSlide.y * Sensitivity) * Screen.dpi;
+
 				rotationX += InputX * RotateCoef;
 				rotationY += InputY * RotateCoef;
 				rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
 				transform.rotation =  Quaternion.Slerp (transform.rotation, Quaternion.Euler(0, originalRotation + rotationX, 0),  0.5f);
 				camera.transform.localRotation =  Quaternion.Slerp (camera.transform.localRotation, Quaternion.Euler(camera.transform.localRotation.x-rotationY, 0, 0),  0.5f);
+
+			
+			
 			}
 			else
 			{

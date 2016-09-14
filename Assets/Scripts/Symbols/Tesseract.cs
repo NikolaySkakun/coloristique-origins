@@ -13,6 +13,7 @@ public class Tesseract : Obj
 	{
 		Mesh mesh = new Mesh ();
 
+
 		List<Vector3> verts = new List<Vector3> ();
 		int[] tris;
 
@@ -83,6 +84,9 @@ public class Tesseract : Obj
 
 		SkinnedMeshRenderer skin = obj.gameObject.AddComponent<SkinnedMeshRenderer> ();
 		skin.sharedMesh = mesh;
+		Bounds bounds = new Bounds (Vector3.zero, Vector3.one);
+
+		skin.localBounds = bounds;
 
 		Vector3 dir = Vector3.zero;
 		dir [axis] = 1;
@@ -113,7 +117,7 @@ public class Tesseract : Obj
 		mesh.bindposes = bindPoses;
 
 		skin.bones = bonesList.ToArray();
-		(skin.material = Game.BaseMaterial).color = Color.white;
+		(skin.material = Game.BaseMaterial).color = Game.White;
 		//(skin.material = new Material(Shader.Find("InverseColor"))).color = Color.white;
 		obj.SetParent (transform);
 		return obj;

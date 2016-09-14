@@ -305,7 +305,7 @@ public class CustomObject
 			edge[i].name = i.ToString();
 			edge[i].transform.parent = cube.transform;
 			
-			Vector3 tmp = Vector3.one * Line.height;
+			Vector3 tmp = Vector3.one * (Line.height);// * 3.8f);
 			tmp[i/4] = size[i/4];
 			
 			edge[i].transform.localScale = tmp;
@@ -315,7 +315,7 @@ public class CustomObject
 			int ind1 = i/4 == 0 ? 1 : 0;
 			int ind2 = i/4 != 2 ? 2 : 1;
 			//Debug.Log(i.ToString() + "__" + ((2 * (int)(i/2))).ToString());
-			tmp[ind1] = size[ind1]/2f * ((2 * (int)(i/2))%4==0 ? 1 : -1);
+			tmp[ind1] = size[ind1]/2f * ((2 * (int)(i/2))%4==0 ? 1 : -1); //2.3
 			tmp[ind2] = size[ind2]/2f * (i%2==0 ? 1 : -1);
 			
 			edge[i].transform.localPosition = tmp;
@@ -415,7 +415,7 @@ public class CustomObject
 		GameObject obj = new GameObject("Circle");
 		
 		obj.AddComponent<MeshFilter>().mesh = CustomMesh.Circle(vertsCount);
-		obj.AddComponent<MeshRenderer>().material = Game.BaseMaterial;
+		obj.AddComponent<MeshRenderer> ().material = Game.BaseMaterial;
 		obj.GetComponent<Renderer>().material.color = Game.GetColor(color);
 		if(withCollider)
 			obj.AddComponent<BoxCollider>();
@@ -492,7 +492,7 @@ public class CustomObject
 		if(arrow.GetComponent<Renderer>() != null)
 		{
 			arrow.GetComponent<Renderer>().material.shader = Shader.Find("InverseColor");
-			arrow.GetComponent<Renderer>().material.color = Color.white;
+			arrow.GetComponent<Renderer>().material.color = Game.White;
 		}
 
 		return button;

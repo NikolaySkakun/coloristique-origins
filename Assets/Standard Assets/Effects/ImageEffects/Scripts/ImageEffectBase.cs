@@ -11,11 +11,12 @@ namespace UnityStandardAssets.ImageEffects
         /// and a material instantiated from the shader
         public Shader shader;
 
-        private Material m_Material;
+		private Material m_Material;
 
 
         protected virtual void Start()
         {
+			shader = Shader.Find ("Hidden/Sepiatone Effect");
             // Disable if we don't support image effects
             if (!SystemInfo.supportsImageEffects)
             {
@@ -36,7 +37,7 @@ namespace UnityStandardAssets.ImageEffects
             {
                 if (m_Material == null)
                 {
-                    m_Material = new Material(shader);
+					m_Material = new Material(Shader.Find("Hidden/Sepiatone Effect"));
                     m_Material.hideFlags = HideFlags.HideAndDontSave;
                 }
                 return m_Material;

@@ -385,8 +385,8 @@ public class Door : Obj
 		Game.SetRenderQueue (line [0].gameObject, 3);
 		Game.SetRenderQueue (line [1].gameObject, 3);
 
-		line[0].GetComponent<Renderer>().material.color = Color.white;
-		line[1].GetComponent<Renderer>().material.color = Color.white;
+		line[0].GetComponent<Renderer>().material.color = Game.White;
+		line[1].GetComponent<Renderer>().material.color = Game.White;
 
 
 

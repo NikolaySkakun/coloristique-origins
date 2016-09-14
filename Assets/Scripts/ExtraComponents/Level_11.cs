@@ -9,6 +9,7 @@ public class Level_11 : MonoBehaviour
 	{
 		level = Level.current;
 
+		Player.aimParent.SetActive (false);
 
 		GameObject gameName = Word.WriteString("coloristique", 0.5f, Obj.Colour.WHITE, true); //"abcdefghijklmn|opqrstuvwxyz" //"coloristique"
 		gameName.transform.localEulerAngles = new Vector3(0, 90, 90);
@@ -24,6 +25,7 @@ public class Level_11 : MonoBehaviour
 
 		CreateMobiusStrip ();
 		CreateTesseract ();
+		CreatePenroseTriangle ();
 
 		//level.room[0].side[0].collider.enabled = true;
 	
@@ -31,6 +33,7 @@ public class Level_11 : MonoBehaviour
 
 	GameObject symbol;
 	GameObject symbol2;
+	GameObject symbol3;
 
 	void CreateMobiusStrip()
 	{
@@ -62,6 +65,8 @@ public class Level_11 : MonoBehaviour
 		symbol.transform.parent = level.room [0].transform;
 		symbol.transform.localEulerAngles = Vector3.up * 90f;
 		Player.SetPosition (symbol, level.room [0], new Vector3 (25, 1.65f, 50)); //30, 1.65f, 50
+
+		symbol.AddComponent<SphereCollider> ().radius = 1;
 	}
 
 	void CreateTesseract()
@@ -70,11 +75,25 @@ public class Level_11 : MonoBehaviour
 		//tes.transform.localEulerAngles = Vector3.up * 45f;
 		Player.SetPosition(tes, level.room [0], new Vector3 (75, 1.6f, 50));
 
+		tes.AddComponent<SphereCollider> ().radius = 1;
+
 //		foreach (Side s in level.room[2].side)
 //		{
 //			foreach (Line l in s.line)
 //				l.Repaint ();
 //		}
+	}
+
+	void CreatePenroseTriangle()
+	{
+		symbol3 = PenroseTriangle.Create (GameObject.FindObjectsOfType<Camera>());
+
+		symbol3.transform.parent = level.room [0].transform;
+		symbol3.transform.localScale = Vector3.one * 0.025f;
+		symbol3.transform.localEulerAngles += Vector3.up * 90f;
+		//symbol.transform.localEulerAngles = Vector3.up * 90f;
+		Player.SetPosition (symbol3, level.room [0], new Vector3 (45, 1.65f, 90));
+		symbol3.AddComponent<SphereCollider> ().radius = 1f/symbol3.transform.localScale.x;
 	}
 	
 

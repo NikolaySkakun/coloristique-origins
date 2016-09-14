@@ -7,10 +7,21 @@ namespace UnityStandardAssets.ImageEffects
     [AddComponentMenu("Image Effects/Color Adjustments/Sepia Tone")]
     public class SepiaTone : ImageEffectBase
 	{
-        // Called by camera to apply image effect
+		void Awake()
+		{
+			shader = Shader.Find("Sepiatone Effect");
+		}
+
         void OnRenderImage (RenderTexture source, RenderTexture destination)
 		{
             Graphics.Blit (source, destination, material);
         }
+
+		public void UpdateMaterial(float color)
+		{
+			material.SetFloat ("_Color", color);
+			material.SetFloat ("_Color", color);
+			material.SetFloat ("_Color", color);
+		}
     }
 }

@@ -136,14 +136,14 @@ public class Ball : Obj
 
 
 		whiteBall = new Material(Shader.Find("BallShader"));
-		whiteBall.SetColor("_BorderColor", Color.black);
-		whiteBall.SetColor("_Color", Color.white);
+		whiteBall.SetColor("_BorderColor", Game.Black);
+		whiteBall.SetColor("_Color", Game.White);
 		
 		
 		
 		blackBall = new Material(Shader.Find("BallShader"));
-		blackBall.SetColor("_BorderColor", Color.white);
-		blackBall.SetColor("_Color", Color.black);
+		blackBall.SetColor("_BorderColor", Game.White);
+		blackBall.SetColor("_Color", Game.Black);
 			
 	}
 

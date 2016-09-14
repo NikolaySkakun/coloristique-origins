@@ -26,14 +26,14 @@ public class Side : Obj
 	static Side()
 	{
 		whiteSide = new Material(Shader.Find("SideShader"));
-		whiteSide.SetColor("_LineColor", Color.black);
-		whiteSide.SetColor("_Color", Color.white);
+		whiteSide.SetColor("_LineColor", Game.Black);
+		whiteSide.SetColor("_Color", Game.White);
 		
 		
 		
 		blackSide = new Material(Shader.Find("SideShader"));
-		blackSide.SetColor("_LineColor", Color.white);
-		blackSide.SetColor("_Color", Color.black);
+		blackSide.SetColor("_LineColor", Game.White);
+		blackSide.SetColor("_Color", Game.Black);
 			
 	}
 	
