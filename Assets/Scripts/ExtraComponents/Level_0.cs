@@ -566,13 +566,13 @@ public class Level_0 : MonoBehaviour
 		//Escape();
 		//yield return new WaitForSeconds(Game.drawTime*1.5f);
 		//level.door[2].gameObject.SetActive(true);
-		//CreateUnity();
+		CreateUnity();
 	}
 
 
 
 
-	Mesh GetUnityMesh()
+	static public Mesh GetUnityMesh()
 	{
 		Debug.LogWarning ("Unity");
 		XmlDocument doc = new XmlDocument();
@@ -581,7 +581,7 @@ public class Level_0 : MonoBehaviour
 		List<Vector3> verts = new List<Vector3> ();
 
 		Mesh mesh = Triangulator.CreateMesh (SVGImporter.GetEdgeCollider (doc.DocumentElement as XmlNode, 10, 15));
-
+		//CustomMesh.OptimizeMesh (mesh);
 		for (int i = 0; i < mesh.vertexCount; ++i)
 		{
 			verts.Add ((mesh.vertices[i] - Vector3.right*0.7095f)); // * 1.002f
@@ -641,6 +641,7 @@ public class Level_0 : MonoBehaviour
 
 
 		Mesh mesh = GetUnityMesh (); //unity.GetComponent<MeshFilter> ().sharedMesh;
+		//CustomMesh.OptimizeMesh(mesh);
 		GameObject unity = Word.GetGameObject(mesh);
 		unity.name = "U";
 
@@ -850,41 +851,41 @@ public class Level_0 : MonoBehaviour
 //				infoMouse.GetComponent<Animation> ().Play ("Destroy");
 //			}
 
-			if (Input.GetKeyDown (KeyCode.JoystickButton8)) // L2
-			{
-				foreach (NewLensCorrection lens in GameObject.FindObjectsOfType<NewLensCorrection>())
-				{
-					lens.strengthX -= 0.1f;
-					lens.strengthY -= 0.1f;
-				}
-			} 
-			else if(Input.GetKeyDown (KeyCode.JoystickButton9)) // R2
-			{
-				foreach (NewLensCorrection lens in GameObject.FindObjectsOfType<NewLensCorrection>())
-				{
-					lens.strengthX += 0.1f;
-					lens.strengthY += 0.1f;
-				}
-			}
-
-
-
-			if (Input.GetKeyDown (KeyCode.JoystickButton10) || Input.GetKeyDown (KeyCode.LeftShift)) // L2
-			{
-				foreach (NewLensCorrection lens in GameObject.FindObjectsOfType<NewLensCorrection>())
-				{
-					lens.gameObject.GetComponent<Camera> ().fieldOfView -= 1;
-				}
-				//binary -= 1;
-			} 
-			else if(Input.GetKeyDown (KeyCode.JoystickButton11) || Input.GetKeyDown (KeyCode.RightShift)) // R2
-			{
-				foreach (NewLensCorrection lens in GameObject.FindObjectsOfType<NewLensCorrection>())
-				{
-					lens.gameObject.GetComponent<Camera> ().fieldOfView += 1;
-				}
-				//binary += 1;
-			}
+//			if (Input.GetKeyDown (KeyCode.JoystickButton8)) // L2
+//			{
+//				foreach (NewLensCorrection lens in GameObject.FindObjectsOfType<NewLensCorrection>())
+//				{
+//					lens.strengthX -= 0.1f;
+//					lens.strengthY -= 0.1f;
+//				}
+//			} 
+//			else if(Input.GetKeyDown (KeyCode.JoystickButton9)) // R2
+//			{
+//				foreach (NewLensCorrection lens in GameObject.FindObjectsOfType<NewLensCorrection>())
+//				{
+//					lens.strengthX += 0.1f;
+//					lens.strengthY += 0.1f;
+//				}
+//			}
+//
+//
+//
+//			if (Input.GetKeyDown (KeyCode.JoystickButton10) || Input.GetKeyDown (KeyCode.LeftShift)) // L2
+//			{
+//				foreach (NewLensCorrection lens in GameObject.FindObjectsOfType<NewLensCorrection>())
+//				{
+//					lens.gameObject.GetComponent<Camera> ().fieldOfView -= 1;
+//				}
+//				//binary -= 1;
+//			} 
+//			else if(Input.GetKeyDown (KeyCode.JoystickButton11) || Input.GetKeyDown (KeyCode.RightShift)) // R2
+//			{
+//				foreach (NewLensCorrection lens in GameObject.FindObjectsOfType<NewLensCorrection>())
+//				{
+//					lens.gameObject.GetComponent<Camera> ().fieldOfView += 1;
+//				}
+//				//binary += 1;
+//			}
 		}
 
 		//binary = 0;

@@ -221,7 +221,7 @@ public class Player : MonoBehaviour
 		player.AddComponent<Player>();
 		audio = player.AddComponent<AudioController>();
 
-		NewLensCorrection[] lens = GameObject.FindObjectsOfType<NewLensCorrection> ();
+		//NewLensCorrection[] lens = GameObject.FindObjectsOfType<NewLensCorrection> ();
 
 		aimParent = new GameObject ("Aim");
 
